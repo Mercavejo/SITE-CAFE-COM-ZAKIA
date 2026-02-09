@@ -369,7 +369,6 @@ img {
             rgba(13, 13, 13, 0.7) 40%,
             rgba(13, 13, 13, 0.4) 70%,
             rgba(13, 13, 13, 0.2) 100%);
-    backdrop-filter: blur(2px);
     z-index: -1;
 }
 
