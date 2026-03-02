@@ -5,7 +5,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize all components
     initNavbar();
-    initCarousel();
     initScrollAnimations();
     initSmoothScroll();
     initCinemaPlayer();
@@ -183,7 +182,7 @@ function initCarousel() {
 /* ---------- Scroll Animations ---------- */
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll(
-        '.section-header, .pricing-card, .mercavejo-content, .portfolio-carousel, ' +
+        '.section-header, .pricing-card, ' +
         '.guest-card, .cinema-showcase, .host-content, .diferencial-content, .sponsors-marquee'
     );
 
