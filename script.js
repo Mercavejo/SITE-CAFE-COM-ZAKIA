@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCarousel();
     initScrollAnimations();
     initSmoothScroll();
+    initCinemaPlayer();
 });
 
 /* ---------- Navbar ---------- */
@@ -181,7 +182,10 @@ function initCarousel() {
 
 /* ---------- Scroll Animations ---------- */
 function initScrollAnimations() {
-    const animatedElements = document.querySelectorAll('.section-header, .pricing-card, .mercavejo-content, .portfolio-carousel');
+    const animatedElements = document.querySelectorAll(
+        '.section-header, .pricing-card, .mercavejo-content, .portfolio-carousel, ' +
+        '.guest-card, .cinema-showcase, .host-content, .diferencial-content, .sponsors-marquee'
+    );
 
     animatedElements.forEach(el => {
         el.classList.add('animate-on-scroll');
@@ -251,4 +255,43 @@ function throttle(func, limit) {
             setTimeout(() => inThrottle = false, limit);
         }
     };
+}
+
+/* ---------- Cinema Video Player ---------- */
+function initCinemaPlayer() {
+    const video = document.querySelector('.cinema-video');
+    const overlay = document.querySelector('.cinema-player-overlay');
+    const playBtn = document.getElementById('cinemaPlayBtn');
+
+    if (!video || !overlay || !playBtn) return;
+
+    let isMuted = true;
+
+    overlay.addEventListener('click', () => {
+        if (isMuted) {
+            video.muted = false;
+            isMuted = false;
+            overlay.classList.add('hidden');
+        } else {
+            video.muted = true;
+            isMuted = true;
+            overlay.classList.remove('hidden');
+        }
+    });
+
+    // Pause/play on visibility
+    const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                video.play().catch(() => {});
+            } else {
+                video.pause();
+                video.muted = true;
+                isMuted = true;
+                overlay.classList.remove('hidden');
+            }
+        });
+    }, { threshold: 0.3 });
+
+    videoObserver.observe(video);
 }
