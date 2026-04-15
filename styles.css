@@ -131,7 +131,7 @@ img {
     width: 100%;
     max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 var(--space-md);
+    padding: 0 var(--space-lg); /* Aumentado para 20px+ nas laterais */
 }
 
 .gradient-text {
@@ -422,6 +422,13 @@ section {
     display: flex;
     flex-direction: column;
     text-align: center;
+    height: 100%; /* Garante altura igual */
+}
+
+.pricing-card .btn {
+    margin-top: auto; /* Empurra o botão para o final do card */
+    width: 100%; /* Padroniza largura */
+    min-width: 200px;
 }
 
 .pricing-card:hover {
@@ -484,6 +491,52 @@ section {
     font-weight: bold;
 }
 
+/* ---------- Guests/Depoimentos ---------- */
+.guests-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+}
+
+.guest-card {
+    background: var(--color-bg-secondary);
+    padding: var(--space-lg);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: var(--transition-base);
+}
+
+.guest-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--color-primary);
+}
+
+.guest-name {
+    font-size: 1.25rem;
+    margin-bottom: 5px;
+    text-align: left;
+    color: var(--color-text-primary);
+}
+
+.guest-title {
+    font-size: 0.875rem;
+    color: var(--color-primary);
+    display: block;
+    margin-bottom: var(--space-md);
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.guest-quote {
+    font-style: italic;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    text-align: left;
+    margin: 0;
+}
+
 /* ---------- Sponsors ---------- */
 .sponsors-marquee {
     overflow: hidden;
@@ -540,22 +593,56 @@ section {
 }
 
 /* ---------- Responsividade ---------- */
-@media (max-width: 768px) {
-    .container {
-        padding: 0 20px;
+@media (max-width: 1024px) {
+    .pricing-grid {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: var(--space-lg);
     }
     .pricing-card.featured {
         transform: scale(1);
-        margin: var(--space-lg) 0;
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --space-3xl: 4rem;
+        --space-2xl: 3rem;
+    }
+    .container {
+        padding: 0 20px;
     }
     .nav-menu {
-        display: none; /* Simplificando para o mobile */
+        display: none;
+    }
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+    .pricing-card.featured {
+        margin: var(--space-lg) 0;
     }
     .trust-stats {
         flex-direction: column;
+        gap: var(--space-sm);
     }
     .stat-divider {
-        width: 50px;
+        width: 60px;
         height: 1px;
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    .hero-ctas {
+        flex-direction: column;
+        width: 100%;
+    }
+    .btn {
+        width: 100%;
     }
 }
