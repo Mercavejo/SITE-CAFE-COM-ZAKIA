@@ -501,8 +501,10 @@ img {
 
 .stat-value {
     font-family: var(--font-heading);
-    font-weight: 700;
+    font-weight: 800;
+    font-size: 1.25rem;
     color: var(--color-primary);
+    text-shadow: 0 0 15px rgba(139, 74, 59, 0.3);
 }
 
 .stat-label {
@@ -1632,9 +1634,7 @@ section {
         transform: translateY(-8px);
     }
 
-    .guests-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
+
 
     .cinema-features {
         grid-template-columns: repeat(2, 1fr);
@@ -1697,11 +1697,23 @@ section {
 
     .trust-stats {
         flex-direction: column;
+        gap: var(--space-sm);
+    }
+
+    .stat {
+        flex-direction: column;
+        text-align: center;
+        gap: 2px;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
     }
 
     .stat-divider {
-        width: 60px;
+        width: 40px;
         height: 1px;
+        background: rgba(255, 255, 255, 0.1);
     }
 
     .hero-ctas {
@@ -1714,11 +1726,7 @@ section {
         max-width: 300px;
     }
 
-    .guests-grid {
-        grid-template-columns: 1fr;
-        max-width: 420px;
-        margin: 0 auto;
-    }
+
 
     .host-content {
         grid-template-columns: 1fr;
