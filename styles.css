@@ -278,12 +278,14 @@ img {
 
 .nav-social-icons {
     display: flex;
-    gap: 15px;
+    gap: 20px;
     align-items: center;
-    margin: 0 10px;
+    margin: 0 15px;
 }
 
 .nav-icon img {
+    width: 28px; /* Aumentado de 20px */
+    height: 28px;
     transition: transform 0.3s ease, filter 0.3s ease;
     filter: grayscale(100%) brightness(0.8);
 }
@@ -335,7 +337,7 @@ img {
 /* Trust Bar */
 .trust-bar {
     margin-top: var(--space-2xl);
-    padding: var(--space-md) var(--space-lg);
+    padding: var(--space-lg) var(--space-xl);
     background: var(--color-bg-glass);
     backdrop-filter: blur(10px);
     border-radius: 12px;
@@ -343,7 +345,52 @@ img {
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: var(--space-lg);
+    width: 100%;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.stat-highlight {
+    background: rgba(139, 74, 59, 0.1);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(139, 74, 59, 0.2);
+    transform: scale(1.1);
+}
+
+.stat-highlight .stat-label {
+    font-weight: 700;
+    color: var(--color-primary) !important;
+}
+
+.trust-socials {
+    display: flex;
     gap: var(--space-md);
+    margin-top: var(--space-sm);
+}
+
+.trust-socials .social-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--color-bg-tertiary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-base);
+    color: var(--color-text-primary);
+}
+
+.trust-socials .social-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.trust-socials .social-icon:hover {
+    background: var(--color-primary);
+    transform: translateY(-3px);
 }
 
 .trust-stats {
