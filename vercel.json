@@ -1,48 +1,6 @@
 {
-  "$schema": "https://open.vercel.com/json",
-  "version": 2,
-  "name": "cafe-com-zakia",
-  "framework": null,
-  "outputDirectory": ".",
-  "rewrites": [
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "DENY"
-        },
-        {
-          "key": "X-XSS-Protection",
-          "value": "1; mode=block"
-        }
-      ]
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/home",
-      "destination": "/",
-      "permanent": true
-    }
-  ]
+  "outputDirectory": "next-app/.next",
+  "installCommand": "cd next-app && npm install",
+  "buildCommand": "cd next-app && npm run build",
+  "framework": "nextjs"
 }
