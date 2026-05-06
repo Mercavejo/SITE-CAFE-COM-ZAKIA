@@ -1,0 +1,80 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "mcp": {
+    "context-mode": {
+      "type": "local",
+      "command": ["context-mode"],
+      "enabled": true
+    },
+
+    "vercel": {
+      "type": "remote",
+      "url": "https://mcp.vercel.com",
+      "enabled": true
+    }
+  },
+
+  "plugin": ["context-mode"],
+
+  "tools": {
+    "vercel_*": false
+  },
+
+  "model": "opencode-go/qwen3.5-plus",
+  "small_model": "opencode-go/deepseek-v4-flash",
+
+  "instructions": [
+    "AGENTS.md",
+    ".github/copilot-instructions.md"
+  ],
+
+  "agent": {
+    "default": {
+      "description": "Agente principal para desenvolvimento diário.",
+      "mode": "primary",
+      "model": "opencode-go/qwen3.5-plus",
+      "temperature": 0.2,
+      "permission": {
+        "edit": "ask",
+        "bash": "ask"
+      }
+    },
+
+    "fast-triage": {
+      "description": "Triagem econômica para entender o projeto, arquivos e próximos passos.",
+      "mode": "primary",
+      "model": "opencode-go/deepseek-v4-flash",
+      "temperature": 0.1,
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+
+    "code-review": {
+      "description": "Revisão de código, bugs, riscos, testes e segurança básica.",
+      "mode": "primary",
+      "model": "opencode-go/qwen3.6-plus",
+      "temperature": 0.1,
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      }
+    },
+
+    "vercel-ops": {
+      "description": "Operações Vercel: preview deploy, production deploy, logs, status e troubleshooting.",
+      "mode": "primary",
+      "model": "opencode-go/qwen3.5-plus",
+      "temperature": 0.1,
+      "permission": {
+        "edit": "deny",
+        "bash": "ask"
+      },
+      "tools": {
+        "vercel_*": true
+      }
+    }
+  }
+}
