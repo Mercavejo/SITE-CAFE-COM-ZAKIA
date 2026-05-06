@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+:root {
+  /* Café com Zakia Colors */
+  --zakia-maroon: #8B4A3B;
+  --zakia-maroon-light: #A65D4D;
+  --zakia-dark: #1A1A1A;
+
+  /* Mercavejo Colors */
+  --mercavejo-gold: #d4b67b;
+  --mercavejo-gold-hover: #c9a36a;
+  --mercavejo-blue: #0F3A7D;
+  --mercavejo-blue-hover: #0a2555;
+
+  /* Light Theme */
+  --background: #FFFFFF;
+  --foreground: #1A1A1A;
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --bg-tertiary: #E5E5E5;
+  --text-primary: #1A1A1A;
+  --text-secondary: #666666;
+  --border-color: #E5E5E5;
+}
+
+.dark {
+  /* Dark Theme */
+  --background: #0D0D0D;
+  --foreground: #FFFFFF;
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #1A1A1A;
+  --bg-tertiary: #252525;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0A0A0;
+  --border-color: #333333;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-zakia-maroon: var(--zakia-maroon);
+  --color-zakia-maroon-light: var(--zakia-maroon-light);
+  --color-mercavejo-gold: var(--mercavejo-gold);
+  --color-mercavejo-blue: var(--mercavejo-blue);
+  --font-sans: var(--font-poppins);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-poppins), system-ui, sans-serif;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--zakia-maroon);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--zakia-maroon-light);
+}

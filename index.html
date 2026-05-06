@@ -38,9 +38,13 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="#" class="nav-logo">
-                <img src="assets/logo.png" alt="Café com Zakia" class="logo-img" width="110" height="110">
+                <picture>
+  <source srcset="assets/optimized/logo.avif" type="image/avif">
+  <source srcset="assets/optimized/logo.webp" type="image/webp">
+  <img src="assets/logo.png" alt="Café com Zakia" class="logo-img" width="110" height="110" loading="eager">
+</picture>
             </a>
-            <button class="nav-toggle" id="navToggle" aria-label="Menu">
+            <button type="button" class="nav-toggle" id="navToggle" aria-label="Menu">
                 <span class="hamburger"></span>
             </button>
             <ul class="nav-menu" id="navMenu">
@@ -119,28 +123,28 @@
                     <a href="https://www.mercavejo.com.br" target="_blank" class="trust-logo-item mercavejo"
                         title="Mercavejo">
                         <img src="https://iijzjfokryulldsukhpj.supabase.co/storage/v1/object/public/logos/mercavejov2.png"
-                            alt="Mercavejo">
+                            alt="Mercavejo" loading="lazy" decoding="async">
                     </a>
                     <a href="https://www.youtube.com/@cafecomzakia" target="_blank" class="trust-logo-item youtube"
                         title="YouTube">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg"
-                            alt="YouTube">
+                            alt="YouTube" loading="lazy" decoding="async">
                     </a>
                     <a href="https://open.spotify.com/show/5HEziKX3xOOfV7eryMZ91v" target="_blank"
                         class="trust-logo-item spotify" title="Spotify">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg"
-                            alt="Spotify">
+                            alt="Spotify" loading="lazy" decoding="async">
                     </a>
                     <a href="https://www.instagram.com/cafecomzakia" target="_blank" class="trust-logo-item instagram"
                         title="Instagram">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
-                            alt="Instagram">
+                            alt="Instagram" loading="lazy" decoding="async">
                         <span>Instagram</span>
                     </a>
                     <a href="https://www.tiktok.com/@cafecomzakia" target="_blank"
                         class="trust-logo-item tiktok" title="TikTok">
                         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/a/a9/TikTok_logo.svg/3840px-TikTok_logo.svg.png "
-                            alt="TikTok">
+                            alt="TikTok" loading="lazy" decoding="async">
                     </a>
                     <a href="https://www.mercavejo.com.br/podcast" target="_blank" class="trust-logo-item estudios"
                         title="Estúdios Mercavejo">
@@ -149,8 +153,8 @@
                             <div class="estudios-text">
                                 <span class="estudios-title">Estúdios</span>
                                 <span class="estudios-subtitle">Mercavejo</span>
-                            </div>
-                        </div>
+            </div>
+        </section>
                     </a>
                 </div>
             </div>
@@ -167,7 +171,7 @@
             </div>
         </div>
 
-        <div class="sponsors-marquee" aria-label="Logotipos dos patrocinadores e parceiros">
+        <section class="sponsors-marquee" role="region" aria-label="Logotipos dos patrocinadores e parceiros">
             <div class="marquee-track">
                 <div class="sponsor-logo">
                     <div class="sponsor-placeholder">Merlim Brindes</div>
@@ -411,19 +415,19 @@
                         <li>
                             <a href="https://www.youtube.com/@cafecomzakia" target="_blank">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg"
-                                    width="16" height="16" style="display:inline; margin-right:8px;"> YouTube
+                                    width="16" height="16" style="display:inline; margin-right:8px;" loading="lazy" decoding="async" alt="YouTube"> YouTube
                             </a>
                         </li>
                         <li>
                             <a href="https://open.spotify.com/show/5HEziKX3xOOfV7eryMZ91v" target="_blank">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg"
-                                    width="16" height="16" style="display:inline; margin-right:8px;"> Spotify
+                                    width="16" height="16" style="display:inline; margin-right:8px;" loading="lazy" decoding="async" alt="Spotify"> Spotify
                             </a>
                         </li>
                         <li>
                             <a href="https://www.instagram.com/cafecomzakia" target="_blank">
                                 <img src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Instagram_logo_2016.svg"
-                                    width="16" height="16" style="display:inline; margin-right:8px;"> Instagram
+                                    width="16" height="16" style="display:inline; margin-right:8px;" loading="lazy" decoding="async" alt="Instagram"> Instagram
                             </a>
                         </li>
                     </ul>
@@ -433,7 +437,7 @@
                     <h4 class="footer-title">Produzido por</h4>
                     <div class="mercavejo-badge">
                         <span class="mercavejo-logo">MERCAVEJO</span>
-                        <span class="mercavejo-tagline">Agência de Marketing & Estúdio</span>
+                        <span class="mercavejo-tagline">Agência de Marketing &amp; Estúdio</span>
                     </div>
                     <a href="https://www.mercavejo.com.br" target="_blank" class="mercavejo-link">
                         🔗 www.mercavejo.com.br
@@ -447,7 +451,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 
 </html>
