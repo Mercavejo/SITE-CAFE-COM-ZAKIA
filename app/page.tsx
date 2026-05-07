@@ -5,10 +5,124 @@ const presenterUrl = "https://www.danieldevittozakia.com.br/";
 const mercavejoUrl = "https://www.mercavejo.com.br/";
 const instagramReelUrl =
   "https://www.instagram.com/reel/DX4Vzw8FV9a/?igsh=MzdpaDRtazhpNXQ0";
+const siteUrl = "https://www.cafecomzakia.com.br";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      name: "Café com Zákia",
+      alternateName: "Café com Zákia Falando de Negócios",
+      url: siteUrl,
+      inLanguage: "pt-BR",
+      publisher: {
+        "@id": `${siteUrl}/#organization`,
+      },
+    },
+    {
+      "@type": "WebPage",
+      "@id": `${siteUrl}/#webpage`,
+      url: siteUrl,
+      name: "Café com Zákia | Podcast de Negócios com Daniel Zákia",
+      description:
+        "Podcast de negócios com entrevistas premium para empresários, líderes e especialistas que desejam construir autoridade, visibilidade e posicionamento.",
+      inLanguage: "pt-BR",
+      isPartOf: {
+        "@id": `${siteUrl}/#website`,
+      },
+      about: {
+        "@id": `${siteUrl}/#podcast`,
+      },
+      primaryImageOfPage: {
+        "@type": "ImageObject",
+        url: `${siteUrl}/assets/hero-cafe-zakia-final.jpg`,
+        width: 1920,
+        height: 1080,
+      },
+    },
+    {
+      "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
+      name: "Café com Zákia",
+      url: siteUrl,
+      logo: `${siteUrl}/assets/logo-white.png`,
+      sameAs: [channelUrl, instagramReelUrl, presenterUrl, mercavejoUrl],
+      founder: {
+        "@id": `${siteUrl}/#daniel-zakia`,
+      },
+      parentOrganization: {
+        "@type": "Organization",
+        name: "Mercavejo Consultoria",
+        url: mercavejoUrl,
+      },
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#daniel-zakia`,
+      name: "Daniel Zákia",
+      alternateName: "Daniel Devitto Zákia",
+      url: presenterUrl,
+      jobTitle: "Apresentador do Café com Zákia",
+      worksFor: {
+        "@id": `${siteUrl}/#organization`,
+      },
+      sameAs: [presenterUrl, channelUrl],
+    },
+    {
+      "@type": "PodcastSeries",
+      "@id": `${siteUrl}/#podcast`,
+      name: "Café com Zákia",
+      alternateName: "Café com Zákia Falando de Negócios",
+      url: siteUrl,
+      inLanguage: "pt-BR",
+      genre: ["Negócios", "Empreendedorismo", "Entrevistas"],
+      description:
+        "Podcast de negócios conduzido por Daniel Zákia, com conversas premium para empresários, líderes e especialistas.",
+      image: `${siteUrl}/assets/hero-cafe-zakia-final.jpg`,
+      author: {
+        "@id": `${siteUrl}/#daniel-zakia`,
+      },
+      publisher: {
+        "@id": `${siteUrl}/#organization`,
+      },
+      sameAs: [channelUrl],
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `${siteUrl}/#breadcrumb`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Início",
+          item: siteUrl,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Episódios",
+          item: `${siteUrl}/#episodios`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "Participar",
+          item: `${siteUrl}/#participar`,
+        },
+      ],
+    },
+  ],
+};
 
 export default function Home() {
   return (
     <main id="inicio">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+      />
       <header className="topbar">
         <a className="brand" href="#inicio" aria-label="Café com Zákia">
           <img src="/assets/logo-white.png" alt="Café com Zákia" />
