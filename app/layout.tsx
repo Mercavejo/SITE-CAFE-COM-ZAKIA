@@ -1,44 +1,34 @@
 import type { Metadata } from "next";
-import { Poppins, Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.cafecomzakia.com.br"),
-  title: "Café com Zakia | Sua Autoridade Digital Começa Aqui",
+  title: "Café com Zákia • Podcast de Negócios com Daniel Zákia",
   description:
-    "Transforme sua história em estratégia de posicionamento. Cortes virais, tráfego pago e liderança de mercado. Gravado nos estúdios Mercavejo.",
+    "Café com Zákia é o podcast de negócios conduzido por Daniel Zákia, com entrevistas para empresários, líderes e especialistas que desejam construir autoridade, visibilidade e posicionamento premium.",
   keywords: [
+    "Café com Zákia",
+    "Daniel Zákia",
+    "podcast de negócios",
+    "entrevistas com empresários",
     "podcast empresarial",
-    "autoridade digital",
-    "posicionamento de marca",
-    "Café com Zakia",
-    "Mercavejo",
-    "marketing digital",
-    "cortes virais",
+    "Mercavejo Consultoria",
   ],
   openGraph: {
-    title: "Café com Zakia | Sua Autoridade Digital Começa Aqui",
+    title: "Café com Zákia • Podcast de Negócios com Daniel Zákia",
     description:
-      "Transforme sua história em estratégia de posicionamento. Gravado nos estúdios Mercavejo.",
+      "Entrevistas premium para empresários, líderes e especialistas que desejam construir autoridade.",
     type: "website",
     url: "https://www.cafecomzakia.com.br",
-    images: [{ url: "/og-image.jpg", alt: "Café com Zakia" }],
+    images: [
+      {
+        url: "/assets/hero-cafe-zakia-final.jpg",
+        alt: "Café com Zákia",
+      },
+    ],
   },
   icons: {
-    icon: "/favicon.png",
+    icon: "/assets/logo.png",
   },
 };
 
@@ -48,19 +38,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" suppressHydrationWarning>
-      <body
-        className={`${poppins.variable} ${inter.variable} font-sans antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          {children}
-        </ThemeProvider>
-      </body>
+    <html lang="pt-BR">
+      <body>{children}</body>
     </html>
   );
 }

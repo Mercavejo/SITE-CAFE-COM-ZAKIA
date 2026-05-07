@@ -1,75 +1,739 @@
-@import "tailwindcss";
-
-:root {
-  /* Café com Zakia Colors */
-  --zakia-maroon: #8B4A3B;
-  --zakia-maroon-light: #A65D4D;
-  --zakia-dark: #1A1A1A;
-
-  /* Mercavejo Colors */
-  --mercavejo-gold: #d4b67b;
-  --mercavejo-gold-hover: #c9a36a;
-  --mercavejo-blue: #0F3A7D;
-  --mercavejo-blue-hover: #0a2555;
-
-  /* Light Theme */
-  --background: #FFFFFF;
-  --foreground: #1A1A1A;
-  --bg-primary: #FFFFFF;
-  --bg-secondary: #F5F5F5;
-  --bg-tertiary: #E5E5E5;
-  --text-primary: #1A1A1A;
-  --text-secondary: #666666;
-  --border-color: #E5E5E5;
+﻿:root {
+  --black: #030303;
+  --black-2: #080808;
+  --graphite: #141416;
+  --graphite-2: #222226;
+  --silver: #e4e4e4;
+  --silver-soft: #a9abb0;
+  --gold: #d4af37;
+  --gold-light: #ffe79a;
+  --gold-dark: #8f6714;
+  --white: #ffffff;
+  --line: rgba(255, 231, 154, 0.26);
+  --shadow: 0 34px 96px rgba(0, 0, 0, 0.58);
 }
 
-.dark {
-  /* Dark Theme */
-  --background: #0D0D0D;
-  --foreground: #FFFFFF;
-  --bg-primary: #0D0D0D;
-  --bg-secondary: #1A1A1A;
-  --bg-tertiary: #252525;
-  --text-primary: #FFFFFF;
-  --text-secondary: #A0A0A0;
-  --border-color: #333333;
+* {
+  box-sizing: border-box;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-zakia-maroon: var(--zakia-maroon);
-  --color-zakia-maroon-light: var(--zakia-maroon-light);
-  --color-mercavejo-gold: var(--mercavejo-gold);
-  --color-mercavejo-blue: var(--mercavejo-blue);
-  --font-sans: var(--font-poppins);
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-poppins), system-ui, sans-serif;
-}
-
-/* Smooth scroll */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--white);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--bg-secondary);
+body::selection {
+  background: var(--gold);
+  color: var(--black);
 }
 
-::-webkit-scrollbar-thumb {
-  background: var(--zakia-maroon);
-  border-radius: 4px;
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: var(--zakia-maroon-light);
+img {
+  display: block;
+  max-width: 100%;
 }
+
+.topbar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 28px;
+  padding: 12px clamp(18px, 4vw, 58px);
+  background:
+    linear-gradient(90deg, rgba(3, 3, 3, 0.95), rgba(12, 12, 12, 0.86)),
+    rgba(3, 3, 3, 0.88);
+  border-bottom: 1px solid rgba(255, 231, 154, 0.2);
+  backdrop-filter: blur(20px);
+}
+
+.brand img {
+  width: 124px;
+  height: 58px;
+  object-fit: contain;
+  opacity: 0.96;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: clamp(16px, 3vw, 38px);
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+nav a:hover,
+.text-link:hover,
+.footer a:hover {
+  color: var(--gold-light);
+}
+
+.nav-cta,
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 3px;
+  font-weight: 900;
+  letter-spacing: 0;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.hero .button {
+  min-height: 44px;
+  padding-inline: 18px;
+  font-size: 0.92rem;
+}
+
+.nav-cta,
+.button.primary {
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold) 45%, var(--gold-light));
+  color: #0a0803;
+  box-shadow: 0 18px 42px rgba(215, 173, 63, 0.2);
+}
+
+.button.secondary,
+.button.outline {
+  border: 1px solid rgba(255, 226, 138, 0.36);
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--white);
+}
+
+.button:hover,
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 24px 58px rgba(215, 173, 63, 0.25);
+}
+
+.button.full {
+  width: 100%;
+}
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  display: grid;
+  align-items: end;
+}
+
+.hero-bg,
+.hero-shade {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-bg {
+  background: url("/assets/hero-cafe-zakia-final.jpg") center center / cover no-repeat;
+  transform: scale(1.004);
+}
+
+.hero-shade {
+  background:
+    radial-gradient(circle at 54% 32%, rgba(255, 231, 154, 0.11), transparent 28%),
+    linear-gradient(90deg, rgba(3, 3, 3, 0.9) 0%, rgba(3, 3, 3, 0.58) 34%, rgba(3, 3, 3, 0.1) 66%, rgba(3, 3, 3, 0.42) 100%),
+    linear-gradient(0deg, rgba(3, 3, 3, 0.96) 0%, rgba(3, 3, 3, 0.18) 42%, rgba(3, 3, 3, 0.02) 100%);
+}
+
+.hero-gold-line {
+  position: absolute;
+  z-index: 1;
+  left: clamp(18px, 4vw, 58px);
+  right: clamp(18px, 4vw, 58px);
+  bottom: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 231, 154, 0.75), transparent);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1280px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: 152px 0 54px;
+  display: grid;
+  grid-template-columns: minmax(390px, 0.5fr) minmax(250px, 0.28fr);
+  align-items: center;
+  justify-content: space-between;
+  gap: clamp(28px, 7vw, 110px);
+}
+
+.hero-copy-block,
+.hero-panel,
+.metric-grid article,
+.episode-card,
+.participate-card {
+  border: 1px solid rgba(255, 231, 154, 0.2);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.09), rgba(255, 255, 255, 0.035)),
+    rgba(3, 3, 3, 0.38);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.38);
+  backdrop-filter: blur(8px);
+}
+
+.hero-copy-block {
+  padding: clamp(18px, 2.2vw, 28px);
+  max-width: 560px;
+}
+
+.eyebrow,
+.panel-label {
+  display: block;
+  margin: 0 0 14px;
+  color: var(--gold-light);
+  font-size: 0.7rem;
+  font-weight: 950;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1,
+h2 {
+  font-family: Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+}
+
+h1 {
+  margin-bottom: 8px;
+  font-size: clamp(2.6rem, 4.5vw, 4.25rem);
+  line-height: 0.94;
+  color: var(--white);
+  text-shadow: 0 12px 42px rgba(0, 0, 0, 0.72);
+}
+
+.subtitle {
+  margin-bottom: 12px;
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.25rem, 1.9vw, 1.9rem);
+  font-weight: 900;
+  line-height: 0.94;
+}
+
+.presenter {
+  margin-bottom: 16px;
+  color: var(--silver);
+  font-size: clamp(1rem, 1.55vw, 1.2rem);
+  font-weight: 700;
+}
+
+.presenter strong {
+  color: var(--white);
+}
+
+.hero-copy,
+.section-heading p,
+.program-copy p,
+.episode-card p,
+.participate-copy p,
+.participate-card p,
+.metric-grid p {
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.76;
+}
+
+.hero-copy {
+  max-width: 720px;
+  font-size: clamp(0.9rem, 1vw, 0.98rem);
+  line-height: 1.62;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.hero-panel {
+  align-self: end;
+  padding: 20px;
+  border-color: rgba(255, 231, 154, 0.24);
+  max-width: 300px;
+  max-height: none;
+  overflow: hidden;
+}
+
+.hero-panel strong {
+  display: block;
+  color: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.55rem, 2.4vw, 2.15rem);
+  line-height: 0.96;
+}
+
+.hero-panel p {
+  margin-bottom: 0;
+  color: var(--silver);
+  font-size: 0.86rem;
+  line-height: 1.48;
+}
+
+.panel-line {
+  height: 1px;
+  margin: 14px 0;
+  background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+}
+
+.authority,
+.episodes,
+.participate {
+  padding: clamp(78px, 9vw, 138px) clamp(18px, 4vw, 58px);
+}
+
+.authority {
+  background:
+    radial-gradient(circle at 15% 0%, rgba(212, 175, 55, 0.14), transparent 30%),
+    linear-gradient(180deg, #030303, #101012);
+}
+
+.section-heading {
+  width: min(1080px, 100%);
+  margin: 0 auto 44px;
+}
+
+.section-heading.centered {
+  width: min(820px, 100%);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 18px;
+  font-size: clamp(2.3rem, 5.5vw, 5rem);
+  line-height: 0.96;
+}
+
+h3 {
+  margin-bottom: 12px;
+  font-size: clamp(1.2rem, 2vw, 1.65rem);
+  line-height: 1.2;
+}
+
+.metric-grid {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.metric-grid article {
+  padding: clamp(24px, 3vw, 36px);
+}
+
+.metric-grid span {
+  display: block;
+  margin-bottom: 36px;
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.8rem, 6vw, 5.6rem);
+  line-height: 0.9;
+}
+
+.program,
+.program-section {
+  display: grid;
+  padding: clamp(78px, 9vw, 138px) clamp(18px, 4vw, 58px);
+  background:
+    radial-gradient(circle at 88% 18%, rgba(216, 216, 216, 0.08), transparent 28%),
+    linear-gradient(180deg, #101012, #030303);
+}
+
+.program-grid {
+  width: min(1320px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(360px, 0.82fr) minmax(0, 1.18fr);
+  gap: clamp(32px, 5vw, 82px);
+  align-items: center;
+}
+
+.program-image img,
+.program-media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: 52% 38%;
+  border: 1px solid rgba(255, 231, 154, 0.36);
+  box-shadow: var(--shadow);
+}
+
+.program-content {
+  max-width: 820px;
+}
+
+.program-description {
+  max-width: 760px;
+  margin-bottom: 30px;
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.55vw, 1.18rem);
+  line-height: 1.78;
+}
+
+.seasons {
+  margin: 32px 0 24px;
+  padding: clamp(20px, 3vw, 28px);
+  border: 1px solid rgba(255, 231, 154, 0.24);
+  background:
+    linear-gradient(135deg, rgba(255, 231, 154, 0.09), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.035);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.36);
+}
+
+.seasons h3 {
+  margin-bottom: 16px;
+  color: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+}
+
+.season-links {
+  display: grid;
+  gap: 10px;
+}
+
+.season-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 0 18px;
+  border: 1px solid rgba(255, 231, 154, 0.2);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 900;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.season-btn:hover {
+  transform: translateX(4px);
+  border-color: rgba(255, 231, 154, 0.55);
+  background: rgba(255, 231, 154, 0.12);
+}
+
+.season-btn span {
+  color: var(--gold-light);
+  font-size: 1.25rem;
+}
+
+.button.large {
+  min-height: 56px;
+  padding-inline: 28px;
+}
+
+.features {
+  display: grid;
+  gap: 10px;
+  margin: 30px 0 0;
+}
+
+.features div {
+  padding: 15px 18px;
+  border-left: 3px solid var(--gold);
+  background: linear-gradient(90deg, rgba(255, 231, 154, 0.1), rgba(255, 255, 255, 0.04));
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 650;
+}
+
+.check-list {
+  display: grid;
+  gap: 10px;
+  margin: 28px 0;
+  padding: 0;
+  list-style: none;
+}
+
+.check-list li {
+  padding: 14px 16px;
+  border-left: 3px solid var(--gold);
+  background: rgba(255, 255, 255, 0.055);
+  color: rgba(255, 255, 255, 0.84);
+}
+
+.text-link {
+  color: var(--gold-light);
+  font-weight: 950;
+}
+
+.episodes {
+  background:
+    radial-gradient(circle at 80% 18%, rgba(212, 175, 55, 0.18), transparent 32%),
+    linear-gradient(180deg, #030303, #141416 48%, #030303);
+}
+
+.episode-showcase {
+  width: min(1260px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(320px, 0.5fr);
+  gap: 24px;
+}
+
+.video-frame {
+  position: relative;
+  overflow: hidden;
+  min-height: 520px;
+  aspect-ratio: 16 / 9;
+  border: 2px solid rgba(255, 231, 154, 0.48);
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.52), rgba(0, 0, 0, 0.12) 46%, rgba(0, 0, 0, 0.72)),
+    linear-gradient(0deg, rgba(0, 0, 0, 0.86), rgba(0, 0, 0, 0.1) 48%, rgba(0, 0, 0, 0.46)),
+    url("/assets/hero-cafe-zakia-final.jpg") center center / cover;
+  box-shadow: var(--shadow);
+}
+
+.video-frame::before {
+  content: "";
+  position: absolute;
+  inset: 16px;
+  border: 1px solid rgba(255, 226, 138, 0.32);
+  pointer-events: none;
+}
+
+.video-frame iframe {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+}
+
+.youtube-fallback {
+  position: relative;
+  z-index: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 16px;
+  padding: clamp(34px, 5vw, 68px);
+}
+
+.youtube-fallback span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 226, 138, 0.42);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.72);
+  color: var(--gold-light);
+  font-size: 0.82rem;
+  font-weight: 950;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.youtube-fallback strong {
+  display: inline-flex;
+  align-items: center;
+  min-height: clamp(78px, 10vw, 118px);
+  padding: 0 clamp(22px, 4vw, 44px);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold) 42%, var(--gold-light));
+  color: #080808;
+  border: 1px solid rgba(255, 255, 255, 0.42);
+  box-shadow: 0 28px 58px rgba(0, 0, 0, 0.52), 0 0 70px rgba(215, 173, 63, 0.22);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.2rem, 5.4vw, 5.6rem);
+  line-height: 0.96;
+  text-transform: uppercase;
+}
+
+.youtube-fallback strong::before {
+  content: "";
+  width: clamp(46px, 5vw, 76px);
+  height: clamp(46px, 5vw, 76px);
+  margin-right: clamp(14px, 2vw, 24px);
+  background: #080808;
+  clip-path: polygon(28% 18%, 28% 82%, 82% 50%);
+}
+
+.youtube-fallback em {
+  color: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 5vw, 4.6rem);
+  font-style: normal;
+  font-weight: 900;
+  line-height: 0.94;
+  text-shadow: 0 10px 34px rgba(0, 0, 0, 0.9);
+}
+
+.episode-card {
+  padding: clamp(24px, 3vw, 36px);
+}
+
+.episode-card .button + .button {
+  margin-top: 12px;
+}
+
+.participate {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 390px;
+  gap: clamp(26px, 5vw, 78px);
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(212, 175, 55, 0.16), transparent 36%),
+    linear-gradient(180deg, #101012, #030303);
+}
+
+.participate-copy {
+  max-width: 780px;
+}
+
+.participate-card {
+  padding: clamp(24px, 3vw, 36px);
+}
+
+.participate-card small {
+  display: block;
+  margin-top: 14px;
+  color: var(--silver-soft);
+  text-align: center;
+}
+
+.footer {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 20px;
+  align-items: center;
+  padding: 30px clamp(18px, 4vw, 58px);
+  border-top: 1px solid rgba(255, 231, 154, 0.2);
+  background: #030303;
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.footer img {
+  width: 86px;
+  opacity: 0.92;
+}
+
+.footer p {
+  margin: 0;
+}
+
+.footer strong,
+.footer span {
+  display: block;
+}
+
+.footer strong {
+  color: var(--white);
+}
+
+.site-credit {
+  margin-top: 8px;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.9rem;
+}
+
+.site-credit a {
+  color: var(--gold-light);
+  font-weight: 900;
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+@media (max-width: 920px) {
+  .topbar {
+    position: absolute;
+    grid-template-columns: 1fr auto;
+  }
+
+  nav {
+    display: none;
+  }
+
+  .hero-inner,
+  .metric-grid,
+  .program,
+  .program-grid,
+  .episode-showcase,
+  .participate,
+  .footer {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-panel {
+    max-width: 520px;
+  }
+
+  .video-frame {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand img {
+    width: 88px;
+  }
+
+  .nav-cta {
+    padding-inline: 14px;
+  }
+
+  .hero-inner {
+    width: min(100% - 24px, 1280px);
+    padding-top: 112px;
+  }
+
+  .hero-copy-block,
+  .hero-panel {
+    padding: 18px;
+    max-width: 100%;
+  }
+
+  .hero-actions {
+    display: grid;
+  }
+
+  .button,
+  .nav-cta {
+    width: 100%;
+    min-height: 48px;
+  }
+
+  .youtube-fallback {
+    padding: 24px;
+  }
+
+  .youtube-fallback strong {
+    width: 100%;
+    font-size: clamp(1.7rem, 10vw, 2.8rem);
+  }
+
+  .youtube-fallback strong::before {
+    width: 38px;
+    height: 38px;
+  }
+}
+
