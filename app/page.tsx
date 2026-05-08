@@ -1,6 +1,9 @@
+import { seoTopicList } from "./seo-data";
+
 const whatsappUrl =
   "https://wa.me/5517996233327?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caf%C3%A9%20com%20Z%C3%A1kia.%20Quero%20entender%20como%20participar%20do%20programa%20e%20posicionar%20minha%20marca.";
 const channelUrl = "https://www.youtube.com/@cafecomzakia";
+const instagramUrl = "https://www.instagram.com/cafecomzakia/";
 const presenterUrl = "https://www.danieldevittozakia.com.br/";
 const mercavejoUrl = "https://www.mercavejo.com.br/";
 const instagramReelUrl =
@@ -48,7 +51,7 @@ const structuredData = {
       name: "Café com Zákia",
       url: siteUrl,
       logo: `${siteUrl}/assets/logo-white.png`,
-      sameAs: [channelUrl, instagramReelUrl, presenterUrl, mercavejoUrl],
+      sameAs: [channelUrl, instagramUrl, instagramReelUrl, presenterUrl, mercavejoUrl],
       founder: {
         "@id": `${siteUrl}/#daniel-zakia`,
       },
@@ -87,7 +90,7 @@ const structuredData = {
       publisher: {
         "@id": `${siteUrl}/#organization`,
       },
-      sameAs: [channelUrl],
+      sameAs: [channelUrl, instagramUrl],
     },
     {
       "@type": "BreadcrumbList",
@@ -204,6 +207,50 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="search-topics" aria-label="Temas estratégicos para buscas">
+        <div className="section-heading centered">
+          <p className="eyebrow">Buscas estratégicas</p>
+          <h2>O Café com Zákia também é referência para quem procura negócios, entrevistas, vídeos e marketing.</h2>
+          <p>
+            O site trabalha junto com o YouTube <strong>@cafecomzakia</strong> e o Instagram{" "}
+            <strong>@cafecomzakia</strong>, incluindo prova social com corte acima de 5 milhões
+            de visualizações.
+          </p>
+        </div>
+        <div className="topic-links">
+          {seoTopicList.map((topic) => (
+            <a key={topic.slug} href={`/${topic.slug}`}>
+              {topic.kicker}
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section className="social-proof" aria-label="Autoridade digital do Café com Zákia">
+        <div className="social-proof-inner">
+          <div>
+            <p className="eyebrow">Autoridade digital</p>
+            <h2>Instagram e YouTube como vitrines de alcance real.</h2>
+            <p>
+              O Café com Zákia fortalece presença nas redes com episódios, cortes, conversas de
+              negócios e conteúdos que ampliam reputação para convidados e marcas.
+            </p>
+          </div>
+          <div className="social-proof-cards">
+            <a href={channelUrl} target="_blank" rel="noopener">
+              <span>YouTube</span>
+              <strong>@cafecomzakia</strong>
+              <small>Canal oficial com episódios e entrevistas</small>
+            </a>
+            <a href={instagramReelUrl} target="_blank" rel="noopener">
+              <span>Instagram</span>
+              <strong>+5 milhões</strong>
+              <small>corte viral no @cafecomzakia</small>
+            </a>
+          </div>
+        </div>
+      </section>
+
       <section className="program-section" id="programa">
         <div className="program-grid">
           <div className="program-media">
@@ -294,6 +341,7 @@ export default function Home() {
         <p>
           <strong>Café com Zákia</strong>
           <span>Falando de Negócios • Produção Mercavejo Consultoria</span>
+          <span>Canal oficial: YouTube e Instagram @cafecomzakia</span>
           <span className="site-credit">
             Site desenvolvido por{" "}
             <a href={mercavejoUrl} target="_blank" rel="noopener">
@@ -303,6 +351,7 @@ export default function Home() {
         </p>
         <div className="footer-links">
           <a href={channelUrl} target="_blank" rel="noopener">YouTube</a>
+          <a href={instagramUrl} target="_blank" rel="noopener">Instagram</a>
           <a href={mercavejoUrl} target="_blank" rel="noopener">Mercavejo Consultoria</a>
           <a href={whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
         </div>

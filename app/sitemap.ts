@@ -1,38 +1,22 @@
 import type { MetadataRoute } from "next";
+import { seoTopicList } from "./seo-data";
 
 const baseUrl = "https://www.cafecomzakia.com.br";
+const now = new Date();
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
       url: baseUrl,
-      lastModified: new Date(),
+      lastModified: now,
       changeFrequency: "weekly",
       priority: 1,
     },
-    {
-      url: `${baseUrl}/#autoridade`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#programa`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/#episodios`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/#participar`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
+    ...seoTopicList.map((topic) => ({
+      url: `${baseUrl}/${topic.slug}`,
+      lastModified: now,
+      changeFrequency: "weekly" as const,
+      priority: 0.88,
+    })),
   ];
 }
