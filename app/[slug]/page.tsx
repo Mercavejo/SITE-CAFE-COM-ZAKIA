@@ -6,6 +6,7 @@ import {
   instagramReelUrl,
   instagramUrl,
   mercavejoUrl,
+  presenterUrl,
   seoTopicList,
   siteUrl,
   whatsappUrl,
@@ -188,6 +189,9 @@ export default async function SeoTopicPage({ params }: PageProps) {
               Conversas premium sobre negócios, autoridade, marketing, reputação e trajetória.
               Presença conectada ao YouTube e Instagram @cafecomzakia.
             </p>
+            <a className="text-link" href={presenterUrl} target="_blank" rel="noopener">
+              Conhecer Daniel Devitto Zákia
+            </a>
           </aside>
         </div>
 
@@ -255,6 +259,9 @@ export default async function SeoTopicPage({ params }: PageProps) {
           </a>
           <a href={instagramUrl} target="_blank" rel="noopener">
             Instagram
+          </a>
+          <a href={presenterUrl} target="_blank" rel="noopener">
+            Daniel Zákia
           </a>
           <a href={instagramReelUrl} target="_blank" rel="noopener">
             Corte com 5M+

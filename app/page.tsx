@@ -72,6 +72,7 @@ const structuredData = {
         "@id": `${siteUrl}/#organization`,
       },
       sameAs: [presenterUrl, channelUrl],
+      mainEntityOfPage: presenterUrl,
     },
     {
       "@type": "PodcastSeries",
@@ -226,6 +227,23 @@ export default function Home() {
         </div>
       </section>
 
+      <section className="presenter-section" aria-label="Quem é o apresentador do Café com Zákia">
+        <div className="presenter-inner">
+          <div>
+            <p className="eyebrow">Apresentador e entrevistador</p>
+            <h2>Daniel Zákia conduz o Café com Zákia com visão de negócios, presença e autoridade.</h2>
+            <p>
+              Para quem busca entender quem é o entrevistador do Café com Zákia, o site oficial de
+              Daniel Devitto Zákia apresenta sua trajetória, posicionamento e presença profissional.
+              Essa conexão fortalece o programa, o apresentador e a autoridade da marca nos buscadores.
+            </p>
+          </div>
+          <a className="button primary" href={presenterUrl} target="_blank" rel="noopener">
+            Conhecer Daniel Devitto Zákia
+          </a>
+        </div>
+      </section>
+
       <section className="social-proof" aria-label="Autoridade digital do Café com Zákia">
         <div className="social-proof-inner">
           <div>
@@ -352,6 +370,7 @@ export default function Home() {
         <div className="footer-links">
           <a href={channelUrl} target="_blank" rel="noopener">YouTube</a>
           <a href={instagramUrl} target="_blank" rel="noopener">Instagram</a>
+          <a href={presenterUrl} target="_blank" rel="noopener">Daniel Zákia</a>
           <a href={mercavejoUrl} target="_blank" rel="noopener">Mercavejo Consultoria</a>
           <a href={whatsappUrl} target="_blank" rel="noopener">WhatsApp</a>
         </div>

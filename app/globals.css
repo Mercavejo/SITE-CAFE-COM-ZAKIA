@@ -505,6 +505,7 @@ h3 {
 }
 
 .search-topics,
+.presenter-section,
 .social-proof,
 .seo-content {
   padding: clamp(72px, 8vw, 124px) clamp(18px, 4vw, 58px);
@@ -557,6 +558,33 @@ h3 {
   background:
     radial-gradient(circle at 80% 12%, rgba(255, 231, 154, 0.1), transparent 32%),
     linear-gradient(180deg, #101012, #030303);
+}
+
+.presenter-section {
+  background:
+    radial-gradient(circle at 82% 15%, rgba(216, 216, 216, 0.08), transparent 32%),
+    linear-gradient(180deg, #101012, #030303);
+}
+
+.presenter-inner {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: clamp(24px, 5vw, 70px);
+  align-items: center;
+  padding: clamp(24px, 4vw, 42px);
+  border: 1px solid rgba(255, 231, 154, 0.24);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.08), rgba(255, 255, 255, 0.035)),
+    rgba(255, 255, 255, 0.035);
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.28);
+}
+
+.presenter-inner p {
+  max-width: 840px;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.72;
 }
 
 .social-proof-inner {
@@ -949,6 +977,7 @@ h3 {
   .episodes,
   .participate,
   .search-topics,
+  .presenter-section,
   .social-proof,
   .seo-content {
     padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
@@ -1155,6 +1184,10 @@ h3 {
 
   .topic-links a {
     min-height: 58px;
+  }
+
+  .presenter-inner {
+    grid-template-columns: 1fr;
   }
 
   .social-proof-cards strong {

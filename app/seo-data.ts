@@ -1,4 +1,5 @@
 export const siteUrl = "https://www.cafecomzakia.com.br";
+export const presenterUrl = "https://www.danieldevittozakia.com.br/";
 export const whatsappUrl =
   "https://wa.me/5517996233327?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caf%C3%A9%20com%20Z%C3%A1kia.%20Quero%20entender%20como%20participar%20do%20programa%20e%20posicionar%20minha%20marca.";
 export const channelUrl = "https://www.youtube.com/@cafecomzakia";
@@ -42,6 +43,8 @@ export const seoTopicList: SeoTopic[] = [
       "como participar de podcast",
       "entrevista em podcast",
       "Café com Zákia",
+      "Daniel Devitto Zákia",
+      "www.danieldevittozakia.com.br",
       "YouTube @cafecomzakia",
       "Instagram @cafecomzakia",
     ],
@@ -91,6 +94,8 @@ export const seoTopicList: SeoTopic[] = [
       "podcast sobre empreendedorismo",
       "falando de negócios",
       "Daniel Zákia",
+      "Daniel Devitto Zákia",
+      "www.danieldevittozakia.com.br",
       "YouTube @cafecomzakia",
       "Instagram @cafecomzakia",
     ],
@@ -140,6 +145,8 @@ export const seoTopicList: SeoTopic[] = [
       "programa com empresários",
       "podcast com empresários",
       "Café com Zákia entrevistas",
+      "Daniel Devitto Zákia",
+      "www.danieldevittozakia.com.br",
       "Instagram @cafecomzakia",
     ],
     proof: "A entrevista funciona como vitrine de confiança, apoiada por canal no YouTube, Instagram @cafecomzakia e cortes com grande alcance.",
@@ -188,6 +195,8 @@ export const seoTopicList: SeoTopic[] = [
       "programa empresarial",
       "Café com Zákia programa",
       "negócios e empreendedorismo",
+      "Daniel Devitto Zákia",
+      "www.danieldevittozakia.com.br",
       "corte viral 5 milhões",
     ],
     proof: "A força do programa está em unir imagem, conversa, distribuição, YouTube, Instagram e posicionamento.",
@@ -236,6 +245,8 @@ export const seoTopicList: SeoTopic[] = [
       "entrevistas no YouTube",
       "podcast no YouTube",
       "Café com Zákia YouTube",
+      "Daniel Devitto Zákia",
+      "www.danieldevittozakia.com.br",
       "Instagram @cafecomzakia",
     ],
     proof: "O canal oficial no YouTube e o Instagram @cafecomzakia reúnem episódios, cortes e conteúdos voltados para negócios e autoridade.",
@@ -284,6 +295,8 @@ export const seoTopicList: SeoTopic[] = [
       "posicionamento de marca",
       "autoridade digital",
       "Mercavejo Consultoria",
+      "Daniel Devitto Zákia",
+      "www.danieldevittozakia.com.br",
       "Instagram @cafecomzakia",
     ],
     proof: "Uma presença bem construída pode gerar desejo, confiança e memória de marca.",
