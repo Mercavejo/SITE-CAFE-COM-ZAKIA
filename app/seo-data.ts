@@ -81,7 +81,7 @@ export const seoTopicList: SeoTopic[] = [
   },
   {
     slug: "podcast-de-negocios",
-    title: "Podcast de Negócios | Café com Zákia Falando de Negócios",
+    title: "Podcast de Negócios e Entrevistas Premium",
     description:
       "Café com Zákia é um podcast de negócios com entrevistas premium sobre empreendedorismo, estratégia, liderança e posicionamento.",
     kicker: "Podcast de negócios",
@@ -132,7 +132,7 @@ export const seoTopicList: SeoTopic[] = [
   },
   {
     slug: "entrevistas-com-empresarios",
-    title: "Entrevistas com Empresários | Café com Zákia",
+    title: "Entrevistas com Empresários e Líderes",
     description:
       "Entrevistas com empresários, líderes e especialistas que desejam apresentar trajetória, reputação e visão de negócios com autoridade.",
     kicker: "Entrevistas com empresários",
