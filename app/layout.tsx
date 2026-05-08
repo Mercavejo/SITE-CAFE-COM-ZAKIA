@@ -65,7 +65,12 @@ export const metadata: Metadata = {
   },
   category: "business",
   icons: {
-    icon: "/assets/logo.png",
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/assets/favicon-z.png", type: "image/png", sizes: "512x512" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/assets/favicon-z.png",
   },
 };
 
