@@ -26,6 +26,8 @@ body {
   background: var(--black);
   color: var(--white);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
 }
 
 body::selection {
@@ -41,6 +43,10 @@ a {
 img {
   display: block;
   max-width: 100%;
+}
+
+main {
+  overflow-x: hidden;
 }
 
 .topbar {
@@ -93,6 +99,8 @@ nav a:hover,
   border-radius: 3px;
   font-weight: 900;
   letter-spacing: 0;
+  text-align: center;
+  white-space: normal;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
@@ -175,6 +183,14 @@ nav a:hover,
   gap: clamp(28px, 7vw, 110px);
 }
 
+.hero-inner > *,
+.program-grid > *,
+.episode-showcase > *,
+.participate > *,
+.metric-grid > * {
+  min-width: 0;
+}
+
 .hero-copy-block,
 .hero-panel,
 .metric-grid article,
@@ -219,10 +235,11 @@ h2 {
 
 h1 {
   margin-bottom: 8px;
-  font-size: clamp(2.6rem, 4.5vw, 4.25rem);
+  font-size: clamp(2.45rem, 4.5vw, 4.25rem);
   line-height: 0.94;
   color: var(--white);
   text-shadow: 0 12px 42px rgba(0, 0, 0, 0.72);
+  overflow-wrap: anywhere;
 }
 
 .subtitle {
@@ -323,14 +340,16 @@ h1 {
 
 h2 {
   margin-bottom: 18px;
-  font-size: clamp(2.3rem, 5.5vw, 5rem);
-  line-height: 0.96;
+  font-size: clamp(2.05rem, 5vw, 4.75rem);
+  line-height: 1;
+  overflow-wrap: anywhere;
 }
 
 h3 {
   margin-bottom: 12px;
   font-size: clamp(1.2rem, 2vw, 1.65rem);
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 
 .metric-grid {
@@ -553,16 +572,18 @@ h3 {
 .youtube-fallback strong {
   display: inline-flex;
   align-items: center;
-  min-height: clamp(78px, 10vw, 118px);
-  padding: 0 clamp(22px, 4vw, 44px);
+  min-height: clamp(62px, 6.4vw, 88px);
+  padding: 0 clamp(22px, 3.2vw, 38px);
   background: linear-gradient(135deg, var(--gold-dark), var(--gold) 42%, var(--gold-light));
   color: #080808;
   border: 1px solid rgba(255, 255, 255, 0.42);
   box-shadow: 0 28px 58px rgba(0, 0, 0, 0.52), 0 0 70px rgba(215, 173, 63, 0.22);
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(2.2rem, 5.4vw, 5.6rem);
-  line-height: 0.96;
-  text-transform: uppercase;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: clamp(1.45rem, 3vw, 2.7rem);
+  font-weight: 950;
+  line-height: 1.04;
+  text-transform: none;
+  overflow-wrap: anywhere;
 }
 
 .youtube-fallback strong::before {
@@ -667,6 +688,8 @@ h3 {
   .topbar {
     position: absolute;
     grid-template-columns: 1fr auto;
+    gap: 14px;
+    padding: 12px clamp(14px, 4vw, 28px);
   }
 
   nav {
@@ -687,29 +710,173 @@ h3 {
     max-width: 520px;
   }
 
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-bg {
+    background-position: 54% center;
+  }
+
+  .hero-shade {
+    background:
+      radial-gradient(circle at 52% 20%, rgba(255, 231, 154, 0.14), transparent 32%),
+      linear-gradient(180deg, rgba(3, 3, 3, 0.4) 0%, rgba(3, 3, 3, 0.54) 36%, rgba(3, 3, 3, 0.96) 100%),
+      linear-gradient(90deg, rgba(3, 3, 3, 0.74), rgba(3, 3, 3, 0.22), rgba(3, 3, 3, 0.72));
+  }
+
+  .hero-inner {
+    width: min(100% - 28px, 720px);
+    padding: 132px 0 44px;
+    align-items: end;
+  }
+
+  .hero-copy-block {
+    max-width: 620px;
+  }
+
+  .authority,
+  .program,
+  .program-section,
+  .episodes,
+  .participate {
+    padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
+  }
+
+  .program-media img {
+    aspect-ratio: 16 / 11;
+    object-position: 50% 42%;
+  }
+
   .video-frame {
     min-height: 360px;
+  }
+
+  .youtube-fallback {
+    padding: clamp(24px, 5vw, 42px);
+    overflow: hidden;
+  }
+
+  .youtube-fallback strong {
+    max-width: 100%;
+    min-height: auto;
+    padding: clamp(16px, 3vw, 24px);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: clamp(1.5rem, 5.6vw, 3rem);
+    line-height: 1.04;
+    text-transform: none;
+    overflow-wrap: anywhere;
+  }
+
+  .youtube-fallback strong::before {
+    width: clamp(34px, 5vw, 54px);
+    height: clamp(34px, 5vw, 54px);
+    margin-right: clamp(10px, 2vw, 18px);
+    flex: 0 0 clamp(34px, 5vw, 54px);
+  }
+
+  .youtube-fallback em {
+    font-size: clamp(1.8rem, 6vw, 3.1rem);
+  }
+
+  .footer {
+    text-align: center;
+    justify-items: center;
+  }
+
+  .footer-links {
+    justify-content: center;
   }
 }
 
 @media (max-width: 560px) {
+  .topbar {
+    grid-template-columns: 1fr;
+    justify-items: stretch;
+    background: linear-gradient(180deg, rgba(3, 3, 3, 0.96), rgba(3, 3, 3, 0.78));
+  }
+
+  .brand {
+    justify-self: center;
+  }
+
   .brand img {
-    width: 88px;
+    width: 96px;
+    height: 44px;
   }
 
   .nav-cta {
+    width: 100%;
+    min-height: 42px;
     padding-inline: 14px;
+    font-size: 0.9rem;
+  }
+
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-bg {
+    background-position: 54% top;
+  }
+
+  .hero-shade {
+    background:
+      linear-gradient(180deg, rgba(3, 3, 3, 0.18) 0%, rgba(3, 3, 3, 0.48) 34%, rgba(3, 3, 3, 0.98) 100%),
+      linear-gradient(90deg, rgba(3, 3, 3, 0.78), rgba(3, 3, 3, 0.18), rgba(3, 3, 3, 0.76));
   }
 
   .hero-inner {
     width: min(100% - 24px, 1280px);
-    padding-top: 112px;
+    padding: 144px 0 34px;
+    gap: 16px;
   }
 
   .hero-copy-block,
   .hero-panel {
-    padding: 18px;
+    padding: 16px;
     max-width: 100%;
+  }
+
+  .eyebrow,
+  .panel-label {
+    margin-bottom: 10px;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+  }
+
+  h1 {
+    font-size: clamp(2.18rem, 14vw, 3rem);
+    line-height: 0.96;
+  }
+
+  h2 {
+    font-size: clamp(1.82rem, 10vw, 2.65rem);
+    line-height: 1.04;
+  }
+
+  h3 {
+    font-size: clamp(1.12rem, 5.5vw, 1.45rem);
+  }
+
+  .subtitle {
+    font-size: clamp(1.12rem, 7vw, 1.55rem);
+    line-height: 1.04;
+  }
+
+  .presenter {
+    font-size: 0.98rem;
+  }
+
+  .hero-copy,
+  .section-heading p,
+  .program-description,
+  .episode-card p,
+  .participate-copy p,
+  .participate-card p,
+  .metric-grid p {
+    font-size: 0.95rem;
+    line-height: 1.62;
   }
 
   .hero-actions {
@@ -717,23 +884,142 @@ h3 {
   }
 
   .button,
-  .nav-cta {
+  .hero .button {
     width: 100%;
     min-height: 48px;
+    padding-inline: 16px;
+  }
+
+  .hero-panel strong {
+    font-size: clamp(1.42rem, 8vw, 1.95rem);
+  }
+
+  .metric-grid {
+    gap: 12px;
+  }
+
+  .metric-grid article,
+  .episode-card,
+  .participate-card,
+  .seasons {
+    padding: 18px;
+  }
+
+  .metric-grid span {
+    margin-bottom: 20px;
+    font-size: clamp(2.25rem, 14vw, 3.6rem);
+  }
+
+  .program-grid {
+    gap: 24px;
+  }
+
+  .program-media img {
+    aspect-ratio: 4 / 4.4;
+  }
+
+  .features div,
+  .check-list li {
+    padding: 13px 14px;
+  }
+
+  .season-btn {
+    min-height: 54px;
+    padding: 0 14px;
+    font-size: 0.95rem;
+  }
+
+  .episode-showcase {
+    gap: 18px;
+  }
+
+  .video-frame {
+    min-height: 280px;
   }
 
   .youtube-fallback {
-    padding: 24px;
+    padding: 20px;
+    gap: 12px;
+    overflow: hidden;
   }
 
   .youtube-fallback strong {
     width: 100%;
-    font-size: clamp(1.7rem, 10vw, 2.8rem);
+    min-height: auto;
+    max-width: 100%;
+    padding: 14px 12px;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: clamp(1rem, 5.7vw, 1.45rem);
+    line-height: 1.08;
+    text-align: center;
+    text-transform: none;
+    overflow-wrap: anywhere;
+    word-break: normal;
   }
 
   .youtube-fallback strong::before {
-    width: 38px;
-    height: 38px;
+    width: 26px;
+    height: 26px;
+    margin-right: 10px;
+    flex: 0 0 26px;
+  }
+
+  .youtube-fallback em {
+    font-size: clamp(1.45rem, 9vw, 2.2rem);
+  }
+
+  .footer img {
+    width: 76px;
+  }
+
+  .footer-links {
+    display: grid;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero-inner {
+    width: min(100% - 20px, 1280px);
+  }
+
+  .hero-copy-block,
+  .hero-panel,
+  .metric-grid article,
+  .episode-card,
+  .participate-card,
+  .seasons {
+    padding: 14px;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 13vw, 2.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.6rem, 9vw, 2.2rem);
+  }
+
+  .nav-cta,
+  .button {
+    font-size: 0.86rem;
+  }
+
+  .video-frame {
+    min-height: 250px;
+  }
+
+  .youtube-fallback {
+    padding: 16px;
+  }
+
+  .youtube-fallback span {
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+  }
+
+  .youtube-fallback strong {
+    font-size: 1rem;
   }
 }
 
