@@ -33,6 +33,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Mercavejo Consultoria", url: "https://www.mercavejo.com.br" }],
   creator: "Mercavejo Consultoria",
   publisher: "Mercavejo Consultoria",
+  verification: {
+    google: "rVPwTRqTdgAPT_cbhsgF-T5HQMxViysIp7mY8XOdohc",
+  },
   alternates: {
     canonical: "/",
   },
