@@ -170,7 +170,7 @@ export default function Home() {
           </div>
           <aside className="hero-panel" aria-label="Indicadores do Café com Zákia">
             <span className="panel-label">Vitrine de autoridade</span>
-            <strong>+5 milhões</strong>
+            <strong>+ de 6 milhões</strong>
             <p>em cortes de alta performance nas redes sociais.</p>
             <div className="panel-line" />
             <strong>+1 milhão</strong>
@@ -214,7 +214,7 @@ export default function Home() {
           <h2>O Café com Zákia também é referência para quem procura negócios, entrevistas, vídeos e marketing.</h2>
           <p>
             O site trabalha junto com o YouTube <strong>@cafecomzakia</strong> e o Instagram{" "}
-            <strong>@cafecomzakia</strong>, incluindo prova social com corte acima de 5 milhões
+            <strong>@cafecomzakia</strong>, incluindo prova social com corte acima de 6 milhões
             de visualizações.
           </p>
         </div>
@@ -262,7 +262,7 @@ export default function Home() {
             </a>
             <a href={instagramReelUrl} target="_blank" rel="noopener">
               <span>Instagram</span>
-              <strong>+5 milhões</strong>
+              <strong>+ de 6 milhões</strong>
               <small>corte viral no @cafecomzakia</small>
             </a>
           </div>
@@ -329,7 +329,7 @@ export default function Home() {
               Abrir canal no YouTube
             </a>
             <a className="button outline full" href={instagramReelUrl} target="_blank" rel="noopener">
-              Ver corte com 5M+
+              Ver corte com + de 6 milhões
             </a>
           </aside>
         </div>

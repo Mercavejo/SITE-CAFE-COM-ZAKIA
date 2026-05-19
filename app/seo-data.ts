@@ -48,7 +48,7 @@ export const seoTopicList: SeoTopic[] = [
       "YouTube @cafecomzakia",
       "Instagram @cafecomzakia",
     ],
-    proof: "+5 milhões em corte viral no Instagram @cafecomzakia e +1 milhão de visualizações no YouTube.",
+    proof: "+ de 6 milhões em corte viral no Instagram @cafecomzakia e +1 milhão de visualizações no YouTube.",
     sections: [
       {
         title: "Por que participar",
@@ -197,7 +197,7 @@ export const seoTopicList: SeoTopic[] = [
       "negócios e empreendedorismo",
       "Daniel Devitto Zákia",
       "www.danieldevittozakia.com.br",
-      "corte viral 5 milhões",
+      "corte viral mais de 6 milhões",
     ],
     proof: "A força do programa está em unir imagem, conversa, distribuição, YouTube, Instagram e posicionamento.",
     sections: [

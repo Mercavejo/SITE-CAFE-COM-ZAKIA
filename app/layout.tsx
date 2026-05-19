@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     "marketing e negócios",
     "YouTube @cafecomzakia",
     "Instagram @cafecomzakia",
-    "corte viral 5 milhões",
+    "corte viral mais de 6 milhões",
     "Mercavejo Consultoria",
   ],
   authors: [{ name: "Mercavejo Consultoria", url: "https://www.mercavejo.com.br" }],

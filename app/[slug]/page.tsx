@@ -264,7 +264,7 @@ export default async function SeoTopicPage({ params }: PageProps) {
             Daniel Zákia
           </a>
           <a href={instagramReelUrl} target="_blank" rel="noopener">
-            Corte com 5M+
+            Corte com + de 6 milhões
           </a>
           <a href={mercavejoUrl} target="_blank" rel="noopener">
             Mercavejo Consultoria
