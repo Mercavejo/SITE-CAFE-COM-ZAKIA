@@ -587,6 +587,102 @@ h3 {
   line-height: 1.72;
 }
 
+.youtube-testimonials {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(82px, 9vw, 148px) clamp(18px, 4vw, 58px);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 231, 154, 0.14), transparent 30%),
+    radial-gradient(circle at 82% 24%, rgba(212, 175, 55, 0.1), transparent 34%),
+    linear-gradient(180deg, #030303 0%, #111113 46%, #050505 100%);
+}
+
+.youtube-testimonials::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 231, 154, 0.08), transparent 18%, transparent 82%, rgba(255, 231, 154, 0.08)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 26%);
+}
+
+.youtube-testimonials-inner {
+  position: relative;
+  z-index: 1;
+  width: min(1240px, 100%);
+  margin: 0 auto;
+}
+
+.youtube-testimonials-heading {
+  width: min(980px, 100%);
+  margin: 0 auto clamp(34px, 5vw, 58px);
+  text-align: center;
+}
+
+.youtube-testimonials-heading h2 {
+  color: var(--gold-light);
+  text-shadow: 0 18px 58px rgba(212, 175, 55, 0.18);
+}
+
+.youtube-testimonials-heading p:not(.eyebrow) {
+  margin: 0 auto;
+  color: rgba(228, 228, 228, 0.78);
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  line-height: 1.6;
+}
+
+.youtube-testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+}
+
+.youtube-testimonial-card {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  align-items: center;
+  min-height: 100%;
+  padding: clamp(10px, 1.4vw, 16px);
+  border: 1px solid rgba(255, 231, 154, 0.34);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.08), rgba(255, 255, 255, 0.025)),
+    rgba(8, 8, 8, 0.92);
+  box-shadow: 0 26px 82px rgba(0, 0, 0, 0.42);
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.youtube-testimonial-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(135deg, rgba(255, 231, 154, 0.16), transparent 38%, rgba(212, 175, 55, 0.12));
+  transition: opacity 180ms ease;
+}
+
+.youtube-testimonial-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 231, 154, 0.72);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5), 0 0 52px rgba(212, 175, 55, 0.16);
+}
+
+.youtube-testimonial-card:hover::after {
+  opacity: 1;
+}
+
+.youtube-testimonial-card img {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border: 1px solid rgba(255, 255, 255, 0.04);
+  background: #0f0f0f;
+}
+
 .social-proof-inner {
   width: min(1200px, 100%);
   margin: 0 auto;
@@ -936,6 +1032,7 @@ h3 {
   .participate,
   .topic-links,
   .social-proof-inner,
+  .youtube-testimonials-grid,
   .seo-grid,
   .seo-card-grid,
   .footer {
@@ -978,6 +1075,7 @@ h3 {
   .participate,
   .search-topics,
   .presenter-section,
+  .youtube-testimonials,
   .social-proof,
   .seo-content {
     padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
@@ -1188,6 +1286,14 @@ h3 {
 
   .presenter-inner {
     grid-template-columns: 1fr;
+  }
+
+  .youtube-testimonials-heading {
+    margin-bottom: 30px;
+  }
+
+  .youtube-testimonial-card {
+    padding: 10px;
   }
 
   .social-proof-cards strong {

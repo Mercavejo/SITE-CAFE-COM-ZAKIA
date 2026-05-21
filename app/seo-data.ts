@@ -1,7 +1,7 @@
 export const siteUrl = "https://www.cafecomzakia.com.br";
 export const presenterUrl = "https://www.danieldevittozakia.com.br/";
 export const whatsappUrl =
-  "https://wa.me/5517996233327?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caf%C3%A9%20com%20Z%C3%A1kia.%20Quero%20entender%20como%20participar%20do%20programa%20e%20posicionar%20minha%20marca.";
+  "https://wa.me/5517996240418?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20%40cafecomzakia%2C%20gostaria%20de%20saber%20como%20participar%3F";
 export const channelUrl = "https://www.youtube.com/@cafecomzakia";
 export const instagramUrl = "https://www.instagram.com/cafecomzakia/";
 export const instagramReelUrl =

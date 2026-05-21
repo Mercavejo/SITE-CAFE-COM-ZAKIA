@@ -1,7 +1,7 @@
 import { seoTopicList } from "./seo-data";
 
 const whatsappUrl =
-  "https://wa.me/5517996233327?text=Ol%C3%A1%2C%20vim%20pelo%20site%20Caf%C3%A9%20com%20Z%C3%A1kia.%20Quero%20entender%20como%20participar%20do%20programa%20e%20posicionar%20minha%20marca.";
+  "https://wa.me/5517996240418?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20%40cafecomzakia%2C%20gostaria%20de%20saber%20como%20participar%3F";
 const channelUrl = "https://www.youtube.com/@cafecomzakia";
 const instagramUrl = "https://www.instagram.com/cafecomzakia/";
 const presenterUrl = "https://www.danieldevittozakia.com.br/";
@@ -9,6 +9,32 @@ const mercavejoUrl = "https://www.mercavejo.com.br/";
 const instagramReelUrl =
   "https://www.instagram.com/reel/DX4Vzw8FV9a/?igsh=MzdpaDRtazhpNXQ0";
 const siteUrl = "https://www.cafecomzakia.com.br";
+const youtubeTestimonials = [
+  {
+    src: "/assets/depoimentos-youtube/youtube-comment-01.png",
+    alt: "Depoimento no YouTube parabenizando o canal pela entrevista importante.",
+  },
+  {
+    src: "/assets/depoimentos-youtube/youtube-comment-02.png",
+    alt: "Depoimento no YouTube parabenizando Daniel Zákia pela escolha dos temas.",
+  },
+  {
+    src: "/assets/depoimentos-youtube/youtube-comment-03.png",
+    alt: "Depoimento no YouTube elogiando a entrevista do Café com Zákia.",
+  },
+  {
+    src: "/assets/depoimentos-youtube/youtube-comment-04.png",
+    alt: "Depoimento no YouTube dizendo ser fã do canal Café com Zákia.",
+  },
+  {
+    src: "/assets/depoimentos-youtube/youtube-comment-05.png",
+    alt: "Depoimento no YouTube agradecendo a oportunidade e a condução da entrevista.",
+  },
+  {
+    src: "/assets/depoimentos-youtube/youtube-comment-06.png",
+    alt: "Depoimentos no YouTube parabenizando Daniel Zákia pela entrevista.",
+  },
+];
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -241,6 +267,23 @@ export default function Home() {
           <a className="button primary" href={presenterUrl} target="_blank" rel="noopener">
             Conhecer Daniel Devitto Zákia
           </a>
+        </div>
+      </section>
+
+      <section className="youtube-testimonials" aria-label="O que estão dizendo sobre o Café com Zákia">
+        <div className="youtube-testimonials-inner">
+          <div className="youtube-testimonials-heading">
+            <p className="eyebrow">Prova social no YouTube</p>
+            <h2>O que estão dizendo sobre o Café com Zákia</h2>
+            <p>Depoimentos reais do nosso público no YouTube</p>
+          </div>
+          <div className="youtube-testimonials-grid">
+            {youtubeTestimonials.map((testimonial) => (
+              <article className="youtube-testimonial-card" key={testimonial.src}>
+                <img src={testimonial.src} alt={testimonial.alt} loading="lazy" />
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
