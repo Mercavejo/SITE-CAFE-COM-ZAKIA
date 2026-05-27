@@ -832,6 +832,167 @@ h3 {
   margin: 0 auto 24px;
 }
 
+.package-page {
+  background: var(--black);
+}
+
+.package-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.package-hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  padding: 150px clamp(18px, 4vw, 58px) 74px;
+}
+
+.package-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 68% 28%, rgba(255, 231, 154, 0.16), transparent 26%),
+    linear-gradient(90deg, rgba(3, 3, 3, 0.94), rgba(3, 3, 3, 0.5) 46%, rgba(3, 3, 3, 0.82)),
+    linear-gradient(0deg, rgba(3, 3, 3, 0.96), rgba(3, 3, 3, 0.12) 52%, rgba(3, 3, 3, 0.58)),
+    url("/assets/hero-cafe-zakia-final.jpg") center center / cover no-repeat;
+}
+
+.package-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 420px);
+  gap: clamp(28px, 5vw, 74px);
+  align-items: end;
+}
+
+.package-hero-copy {
+  max-width: 760px;
+}
+
+.package-hero-copy p,
+.package-filter p,
+.package-cta p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.35vw, 1.16rem);
+  line-height: 1.74;
+}
+
+.package-price-card,
+.package-items-grid article,
+.package-filter aside,
+.package-cta .package-shell {
+  border: 1px solid rgba(255, 231, 154, 0.28);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.1), rgba(255, 255, 255, 0.035)),
+    rgba(5, 5, 5, 0.72);
+  box-shadow: 0 28px 84px rgba(0, 0, 0, 0.42), 0 0 56px rgba(212, 175, 55, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.package-price-card {
+  padding: clamp(24px, 3vw, 36px);
+}
+
+.package-price-card strong {
+  display: block;
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(3rem, 5.8vw, 5.25rem);
+  line-height: 0.9;
+}
+
+.package-price-card .installments {
+  font-size: clamp(1.8rem, 3vw, 2.55rem);
+}
+
+.package-price-card p {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.56;
+}
+
+.package-includes,
+.package-filter,
+.package-cta {
+  padding: clamp(78px, 9vw, 138px) clamp(18px, 4vw, 58px);
+}
+
+.package-includes {
+  background:
+    radial-gradient(circle at 20% 4%, rgba(212, 175, 55, 0.12), transparent 28%),
+    linear-gradient(180deg, #030303, #101012);
+}
+
+.package-items-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.package-items-grid article {
+  padding: clamp(22px, 3vw, 32px);
+}
+
+.package-items-grid span {
+  display: block;
+  margin-bottom: 34px;
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 0.9;
+}
+
+.package-items-grid h3 {
+  margin: 0;
+  color: var(--white);
+  font-size: clamp(1.05rem, 1.8vw, 1.38rem);
+}
+
+.package-filter {
+  background:
+    radial-gradient(circle at 80% 16%, rgba(255, 231, 154, 0.12), transparent 30%),
+    linear-gradient(180deg, #101012, #030303);
+}
+
+.package-filter-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
+  gap: clamp(24px, 5vw, 72px);
+  align-items: center;
+}
+
+.package-filter aside {
+  padding: clamp(24px, 3vw, 36px);
+}
+
+.package-filter aside strong {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.7rem, 3vw, 2.5rem);
+  line-height: 1;
+}
+
+.package-cta {
+  text-align: center;
+  background:
+    linear-gradient(135deg, rgba(212, 175, 55, 0.14), transparent 40%),
+    linear-gradient(180deg, #030303, #080808);
+}
+
+.package-cta .package-shell {
+  padding: clamp(28px, 5vw, 58px);
+}
+
+.package-cta p {
+  max-width: 760px;
+  margin: 0 auto 24px;
+}
+
 .episode-showcase {
   width: min(1260px, 100%);
   margin: 0 auto;
@@ -1033,6 +1194,9 @@ h3 {
   .topic-links,
   .social-proof-inner,
   .youtube-testimonials-grid,
+  .package-hero-grid,
+  .package-items-grid,
+  .package-filter-grid,
   .seo-grid,
   .seo-card-grid,
   .footer {
@@ -1084,6 +1248,17 @@ h3 {
   .seo-hero {
     min-height: auto;
     padding: 132px clamp(16px, 5vw, 34px) 58px;
+  }
+
+  .package-hero {
+    min-height: auto;
+    padding: 132px clamp(16px, 5vw, 34px) 58px;
+  }
+
+  .package-includes,
+  .package-filter,
+  .package-cta {
+    padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
   }
 
   .seo-hero .seo-shell {
@@ -1309,8 +1484,16 @@ h3 {
   .seo-side-card,
   .seo-card-grid article,
   .seo-faq article,
-  .seo-footer-cta {
+  .seo-footer-cta,
+  .package-price-card,
+  .package-items-grid article,
+  .package-filter aside,
+  .package-cta .package-shell {
     padding: 18px;
+  }
+
+  .package-items-grid span {
+    margin-bottom: 20px;
   }
 
   .video-frame {

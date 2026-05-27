@@ -146,6 +146,7 @@ export default async function SeoTopicPage({ params }: PageProps) {
         <nav aria-label="Navegação principal">
           <a href="/#autoridade">Autoridade</a>
           <a href="/#programa">Programa</a>
+          <a href="/pacote">Pacote</a>
           <a href="/#episodios">Episódios</a>
           <a href="/#participar">Participar</a>
         </nav>

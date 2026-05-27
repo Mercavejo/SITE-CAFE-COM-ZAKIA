@@ -160,6 +160,7 @@ export default function Home() {
         <nav aria-label="Navegação principal">
           <a href="#autoridade">Autoridade</a>
           <a href="#programa">Programa</a>
+          <a href="/pacote">Pacote</a>
           <a href="#episodios">Episódios</a>
           <a href="#participar">Participar</a>
         </nav>
@@ -188,6 +189,9 @@ export default function Home() {
             <div className="hero-actions">
               <a className="button primary" href={whatsappUrl} target="_blank" rel="noopener">
                 Quero participar do podcast
+              </a>
+              <a className="button secondary" href="/pacote">
+                Ver pacote especial
               </a>
               <a className="button secondary" href="#episodios">
                 Assistir episódios
