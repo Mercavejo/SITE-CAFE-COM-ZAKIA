@@ -20,6 +20,26 @@ const packageItems = [
   "+ de 20 cortes esparramados em todas as nossas redes sociais",
 ];
 
+const packageValueItems = [
+  {
+    item: "Gravação em estúdio",
+    value: "R$ 400,00",
+  },
+  {
+    item: "Edição e gravação do programa",
+    value: "R$ 100,00",
+  },
+  {
+    item: "Entrevista com Daniel Zákia",
+    value: "R$ 800,00",
+  },
+  {
+    item: "20 cortes extras para redes sociais",
+    value: "R$ 1.000,00",
+    note: "Referência de R$ 50,00 por corte, com mínimo de 10 cortes. Neste pacote, serão criados 20 cortes escolhidos pela nossa equipe para compartilhar em nossas plataformas.",
+  },
+];
+
 const searchIntentBlocks = [
   {
     title: "Participar de podcast com autoridade",
@@ -78,7 +98,7 @@ const packageFaqs = [
 export const metadata: Metadata = {
   title: "Participar de Podcast e Ganhar Autoridade | Pacote Café com Zákia",
   description:
-    "Pacote especial para participar de podcast, ser entrevistado, ganhar autoridade, ficar em evidência e divulgar sua história no Café com Zákia, podcast de negócios com Daniel Zákia.",
+    "Pacote especial de R$ 2.300,00 por R$ 799,90 para participar de podcast, ser entrevistado, ganhar autoridade e divulgar sua história no Café com Zákia.",
   keywords: [
     "participar de podcast",
     "como participar de podcast",
@@ -106,7 +126,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Participar de Podcast e Ganhar Autoridade | Café com Zákia",
     description:
-      "Seja entrevistado no Café com Zákia: entrevista completa, estúdio, edição, publicação no YouTube e Spotify e + de 20 cortes para redes sociais.",
+      "Seja entrevistado no Café com Zákia: pacote especial de R$ 2.300,00 por R$ 799,90 com estúdio, edição, entrevista e 20 cortes para redes sociais.",
     url: `${siteUrl}/pacote`,
     type: "website",
     siteName: "Café com Zákia",
@@ -223,6 +243,7 @@ export default function PackagePage() {
 
           <aside className="package-price-card" aria-label="Valores do pacote especial">
             <span className="panel-label">Oferta especial</span>
+            <p className="package-original-price">De R$ 2.300,00 por</p>
             <strong>R$ 799,90</strong>
             <p>à vista</p>
             <div className="panel-line" />
@@ -232,6 +253,43 @@ export default function PackagePage() {
               Aproveitar promoção
             </a>
           </aside>
+        </div>
+      </section>
+
+      <section className="package-value">
+        <div className="package-shell package-value-grid">
+          <div className="package-value-copy">
+            <p className="eyebrow">Valor real da experiência</p>
+            <h2>Uma estrutura de R$ 2.300,00 liberada por R$ 799,90.</h2>
+            <p>
+              A promoção reúne estúdio, gravação, edição, entrevista com Daniel Zákia e distribuição
+              de cortes nas plataformas do Café com Zákia. É uma oportunidade para transformar sua
+              história em conteúdo de autoridade com uma condição especial até julho de 2026.
+            </p>
+          </div>
+
+          <div className="package-value-card" aria-label="Comparativo de valor do pacote">
+            <div className="package-value-total">
+              <span>Valor real estimado</span>
+              <strong>R$ 2.300,00</strong>
+            </div>
+            <div className="package-value-list">
+              {packageValueItems.map((line) => (
+                <article key={line.item}>
+                  <div>
+                    <h3>{line.item}</h3>
+                    {line.note ? <p>{line.note}</p> : null}
+                  </div>
+                  <strong>{line.value}</strong>
+                </article>
+              ))}
+            </div>
+            <div className="package-value-offer">
+              <span>Pacote especial</span>
+              <strong>R$ 799,90</strong>
+              <p>ou 2x de R$ 450,00, sujeito à curadoria e aprovação da equipe.</p>
+            </div>
+          </div>
         </div>
       </section>
 
