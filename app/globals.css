@@ -322,6 +322,63 @@ h1 {
   padding: clamp(78px, 9vw, 138px) clamp(18px, 4vw, 58px);
 }
 
+.authority-snapshot {
+  padding: clamp(34px, 5vw, 68px) clamp(18px, 4vw, 58px);
+  background:
+    radial-gradient(circle at 78% 0%, rgba(255, 231, 154, 0.12), transparent 30%),
+    linear-gradient(180deg, #030303, #0b0b0c);
+  border-top: 1px solid rgba(255, 231, 154, 0.18);
+  border-bottom: 1px solid rgba(255, 231, 154, 0.18);
+}
+
+.authority-snapshot-inner {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1fr) auto;
+  gap: clamp(18px, 3vw, 42px);
+  align-items: center;
+  padding: clamp(20px, 3vw, 32px);
+  border: 1px solid rgba(255, 231, 154, 0.26);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.08), rgba(255, 255, 255, 0.028)),
+    rgba(5, 5, 5, 0.72);
+  box-shadow: 0 26px 82px rgba(0, 0, 0, 0.36), 0 0 70px rgba(212, 175, 55, 0.08);
+}
+
+.authority-snapshot-copy h2 {
+  margin-bottom: 12px;
+  font-size: clamp(1.7rem, 3.2vw, 3rem);
+}
+
+.authority-snapshot-copy p,
+.authority-snapshot-stats span {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.58;
+}
+
+.authority-snapshot-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.authority-snapshot-stats article {
+  min-height: 148px;
+  padding: clamp(18px, 2.4vw, 26px);
+  border: 1px solid rgba(255, 231, 154, 0.2);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.authority-snapshot-stats strong {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.05rem, 4.4vw, 4.2rem);
+  line-height: 0.92;
+}
+
 .authority {
   background:
     radial-gradient(circle at 15% 0%, rgba(212, 175, 55, 0.14), transparent 30%),
@@ -915,7 +972,9 @@ h3 {
 }
 
 .package-includes,
+.package-search-intent,
 .package-filter,
+.package-faq,
 .package-cta {
   padding: clamp(78px, 9vw, 138px) clamp(18px, 4vw, 58px);
 }
@@ -924,6 +983,55 @@ h3 {
   background:
     radial-gradient(circle at 20% 4%, rgba(212, 175, 55, 0.12), transparent 28%),
     linear-gradient(180deg, #030303, #101012);
+}
+
+.package-search-intent {
+  background:
+    radial-gradient(circle at 84% 8%, rgba(255, 231, 154, 0.12), transparent 30%),
+    linear-gradient(180deg, #101012, #050505);
+}
+
+.package-search-grid,
+.package-faq-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.package-search-grid article,
+.package-faq-list article {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(22px, 3vw, 34px);
+  border: 1px solid rgba(255, 231, 154, 0.24);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.085), rgba(255, 255, 255, 0.028)),
+    rgba(5, 5, 5, 0.76);
+  box-shadow: 0 26px 82px rgba(0, 0, 0, 0.34), 0 0 48px rgba(212, 175, 55, 0.055);
+}
+
+.package-search-grid article::before,
+.package-faq-list article::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), transparent);
+}
+
+.package-search-grid h3,
+.package-faq-list h3 {
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.package-search-grid p,
+.package-faq-list p {
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.72;
 }
 
 .package-items-grid {
@@ -955,6 +1063,12 @@ h3 {
   background:
     radial-gradient(circle at 80% 16%, rgba(255, 231, 154, 0.12), transparent 30%),
     linear-gradient(180deg, #101012, #030303);
+}
+
+.package-faq {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(216, 216, 216, 0.08), transparent 28%),
+    linear-gradient(180deg, #030303, #101012);
 }
 
 .package-filter-grid {
@@ -1187,6 +1301,8 @@ h3 {
 
   .hero-inner,
   .metric-grid,
+  .authority-snapshot-inner,
+  .authority-snapshot-stats,
   .program,
   .program-grid,
   .episode-showcase,
@@ -1233,6 +1349,7 @@ h3 {
   }
 
   .authority,
+  .authority-snapshot,
   .program,
   .program-section,
   .episodes,
@@ -1256,7 +1373,9 @@ h3 {
   }
 
   .package-includes,
+  .package-search-intent,
   .package-filter,
+  .package-faq,
   .package-cta {
     padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
   }
@@ -1416,6 +1535,14 @@ h3 {
     font-size: clamp(1.42rem, 8vw, 1.95rem);
   }
 
+  .authority-snapshot-inner {
+    padding: 16px;
+  }
+
+  .authority-snapshot-stats article {
+    min-height: auto;
+  }
+
   .metric-grid {
     gap: 12px;
   }
@@ -1480,11 +1607,19 @@ h3 {
     gap: 12px;
   }
 
+  .package-search-grid,
+  .package-faq-list {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
   .seo-main-card,
   .seo-side-card,
   .seo-card-grid article,
   .seo-faq article,
   .seo-footer-cta,
+  .package-search-grid article,
+  .package-faq-list article,
   .package-price-card,
   .package-items-grid article,
   .package-filter aside,

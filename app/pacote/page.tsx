@@ -20,25 +20,93 @@ const packageItems = [
   "+ de 20 cortes esparramados em todas as nossas redes sociais",
 ];
 
+const searchIntentBlocks = [
+  {
+    title: "Participar de podcast com autoridade",
+    text: "Uma estrutura profissional para empresários, especialistas, candidatos, líderes e marcas que desejam ser entrevistados em um podcast de negócios com imagem forte, conversa séria e presença digital.",
+  },
+  {
+    title: "Seja entrevistado e fique em evidência",
+    text: "A entrevista posiciona sua história com elegância, fortalece reputação e cria conteúdo para quem precisa aparecer com credibilidade, sem perder sofisticação.",
+  },
+  {
+    title: "Ganhe autoridade com mídia própria",
+    text: "O Café com Zákia transforma trajetória em entrevista completa, cortes estratégicos e presença em plataformas como YouTube, Spotify e redes sociais.",
+  },
+  {
+    title: "Seja mídia, tenha mídia e construa reputação",
+    text: "O programa ajuda a apresentar sua mensagem em um ambiente premium, com estética de alto valor e linguagem voltada para negócios, marketing, liderança e posicionamento.",
+  },
+  {
+    title: "Entrevista para candidatos e lideranças",
+    text: "Para quem tem vida pública, atuação empresarial ou uma história relevante, a entrevista pode ampliar clareza, presença e conexão com o público certo.",
+  },
+  {
+    title: "Podcast referência para negócios",
+    text: "Uma vitrine para quem procura grandes podcasts, programas de entrevistas e canais sérios para mostrar experiência, visão e contribuição para a região.",
+  },
+];
+
+const packageFaqs = [
+  {
+    question: "Como participar de podcast no Café com Zákia?",
+    answer:
+      "O primeiro passo é chamar nossa equipe no WhatsApp e contar brevemente sua história. Depois, a Mercavejo Consultoria faz uma análise para entender se a entrevista combina com o nível, o propósito e o público do Café com Zákia.",
+  },
+  {
+    question: "Quem pode ser entrevistado no podcast?",
+    answer:
+      "Empresários, especialistas, profissionais liberais, candidatos, lideranças, criadores, marcas e pessoas com uma trajetória que possa inspirar, orientar ou agregar valor real para quem acompanha o programa.",
+  },
+  {
+    question: "A entrevista ajuda a ganhar autoridade?",
+    answer:
+      "Sim. Uma entrevista bem conduzida pode fortalecer reputação, gerar conteúdo para redes sociais, posicionar sua história e aumentar sua presença como referência em negócios, marketing, liderança ou área de atuação.",
+  },
+  {
+    question: "O pacote garante aprovação da entrevista?",
+    answer:
+      "Não. Mesmo desejando participar, sua história precisa passar por curadoria. A equipe avalia relevância, mensagem, posicionamento e potencial de contribuição antes de aprovar a participação.",
+  },
+  {
+    question: "O Café com Zákia é indicado para quem quer ficar em evidência?",
+    answer:
+      "Sim, desde que a evidência venha acompanhada de verdade, conteúdo e propósito. O objetivo é apresentar histórias fortes com imagem premium, conversa profunda e distribuição estratégica.",
+  },
+];
+
 export const metadata: Metadata = {
-  title: "Pacote Especial para Participar do Podcast",
+  title: "Participar de Podcast e Ganhar Autoridade | Pacote Café com Zákia",
   description:
-    "Aproveite o pacote especial até julho de 2026 para participar do Café com Zákia, com entrevista completa, estúdio, edição, publicação e cortes nas redes sociais.",
+    "Pacote especial para participar de podcast, ser entrevistado, ganhar autoridade, ficar em evidência e divulgar sua história no Café com Zákia, podcast de negócios com Daniel Zákia.",
   keywords: [
+    "participar de podcast",
+    "como participar de podcast",
+    "seja entrevistado",
+    "ganhe autoridade",
+    "fique em evidência",
+    "seja mídia",
+    "tenha mídia",
+    "entrevista para candidatos",
+    "podcast referência",
+    "grandes podcasts",
+    "melhor podcast da região",
     "pacote podcast",
     "participar do Café com Zákia",
     "promoção podcast",
     "entrevista podcast",
     "podcast de negócios",
+    "falando de negócios",
+    "marketing e negócios",
     "Café com Zákia",
   ],
   alternates: {
     canonical: "/pacote",
   },
   openGraph: {
-    title: "Pacote Especial Café com Zákia",
+    title: "Participar de Podcast e Ganhar Autoridade | Café com Zákia",
     description:
-      "Entrevista completa, estúdio, edição, publicação no YouTube e Spotify e + de 20 cortes para redes sociais.",
+      "Seja entrevistado no Café com Zákia: entrevista completa, estúdio, edição, publicação no YouTube e Spotify e + de 20 cortes para redes sociais.",
     url: `${siteUrl}/pacote`,
     type: "website",
     siteName: "Café com Zákia",
@@ -68,7 +136,12 @@ export default function PackagePage() {
         itemOffered: {
           "@type": "Service",
           name: "Participação no Podcast Café com Zákia",
-          serviceType: "Entrevista em podcast de negócios",
+          serviceType:
+            "Entrevista em podcast de negócios, autoridade, mídia, marketing e posicionamento",
+          areaServed: {
+            "@type": "Country",
+            name: "Brasil",
+          },
           provider: {
             "@type": "Organization",
             name: "Café com Zákia",
@@ -80,10 +153,27 @@ export default function PackagePage() {
         "@type": "WebPage",
         "@id": `${siteUrl}/pacote#webpage`,
         url: `${siteUrl}/pacote`,
-        name: "Pacote Especial Café com Zákia",
+        name: "Participar de Podcast e Ganhar Autoridade | Café com Zákia",
         description:
-          "Pacote promocional para entrevista completa no Café com Zákia, sujeito à curadoria e aprovação da equipe.",
+          "Página para quem procura participar de podcast, ser entrevistado, ganhar autoridade, ficar em evidência e apresentar sua história no Café com Zákia.",
         inLanguage: "pt-BR",
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          {
+            "@type": "ListItem",
+            position: 1,
+            name: "Início",
+            item: siteUrl,
+          },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Pacote especial",
+            item: `${siteUrl}/pacote`,
+          },
+        ],
       },
     ],
   };
@@ -115,11 +205,11 @@ export default function PackagePage() {
         <div className="package-shell package-hero-grid">
           <div className="package-hero-copy">
             <p className="eyebrow">Pacote especial até julho de 2026</p>
-            <h1>Aproveite a promoção para apresentar sua história no Café com Zákia.</h1>
+            <h1>Participar de podcast, ser entrevistado e ganhar autoridade no Café com Zákia.</h1>
             <p>
               Uma experiência premium para quem deseja transformar trajetória, presença e reputação
-              em conteúdo de autoridade. A participação é exclusiva e passa por curadoria da nossa
-              equipe antes da aprovação.
+              em conteúdo de autoridade. Seja mídia, tenha mídia e fique em evidência com uma
+              entrevista conduzida por Daniel Zákia, no podcast de negócios Café com Zákia.
             </p>
             <div className="hero-actions">
               <a className="button primary" href={packageWhatsAppUrl} target="_blank" rel="noopener">
@@ -166,6 +256,30 @@ export default function PackagePage() {
         </div>
       </section>
 
+      <section className="package-search-intent">
+        <div className="package-shell">
+          <div className="section-heading centered">
+            <p className="eyebrow">Para quem busca presença e autoridade</p>
+            <h2>Para quem procura participar de podcast, ganhar autoridade e ficar em evidência.</h2>
+            <p>
+              Esta página foi criada para quem busca um podcast referência, um programa de entrevistas
+              com empresários, um espaço para falar de negócios e uma mídia capaz de apresentar sua
+              história com seriedade. O Café com Zákia não vende apenas gravação: constrói presença,
+              conteúdo e percepção de valor.
+            </p>
+          </div>
+
+          <div className="package-search-grid">
+            {searchIntentBlocks.map((block) => (
+              <article key={block.title}>
+                <h3>{block.title}</h3>
+                <p>{block.text}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="package-filter" id="criterio">
         <div className="package-shell package-filter-grid">
           <div>
@@ -185,6 +299,28 @@ export default function PackagePage() {
               autoridade, por isso preservamos o nível do programa e a experiência do público.
             </p>
           </aside>
+        </div>
+      </section>
+
+      <section className="package-faq">
+        <div className="package-shell">
+          <div className="section-heading centered">
+            <p className="eyebrow">Dúvidas frequentes</p>
+            <h2>Respostas para quem quer ser entrevistado e aparecer com autoridade.</h2>
+            <p>
+              Antes de chamar no WhatsApp, veja os principais pontos sobre participação, curadoria,
+              entrevista para candidatos, mídia, autoridade e distribuição do conteúdo.
+            </p>
+          </div>
+
+          <div className="package-faq-list">
+            {packageFaqs.map((item) => (
+              <article key={item.question}>
+                <h3>{item.question}</h3>
+                <p>{item.answer}</p>
+              </article>
+            ))}
+          </div>
         </div>
       </section>
 
