@@ -198,32 +198,14 @@ export default function Home() {
               </a>
             </div>
           </div>
-        </div>
-      </section>
-
-      <section className="authority-snapshot" aria-label="Vitrine de autoridade do Café com Zákia">
-        <div className="authority-snapshot-inner">
-          <div className="authority-snapshot-copy">
-            <p className="eyebrow">Vitrine de autoridade</p>
-            <h2>Números que mostram a força do Café com Zákia.</h2>
-            <p>
-              Alcance real, presença digital e conteúdo preparado para ampliar a reputação de quem
-              entra na mesa com uma história aprovada pela nossa equipe.
-            </p>
-          </div>
-          <div className="authority-snapshot-stats">
-            <article>
-              <strong>+ de 6 milhões</strong>
-              <span>em cortes de alta performance nas redes sociais.</span>
-            </article>
-            <article>
-              <strong>+1 milhão</strong>
-              <span>de visualizações no YouTube do Café com Zákia.</span>
-            </article>
-          </div>
-          <a className="button primary" href="/pacote">
-            Ver pacote especial
-          </a>
+          <aside className="hero-panel" aria-label="Indicadores do Café com Zákia">
+            <span className="panel-label">Vitrine de autoridade</span>
+            <strong>+ de 6 milhões</strong>
+            <p>em cortes de alta performance nas redes sociais.</p>
+            <div className="panel-line" />
+            <strong>+1 milhão</strong>
+            <p>de visualizações no YouTube do Café com Zákia.</p>
+          </aside>
         </div>
       </section>
 
