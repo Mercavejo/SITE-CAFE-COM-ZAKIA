@@ -18,6 +18,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.95,
     },
+    {
+      url: `${baseUrl}/spotify`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
     ...seoTopicList.map((topic) => ({
       url: `${baseUrl}/${topic.slug}`,
       lastModified: now,

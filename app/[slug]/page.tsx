@@ -9,6 +9,7 @@ import {
   presenterUrl,
   seoTopicList,
   siteUrl,
+  spotifyUrl,
   whatsappUrl,
 } from "../seo-data";
 
@@ -92,6 +93,7 @@ export default async function SeoTopicPage({ params }: PageProps) {
           "@type": "PodcastSeries",
           name: "Café com Zákia",
           url: siteUrl,
+          sameAs: [channelUrl, spotifyUrl, instagramUrl],
         },
         primaryImageOfPage: {
           "@type": "ImageObject",
@@ -147,6 +149,7 @@ export default async function SeoTopicPage({ params }: PageProps) {
           <a href="/#autoridade">Autoridade</a>
           <a href="/#programa">Programa</a>
           <a href="/pacote">Pacote</a>
+          <a href="/spotify">Spotify</a>
           <a href="/#episodios">Episódios</a>
           <a href="/#participar">Participar</a>
         </nav>
@@ -258,6 +261,7 @@ export default async function SeoTopicPage({ params }: PageProps) {
           <a href={channelUrl} target="_blank" rel="noopener">
             YouTube
           </a>
+          <a href="/spotify">Spotify</a>
           <a href={instagramUrl} target="_blank" rel="noopener">
             Instagram
           </a>

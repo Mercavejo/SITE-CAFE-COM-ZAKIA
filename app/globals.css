@@ -1216,6 +1216,107 @@ h3 {
   margin: 0 auto 24px;
 }
 
+.spotify-page {
+  background: var(--black);
+}
+
+.spotify-shell {
+  position: relative;
+  z-index: 1;
+  width: min(1180px, 100%);
+  margin: 0 auto;
+}
+
+.spotify-hero {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  align-items: end;
+  overflow: hidden;
+  padding: 150px clamp(18px, 4vw, 58px) 74px;
+}
+
+.spotify-hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 70% 30%, rgba(30, 215, 96, 0.12), transparent 25%),
+    radial-gradient(circle at 42% 20%, rgba(255, 231, 154, 0.14), transparent 28%),
+    linear-gradient(90deg, rgba(3, 3, 3, 0.94), rgba(3, 3, 3, 0.48) 48%, rgba(3, 3, 3, 0.88)),
+    linear-gradient(0deg, rgba(3, 3, 3, 0.96), rgba(3, 3, 3, 0.14) 52%, rgba(3, 3, 3, 0.62)),
+    url("/assets/hero-cafe-zakia-final.jpg") center center / cover no-repeat;
+}
+
+.spotify-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(330px, 480px);
+  gap: clamp(26px, 5vw, 72px);
+  align-items: end;
+}
+
+.spotify-copy {
+  max-width: 760px;
+}
+
+.spotify-copy p,
+.spotify-content p {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: clamp(1rem, 1.35vw, 1.16rem);
+  line-height: 1.74;
+}
+
+.spotify-card,
+.spotify-content article {
+  border: 1px solid rgba(255, 231, 154, 0.28);
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.1), rgba(30, 215, 96, 0.045)),
+    rgba(5, 5, 5, 0.76);
+  box-shadow: 0 28px 84px rgba(0, 0, 0, 0.42), 0 0 56px rgba(212, 175, 55, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+.spotify-card {
+  padding: clamp(18px, 2.5vw, 28px);
+}
+
+.spotify-card iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  background: #121212;
+}
+
+.spotify-content {
+  padding: clamp(78px, 9vw, 138px) clamp(18px, 4vw, 58px);
+  background:
+    radial-gradient(circle at 18% 0%, rgba(30, 215, 96, 0.1), transparent 30%),
+    linear-gradient(180deg, #030303, #101012);
+}
+
+.spotify-content-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.spotify-content article {
+  padding: clamp(22px, 3vw, 34px);
+}
+
+.spotify-content span {
+  display: block;
+  margin-bottom: 32px;
+  color: var(--gold-light);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  line-height: 0.9;
+}
+
+.spotify-content h2 {
+  font-size: clamp(1.45rem, 2.4vw, 2.2rem);
+}
+
 .episode-showcase {
   width: min(1260px, 100%);
   margin: 0 auto;
@@ -1423,6 +1524,8 @@ h3 {
   .package-value-grid,
   .package-items-grid,
   .package-filter-grid,
+  .spotify-hero-grid,
+  .spotify-content-grid,
   .seo-grid,
   .seo-card-grid,
   .footer {
@@ -1477,6 +1580,11 @@ h3 {
     padding: 132px clamp(16px, 5vw, 34px) 58px;
   }
 
+  .spotify-hero {
+    min-height: auto;
+    padding: 132px clamp(16px, 5vw, 34px) 58px;
+  }
+
   .package-hero {
     min-height: auto;
     padding: 132px clamp(16px, 5vw, 34px) 58px;
@@ -1488,6 +1596,10 @@ h3 {
   .package-filter,
   .package-faq,
   .package-cta {
+    padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
+  }
+
+  .spotify-content {
     padding: clamp(64px, 12vw, 96px) clamp(16px, 5vw, 34px);
   }
 
@@ -1744,6 +1856,8 @@ h3 {
   .package-faq-list article,
   .package-value-card,
   .package-value-offer,
+  .spotify-card,
+  .spotify-content article,
   .package-price-card,
   .package-items-grid article,
   .package-filter aside,

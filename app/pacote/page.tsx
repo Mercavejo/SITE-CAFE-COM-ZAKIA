@@ -5,6 +5,7 @@ import {
   mercavejoUrl,
   presenterUrl,
   siteUrl,
+  spotifyUrl,
   whatsappUrl,
 } from "../seo-data";
 
@@ -166,6 +167,7 @@ export default function PackagePage() {
             "@type": "Organization",
             name: "Café com Zákia",
             url: siteUrl,
+            sameAs: [channelUrl, spotifyUrl, instagramUrl],
           },
         },
       },
@@ -212,6 +214,7 @@ export default function PackagePage() {
           <a href="/#autoridade">Autoridade</a>
           <a href="/#programa">Programa</a>
           <a href="/pacote">Pacote</a>
+          <a href="/spotify">Spotify</a>
           <a href="/#episodios">Episódios</a>
           <a href="/#participar">Participar</a>
         </nav>
@@ -413,6 +416,7 @@ export default function PackagePage() {
           <a href={channelUrl} target="_blank" rel="noopener">
             YouTube
           </a>
+          <a href="/spotify">Spotify</a>
           <a href={instagramUrl} target="_blank" rel="noopener">
             Instagram
           </a>

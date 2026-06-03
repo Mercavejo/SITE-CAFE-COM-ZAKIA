@@ -3,6 +3,8 @@ import { seoTopicList } from "./seo-data";
 const whatsappUrl =
   "https://wa.me/5517996240418?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20%40cafecomzakia%2C%20gostaria%20de%20saber%20como%20participar%3F";
 const channelUrl = "https://www.youtube.com/@cafecomzakia";
+const spotifyUrl =
+  "https://open.spotify.com/show/5HEziKX3xOOfV7eryMZ91v?si=lvo-SAFST-OKPc8Huwn_SA";
 const instagramUrl = "https://www.instagram.com/cafecomzakia/";
 const presenterUrl = "https://www.danieldevittozakia.com.br/";
 const mercavejoUrl = "https://www.mercavejo.com.br/";
@@ -77,7 +79,7 @@ const structuredData = {
       name: "Café com Zákia",
       url: siteUrl,
       logo: `${siteUrl}/assets/logo-white.png`,
-      sameAs: [channelUrl, instagramUrl, instagramReelUrl, presenterUrl, mercavejoUrl],
+      sameAs: [channelUrl, spotifyUrl, instagramUrl, instagramReelUrl, presenterUrl, mercavejoUrl],
       founder: {
         "@id": `${siteUrl}/#daniel-zakia`,
       },
@@ -117,7 +119,7 @@ const structuredData = {
       publisher: {
         "@id": `${siteUrl}/#organization`,
       },
-      sameAs: [channelUrl, instagramUrl],
+      sameAs: [channelUrl, spotifyUrl, instagramUrl],
     },
     {
       "@type": "BreadcrumbList",
@@ -161,6 +163,7 @@ export default function Home() {
           <a href="#autoridade">Autoridade</a>
           <a href="#programa">Programa</a>
           <a href="/pacote">Pacote</a>
+          <a href="/spotify">Spotify</a>
           <a href="#episodios">Episódios</a>
           <a href="#participar">Participar</a>
         </nav>
@@ -336,6 +339,9 @@ export default function Home() {
             <div className="seasons">
               <h3>Últimas Temporadas</h3>
               <div className="season-links">
+                <a href="https://www.youtube.com/playlist?list=PLq1xuEiBAG6rOxr07nMdGEwYwRk-4BNun" target="_blank" rel="noopener" className="season-btn">
+                  12ª Temporada <span>→</span>
+                </a>
                 <a href="https://www.youtube.com/watch?v=_OMB2fwzfPk&list=PLq1xuEiBAG6o_pgqouUMZaKiTp8N0WoCA" target="_blank" rel="noopener" className="season-btn">
                   11ª Temporada <span>→</span>
                 </a>
@@ -374,6 +380,9 @@ export default function Home() {
             <p>Uma vitrine para mostrar a força do programa, os episódios passados e a qualidade da produção para quem deseja participar.</p>
             <a className="button primary full" href={channelUrl} target="_blank" rel="noopener">
               Abrir canal no YouTube
+            </a>
+            <a className="button outline full" href="/spotify">
+              Ouvir no Spotify
             </a>
             <a className="button outline full" href={instagramReelUrl} target="_blank" rel="noopener">
               Ver corte com + de 6 milhões
@@ -416,6 +425,7 @@ export default function Home() {
         </p>
         <div className="footer-links">
           <a href={channelUrl} target="_blank" rel="noopener">YouTube</a>
+          <a href="/spotify">Spotify</a>
           <a href={instagramUrl} target="_blank" rel="noopener">Instagram</a>
           <a href={presenterUrl} target="_blank" rel="noopener">Daniel Zákia</a>
           <a href={mercavejoUrl} target="_blank" rel="noopener">Mercavejo Consultoria</a>
