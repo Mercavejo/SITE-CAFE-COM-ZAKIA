@@ -1,0 +1,5099 @@
+:root {
+  --ink: #f8fbff;
+  --panel: rgba(9, 17, 26, 0.91);
+  --line: rgba(255, 255, 255, 0.18);
+  --yellow: #ffd64d;
+  --blue: #48d8ff;
+  --green: #6cff9d;
+  --red: #ff5f69;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  overflow: hidden;
+  color: var(--ink);
+  font-family: "Trebuchet MS", Verdana, sans-serif;
+  background: #09151f;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.menu {
+  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: minmax(300px, 0.9fr) minmax(340px, 1.1fr);
+  gap: clamp(20px, 4vw, 58px);
+  align-items: center;
+  padding: clamp(18px, 4vw, 56px);
+  background:
+    linear-gradient(rgba(5, 16, 25, 0.12), rgba(5, 16, 25, 0.70)),
+    radial-gradient(circle at 18% 18%, rgba(255, 214, 77, 0.28), transparent 26%),
+    radial-gradient(circle at 78% 18%, rgba(255, 79, 216, 0.22), transparent 30%),
+    radial-gradient(circle at 72% 76%, rgba(72, 216, 255, 0.22), transparent 34%),
+    repeating-linear-gradient(90deg, transparent 0 42px, rgba(255, 255, 255, 0.035) 43px 45px),
+    linear-gradient(145deg, #102b3c 0%, #171f2d 45%, #152b23 100%);
+}
+
+.intro {
+  max-width: 660px;
+}
+
+.tag {
+  margin: 0 0 10px;
+  color: var(--yellow);
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(42px, 8vw, 94px);
+  line-height: 0.96;
+  text-shadow: 0 5px 0 #01070c, 0 12px 32px rgba(0, 0, 0, 0.42);
+}
+
+.intro p:last-child {
+  max-width: 590px;
+  color: rgba(248, 251, 255, 0.82);
+  font-size: clamp(17px, 2.2vw, 23px);
+  line-height: 1.45;
+}
+
+.setup {
+  display: grid;
+  gap: 14px;
+  padding-bottom: 28px;
+}
+
+.panel {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+
+.panel h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+}
+
+input:not([type]),
+input[type="text"] {
+  width: 100%;
+  min-height: 48px;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 7px;
+  padding: 10px 13px;
+  outline: 0;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+input:not([type]):focus,
+input[type="text"]:focus {
+  border-color: var(--blue);
+}
+
+input[type="range"] {
+  width: 100%;
+  height: 26px;
+  accent-color: var(--yellow);
+  cursor: pointer;
+}
+
+select {
+  width: 100%;
+  min-height: 50px;
+  border: 2px solid rgba(255, 255, 255, 0.18);
+  border-radius: 7px;
+  padding: 10px 13px;
+  outline: 0;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 1000;
+}
+
+select:focus {
+  border-color: var(--yellow);
+}
+
+select option {
+  color: #071019;
+}
+
+.music-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 42px;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.06);
+  font-weight: 1000;
+}
+
+.music-toggle input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--yellow);
+}
+
+.volume-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.volume-control {
+  display: grid;
+  gap: 5px;
+  min-width: 132px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.volume-control span {
+  color: rgba(248, 251, 255, 0.82);
+  font-size: 12px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.choices,
+.levels,
+.players,
+.cameras,
+.control-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.levels {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cameras {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.players {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.control-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.control-card {
+  display: grid;
+  gap: 7px;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.control-card strong {
+  color: var(--yellow);
+  font-size: 14px;
+}
+
+.control-card button {
+  min-height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 7px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 1000;
+  text-align: left;
+}
+
+.control-card button.waiting {
+  color: #071019;
+  background: var(--yellow);
+}
+
+.choice {
+  min-height: 96px;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  padding: 10px;
+  color: var(--ink);
+  text-align: left;
+  background: linear-gradient(145deg, rgba(255,255,255,0.105), rgba(255,255,255,0.045));
+}
+
+.choice.active {
+  border-color: var(--yellow);
+  box-shadow: inset 0 0 0 1px rgba(255, 214, 77, 0.35), 0 0 24px rgba(255, 214, 77, 0.15);
+}
+
+.choice small {
+  display: block;
+  margin-top: 4px;
+  color: rgba(248, 251, 255, 0.68);
+  font-weight: 900;
+}
+
+.hint {
+  margin: 10px 0 0;
+  color: rgba(248, 251, 255, 0.7);
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+.system-panel {
+  grid-column: 1 / -1;
+}
+
+.system-status {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.system-check {
+  min-height: 74px;
+  border: 1px solid rgba(72, 216, 255, 0.22);
+  border-left: 5px solid var(--blue);
+  border-radius: 8px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.system-check strong {
+  display: block;
+  color: #eaffff;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.system-check span {
+  display: block;
+  margin-top: 5px;
+  color: rgba(248, 251, 255, 0.74);
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.system-check[data-status="ok"] {
+  border-left-color: var(--green);
+  box-shadow: inset 0 0 16px rgba(108, 255, 157, 0.06);
+}
+
+.system-check[data-status="warn"] {
+  border-left-color: var(--yellow);
+  box-shadow: inset 0 0 16px rgba(255, 214, 77, 0.07);
+}
+
+.system-check[data-status="error"] {
+  border-left-color: var(--red);
+  box-shadow: inset 0 0 16px rgba(255, 95, 105, 0.08);
+}
+
+.swatch {
+  width: 92px;
+  height: 40px;
+  margin-bottom: 9px;
+  border: 3px solid rgba(0, 0, 0, 0.45);
+  border-radius: 8px;
+  box-shadow: inset 18px 0 rgba(255, 255, 255, 0.24), inset -12px 0 rgba(0, 0, 0, 0.24), 0 0 22px rgba(72,216,255,0.12);
+}
+
+.start {
+  position: static;
+  z-index: 5;
+  min-height: 58px;
+  border: 0;
+  border-radius: 8px;
+  color: #071019;
+  background: linear-gradient(135deg, #fff38c, #ffbd35 48%, #ff6a4d);
+  font-size: 22px;
+  font-weight: 1000;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.28);
+}
+
+.game {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #101820;
+}
+
+#trackCanvas {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+.hud,
+.powers,
+.buttons,
+.message {
+  position: absolute;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--panel);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
+.hud {
+  top: 14px;
+  display: grid;
+  gap: 7px;
+  min-width: 184px;
+  padding: 11px 12px;
+  pointer-events: none;
+}
+
+.hud.left {
+  left: 14px;
+}
+
+.hud.right {
+  right: 220px;
+}
+
+.hud span {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  color: rgba(248, 251, 255, 0.72);
+  font-size: 12px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+.hud b {
+  color: var(--ink);
+  font-size: 20px;
+  text-shadow: 0 3px 0 #000;
+  text-transform: none;
+}
+
+.powers {
+  left: 50%;
+  top: 14px;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  transform: translateX(-50%);
+}
+
+.player-hud {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(150px, 1fr));
+  gap: 8px;
+  width: min(460px, calc(100vw - 28px));
+  pointer-events: none;
+}
+
+.player-card {
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--blue);
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: var(--panel);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.24);
+}
+
+.player-card strong {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.player-card span {
+  display: block;
+  margin-top: 3px;
+  color: rgba(248, 251, 255, 0.74);
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.pill {
+  min-width: 82px;
+  padding: 6px 8px;
+  border-radius: 7px;
+  color: #071019;
+  background: var(--yellow);
+  font-weight: 1000;
+  font-size: 12px;
+  line-height: 1;
+  white-space: nowrap;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.pill b {
+  display: inline-grid;
+  place-items: center;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  color: #ffffff;
+  background: #071019;
+}
+
+.pill span {
+  opacity: 0.92;
+}
+
+.minimap {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  width: 190px;
+  height: 132px;
+  border: 4px solid #071019;
+  border-radius: 7px;
+  background: #d6bf7b;
+}
+
+.message {
+  left: 50%;
+  bottom: 92px;
+  max-width: min(680px, calc(100vw - 28px));
+  padding: 13px 16px;
+  color: #071019;
+  background: rgba(255, 226, 102, 0.96);
+  font-weight: 1000;
+  text-align: center;
+  opacity: 0;
+  transform: translateX(-50%);
+  transition: opacity 150ms ease;
+  pointer-events: none;
+}
+
+.message.show {
+  opacity: 1;
+}
+
+.audio-mixer {
+  position: absolute;
+  right: 14px;
+  bottom: 76px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(130px, 1fr));
+  gap: 8px;
+  width: min(330px, calc(100vw - 28px));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  background: var(--panel);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.28);
+}
+
+.buttons {
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px;
+  max-width: min(620px, calc(100vw - 28px));
+}
+
+.buttons button,
+.touch button {
+  min-width: 76px;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  font-weight: 1000;
+}
+
+.touch {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: none;
+  gap: 8px;
+  align-items: end;
+}
+
+.touch > button,
+.touch div button {
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+}
+
+.touch div {
+  display: grid;
+  grid-template-columns: repeat(3, 56px);
+  gap: 6px;
+}
+
+.touch > button:last-child {
+  width: 72px;
+  color: #071019;
+  background: var(--yellow);
+}
+
+@media (pointer: coarse), (max-width: 850px) {
+  body {
+    overflow: auto;
+  }
+
+  .menu {
+    grid-template-columns: 1fr;
+    align-content: start;
+  }
+
+  .choices,
+  .levels,
+  .players,
+  .cameras,
+  .control-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .touch {
+    display: flex;
+  }
+
+  .hud.right {
+    top: 158px;
+    right: 14px;
+  }
+
+  .hud {
+    min-width: 148px;
+    padding: 9px;
+  }
+
+  .hud b {
+    font-size: 17px;
+  }
+
+  .powers {
+    top: auto;
+    bottom: 148px;
+  }
+
+  .player-hud {
+    display: none;
+  }
+
+  .minimap {
+    transform: scale(0.82);
+    transform-origin: top right;
+  }
+
+  .volume-grid,
+  .audio-mixer,
+  .system-status {
+    grid-template-columns: 1fr;
+  }
+
+  .audio-mixer {
+    left: 14px;
+    right: auto;
+    bottom: 142px;
+    width: min(230px, calc(100vw - 28px));
+  }
+}
+
+/* Neon garage menu */
+.menu {
+  position: relative;
+  display: block;
+  padding: clamp(18px, 2.8vw, 34px);
+  background:
+    linear-gradient(90deg, rgba(0, 255, 255, 0.045) 1px, transparent 1px) 0 0 / 45px 45px,
+    linear-gradient(rgba(0, 255, 255, 0.025) 1px, transparent 1px) 0 0 / 45px 45px,
+    radial-gradient(circle at 18% 18%, rgba(77, 255, 246, 0.18), transparent 28%),
+    radial-gradient(circle at 78% 15%, rgba(255, 72, 191, 0.16), transparent 26%),
+    radial-gradient(circle at 55% 100%, rgba(255, 196, 64, 0.1), transparent 34%),
+    linear-gradient(135deg, #020912 0%, #061522 46%, #031017 100%);
+}
+
+.menu::before {
+  content: "";
+  position: fixed;
+  inset: 18px;
+  border: 2px solid rgba(72, 216, 255, 0.22);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 0 34px rgba(72, 216, 255, 0.08),
+    0 0 34px rgba(72, 216, 255, 0.08);
+  pointer-events: none;
+}
+
+.menu::after {
+  content: "";
+  position: fixed;
+  inset: 34px;
+  border-top: 2px solid rgba(72, 216, 255, 0.18);
+  border-bottom: 2px solid rgba(72, 216, 255, 0.1);
+  clip-path: polygon(4% 0, 68% 0, 72% 28px, 96% 28px, 100% 70px, 100% 100%, 0 100%, 0 44px);
+  pointer-events: none;
+}
+
+.intro {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 22px;
+  align-items: center;
+  max-width: 1180px;
+  margin: 0 auto 18px;
+  padding: clamp(12px, 2vw, 24px) clamp(14px, 3vw, 34px) 8px;
+}
+
+.intro .tag {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #8ffaff;
+  letter-spacing: 0.08em;
+  text-shadow: 0 0 14px rgba(72, 216, 255, 0.78);
+}
+
+.intro h1 {
+  color: #dffeff;
+  font-size: clamp(56px, 8vw, 112px);
+  font-weight: 500;
+  line-height: 0.95;
+  text-shadow:
+    0 0 9px rgba(143, 250, 255, 0.95),
+    0 0 28px rgba(72, 216, 255, 0.75),
+    0 8px 0 rgba(0, 0, 0, 0.65);
+}
+
+.intro p:last-child {
+  grid-column: 1 / -1;
+  max-width: 820px;
+  margin: 4px 0 0;
+  color: rgba(233, 252, 255, 0.78);
+  font-size: 16px;
+}
+
+.radio-badge {
+  justify-self: end;
+  position: relative;
+  width: 215px;
+  height: 150px;
+  border: 3px solid rgba(72, 216, 255, 0.34);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(143, 250, 255, 0.08), rgba(0, 0, 0, 0.15)),
+    #07101a;
+  box-shadow:
+    inset 0 0 0 4px rgba(0, 0, 0, 0.32),
+    0 0 28px rgba(72, 216, 255, 0.22);
+}
+
+.radio-badge::before,
+.radio-badge::after {
+  content: "";
+  position: absolute;
+  bottom: 26px;
+  width: 58px;
+  height: 58px;
+  border: 6px solid #152533;
+  border-radius: 50%;
+  background: radial-gradient(circle, #060b10 0 28%, #1d3440 29% 48%, #071019 49%);
+  box-shadow: inset 0 0 12px rgba(72, 216, 255, 0.25);
+}
+
+.radio-badge::before {
+  left: 16px;
+}
+
+.radio-badge::after {
+  right: 16px;
+}
+
+.radio-antenna {
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  top: -18px;
+  height: 8px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, transparent, #6deeff, transparent);
+}
+
+.radio-screen {
+  position: absolute;
+  left: 82px;
+  top: 43px;
+  width: 70px;
+  color: #7afff0;
+  font-size: 19px;
+  font-weight: 1000;
+  line-height: 0.92;
+  text-shadow: 0 0 12px rgba(122, 255, 240, 0.9);
+  transform: rotate(1deg);
+}
+
+.setup {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: start;
+  gap: 14px;
+  padding-bottom: 42px;
+}
+
+.panel {
+  border: 2px solid rgba(72, 216, 255, 0.24);
+  background:
+    linear-gradient(145deg, rgba(9, 23, 36, 0.92), rgba(2, 10, 18, 0.9)),
+    rgba(4, 12, 20, 0.94);
+  box-shadow:
+    inset 0 0 18px rgba(72, 216, 255, 0.07),
+    0 0 22px rgba(72, 216, 255, 0.09),
+    0 20px 48px rgba(0, 0, 0, 0.38);
+}
+
+.panel h2 {
+  color: #eaffff;
+  text-shadow: 0 0 12px rgba(72, 216, 255, 0.62);
+}
+
+.setup > .panel:nth-child(1),
+.setup > .panel:nth-child(2) {
+  grid-column: span 2;
+}
+
+.setup > .panel:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.setup > .panel:nth-child(4),
+.setup > .panel:nth-child(5),
+.setup > .panel:nth-child(6),
+.setup > .panel:nth-child(7) {
+  grid-column: span 2;
+}
+
+.choices {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.choice {
+  position: relative;
+  overflow: hidden;
+  min-height: 230px;
+  padding: 14px;
+  border: 2px solid rgba(72, 216, 255, 0.28);
+  border-radius: 18px;
+  background:
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--car, #48d8ff) 28%, transparent), transparent 44%),
+    linear-gradient(180deg, rgba(8, 24, 36, 0.94), rgba(3, 11, 19, 0.96));
+  box-shadow:
+    inset 0 0 26px rgba(72, 216, 255, 0.08),
+    0 0 24px rgba(72, 216, 255, 0.08);
+  text-align: center;
+}
+
+.choice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(130deg, rgba(255,255,255,0.08), transparent 38%, rgba(255,255,255,0.04));
+  pointer-events: none;
+}
+
+.choice.active {
+  border-color: var(--car-neon, var(--yellow));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    inset 0 0 30px color-mix(in srgb, var(--car-neon, #48d8ff) 32%, transparent),
+    0 0 34px color-mix(in srgb, var(--car-neon, #48d8ff) 28%, transparent);
+}
+
+.choice strong {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-top: 8px;
+  color: var(--car-neon, #cfffff);
+  font-size: clamp(20px, 2.2vw, 32px);
+  line-height: 1.02;
+  text-shadow: 0 0 14px color-mix(in srgb, var(--car-neon, #48d8ff) 70%, transparent);
+}
+
+.choice small {
+  position: relative;
+  z-index: 1;
+  max-width: 180px;
+  margin: 8px auto 0;
+  color: rgba(232, 253, 255, 0.74);
+  font-size: 13px;
+}
+
+.players .choice,
+.levels .choice,
+.cameras .choice {
+  min-height: 92px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+.players .choice strong,
+.levels .choice strong,
+.cameras .choice strong {
+  margin-top: 0;
+  color: #eaffff;
+  font-size: 18px;
+}
+
+.menu-car {
+  position: relative;
+  z-index: 1;
+  height: 118px;
+  margin: 10px auto 0;
+  transform: perspective(260px) rotateX(5deg) rotateZ(-8deg);
+}
+
+.menu-car-shadow {
+  position: absolute;
+  left: 17%;
+  right: 12%;
+  bottom: 13px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.52);
+  filter: blur(4px);
+}
+
+.menu-car-body {
+  position: absolute;
+  left: 12%;
+  right: 8%;
+  top: 42px;
+  height: 42px;
+  border: 3px solid rgba(0, 0, 0, 0.64);
+  border-radius: 58% 42% 46% 52% / 52% 48% 54% 46%;
+  background:
+    linear-gradient(115deg, rgba(255,255,255,0.42), transparent 22%),
+    linear-gradient(135deg, var(--car-neon), var(--car) 44%, var(--car-dark));
+  box-shadow:
+    inset 0 -12px 18px rgba(0, 0, 0, 0.28),
+    0 0 24px color-mix(in srgb, var(--car-neon) 48%, transparent);
+}
+
+.menu-car-body::before {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  top: 49%;
+  height: 6px;
+  border-radius: 999px;
+  background: var(--car-stripe, #fff);
+  opacity: 0.88;
+}
+
+.menu-car-cabin {
+  position: absolute;
+  left: 42%;
+  top: 30px;
+  width: 28%;
+  height: 28px;
+  border: 3px solid rgba(0, 0, 0, 0.66);
+  border-radius: 50% 42% 35% 35%;
+  background: linear-gradient(145deg, #bdfbff, #0b1720 58%);
+  box-shadow: inset 0 0 16px rgba(255,255,255,0.2);
+}
+
+.menu-car-wing {
+  position: absolute;
+  right: 4%;
+  top: 28px;
+  width: 34%;
+  height: 10px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, var(--car-dark), var(--car-neon));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--car-neon) 64%, transparent);
+  transform: rotate(-6deg);
+}
+
+.menu-car-light {
+  position: absolute;
+  left: 13%;
+  top: 57px;
+  width: 18px;
+  height: 8px;
+  border-radius: 12px;
+  background: #eaffff;
+  box-shadow: 0 0 18px #bfffff;
+}
+
+.menu-car-wheel {
+  position: absolute;
+  bottom: 23px;
+  width: 28px;
+  height: 28px;
+  border: 6px solid #03070a;
+  border-radius: 50%;
+  background: radial-gradient(circle, #24323b 0 30%, #05080b 31%);
+}
+
+.menu-car-wheel.front {
+  left: 24%;
+}
+
+.menu-car-wheel.rear {
+  right: 19%;
+}
+
+input:not([type]),
+input[type="text"],
+select,
+.music-toggle,
+.volume-control,
+.control-card {
+  border-color: rgba(72, 216, 255, 0.24);
+  background: rgba(4, 13, 22, 0.76);
+}
+
+.start {
+  grid-column: 1 / -1;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #7afff0, #ffd64d 48%, #ff5f69);
+  box-shadow:
+    0 0 28px rgba(72, 216, 255, 0.24),
+    0 18px 34px rgba(0, 0, 0, 0.38);
+}
+
+@media (max-width: 1050px) {
+  .intro {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-badge {
+    justify-self: start;
+  }
+
+  .setup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .intro h1 {
+    font-size: 48px;
+  }
+
+  .setup,
+  .choices,
+  .levels,
+  .players,
+  .cameras,
+  .control-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .setup > .panel:nth-child(n) {
+    grid-column: 1;
+  }
+}
+
+/* 2026 race-menu polish */
+.menu {
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 52% 18%, rgba(122, 255, 240, 0.16), transparent 28%),
+    radial-gradient(circle at 18% 28%, rgba(63, 124, 255, 0.18), transparent 26%),
+    radial-gradient(circle at 82% 34%, rgba(255, 79, 216, 0.16), transparent 28%),
+    linear-gradient(180deg, #020611 0%, #06111f 48%, #03070e 100%);
+}
+
+.menu-track-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px) 0 0 / 54px 54px,
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px) 0 0 / 54px 54px;
+}
+
+.menu-track-bg::before {
+  content: "";
+  position: absolute;
+  left: 7vw;
+  right: 7vw;
+  top: 28px;
+  height: 280px;
+  border: clamp(30px, 4.8vw, 62px) solid rgba(14, 54, 88, 0.72);
+  border-left-width: clamp(42px, 6vw, 78px);
+  border-right-width: clamp(42px, 6vw, 78px);
+  border-radius: 45% 55% 48% 52% / 54% 42% 58% 46%;
+  box-shadow:
+    inset 0 0 0 4px rgba(255,255,255,0.1),
+    inset 0 0 0 13px rgba(0,0,0,0.34),
+    0 0 38px rgba(72,216,255,0.2),
+    0 0 90px rgba(255,79,216,0.12);
+  transform: rotate(-5deg);
+}
+
+.menu-track-bg::after {
+  content: "";
+  position: absolute;
+  left: 15vw;
+  right: 16vw;
+  top: 70px;
+  height: 155px;
+  border: 8px dashed rgba(216, 252, 255, 0.62);
+  border-radius: 47% 53% 50% 50% / 54% 44% 56% 46%;
+  filter: drop-shadow(0 0 12px rgba(72,216,255,0.58));
+  transform: rotate(-5deg);
+}
+
+.track-ribbon {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  opacity: 0.76;
+  filter: blur(0.2px);
+}
+
+.track-ribbon-one {
+  left: 18vw;
+  top: 96px;
+  width: 22vw;
+  height: 8px;
+  background: linear-gradient(90deg, transparent, #4de3ff, #ff4fd8, transparent);
+  box-shadow: 0 0 22px rgba(72,216,255,0.75);
+  transform: rotate(-16deg);
+}
+
+.track-ribbon-two {
+  right: 17vw;
+  top: 145px;
+  width: 24vw;
+  height: 8px;
+  background: linear-gradient(90deg, transparent, #ff4fd8, #ffd64d, transparent);
+  box-shadow: 0 0 22px rgba(255,79,216,0.72);
+  transform: rotate(10deg);
+}
+
+.track-ribbon-three {
+  left: 42vw;
+  top: 55px;
+  width: 16vw;
+  height: 6px;
+  background: linear-gradient(90deg, transparent, #8cf8ff, transparent);
+  box-shadow: 0 0 20px rgba(140,248,255,0.74);
+  transform: rotate(21deg);
+}
+
+.intro {
+  min-height: 270px;
+  align-items: end;
+  padding-top: 36px;
+}
+
+.intro h1 {
+  max-width: 790px;
+  color: #f4feff;
+  font-style: italic;
+  font-weight: 1000;
+  letter-spacing: 0;
+  text-shadow:
+    0 0 7px rgba(255,255,255,0.95),
+    0 0 28px rgba(72,216,255,0.82),
+    0 0 54px rgba(255,79,216,0.34),
+    0 11px 0 rgba(0,0,0,0.68);
+}
+
+.intro .tag {
+  width: max-content;
+  max-width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(122,255,240,0.32);
+  border-radius: 8px;
+  background: rgba(3, 12, 20, 0.58);
+}
+
+.intro p:last-child {
+  color: rgba(241, 253, 255, 0.86);
+  font-weight: 900;
+  text-shadow: 0 2px 9px rgba(0,0,0,0.72);
+}
+
+.radio-badge {
+  align-self: center;
+  transform: rotate(2deg);
+  background:
+    linear-gradient(145deg, rgba(255,255,255,0.12), transparent 24%),
+    linear-gradient(180deg, #142535, #050b12);
+}
+
+.top-mode-bar {
+  position: sticky;
+  top: 0;
+  z-index: 12;
+  max-width: 1180px;
+  margin: 0 auto 12px;
+  padding: 12px clamp(8px, 2vw, 18px);
+  border: 1px solid rgba(122,255,240,0.2);
+  border-radius: 0 0 16px 16px;
+  background:
+    linear-gradient(180deg, rgba(3, 12, 22, 0.94), rgba(5, 16, 28, 0.78)),
+    rgba(5, 16, 28, 0.84);
+  box-shadow: 0 18px 34px rgba(0,0,0,0.32), inset 0 -1px 0 rgba(255,255,255,0.08);
+  backdrop-filter: blur(12px);
+}
+
+.setup {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.setup > .panel:nth-child(1) {
+  grid-column: 1 / span 4;
+}
+
+.setup > .panel:nth-child(2) {
+  grid-column: 5 / span 4;
+}
+
+.setup > .panel:nth-child(3) {
+  grid-column: 1 / span 9;
+  grid-row: span 3;
+}
+
+.setup > .panel:nth-child(4) {
+  grid-column: 10 / span 3;
+}
+
+.setup > .panel:nth-child(5) {
+  grid-column: 10 / span 3;
+}
+
+.setup > .panel:nth-child(6) {
+  grid-column: 1 / span 5;
+}
+
+.setup > .panel:nth-child(7) {
+  grid-column: 6 / span 4;
+}
+
+.setup > .panel:nth-child(8) {
+  grid-column: 10 / span 3;
+}
+
+.panel {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(122, 255, 240, 0.26);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgba(16, 30, 45, 0.92), rgba(4, 12, 21, 0.92)),
+    rgba(4, 12, 20, 0.94);
+  backdrop-filter: blur(10px);
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(125deg, rgba(255,255,255,0.08), transparent 36%, rgba(72,216,255,0.06));
+  pointer-events: none;
+}
+
+.panel > * {
+  position: relative;
+  z-index: 1;
+}
+
+.choices {
+  grid-template-columns: repeat(4, minmax(130px, 1fr));
+}
+
+.vehicle-modes,
+.abas-container {
+  display: flex;
+  gap: 10px;
+}
+
+.mode-choice,
+.aba {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 58px;
+  border: 1px solid rgba(122, 255, 240, 0.24);
+  border-radius: 12px;
+  padding: 12px 30px;
+  color: var(--ink);
+  text-align: center;
+  background:
+    radial-gradient(circle at 88% 26%, rgba(72,216,255,0.22), transparent 34%),
+    linear-gradient(145deg, rgba(31, 41, 55, 0.94), rgba(6, 14, 24, 0.92));
+  box-shadow: inset 0 0 18px rgba(72,216,255,0.07), 0 10px 26px rgba(0,0,0,0.24);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mode-choice::after {
+  content: "";
+  position: absolute;
+  right: 14px;
+  top: 18px;
+  width: 64px;
+  height: 34px;
+  border-radius: 18px 10px 18px 10px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.84), rgba(72,216,255,0.38));
+  opacity: 0.22;
+  transform: rotate(-10deg);
+}
+
+.mode-choice strong,
+.mode-choice small {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.mode-choice strong {
+  color: #eaffff;
+  font-size: 18px;
+  text-shadow: 0 0 12px rgba(72,216,255,0.58);
+}
+
+.mode-choice small {
+  max-width: none;
+  margin-top: 6px;
+  color: rgba(232,253,255,0.74);
+  font-weight: 900;
+}
+
+.mode-choice.active,
+.aba.ativa {
+  border-color: var(--yellow);
+  background:
+    radial-gradient(circle at 88% 26%, rgba(255,214,77,0.35), transparent 34%),
+    linear-gradient(145deg, rgba(59, 130, 246, 0.88), rgba(255,214,77,0.14));
+  color: #fff;
+  font-weight: 1000;
+  box-shadow:
+    inset 0 0 26px rgba(255,214,77,0.11),
+    0 0 28px rgba(59,130,246,0.26),
+    0 0 28px rgba(255,214,77,0.16);
+}
+
+.mode-choice:hover {
+  transform: translateY(-2px);
+  border-color: rgba(122,255,240,0.58);
+}
+
+.choice {
+  transition: transform 160ms ease, border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+}
+
+.choice:hover {
+  transform: translateY(-3px);
+  border-color: var(--car-neon, rgba(122,255,240,0.75));
+  box-shadow:
+    inset 0 0 24px color-mix(in srgb, var(--car-neon, #48d8ff) 20%, transparent),
+    0 0 32px color-mix(in srgb, var(--car-neon, #48d8ff) 24%, transparent),
+    0 22px 34px rgba(0,0,0,0.34);
+}
+
+.choices .choice {
+  min-height: 282px;
+  border-radius: 16px;
+  padding: 12px 12px 16px;
+  background:
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--car-neon, #48d8ff) 34%, transparent), transparent 44%),
+    linear-gradient(180deg, rgba(204, 228, 245, 0.2), rgba(13, 28, 44, 0.58) 42%, rgba(4, 10, 17, 0.98));
+}
+
+.choices .choice.active::after {
+  content: "Selecionado";
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  padding: 5px 8px;
+  border-radius: 7px;
+  color: #061019;
+  background: var(--yellow);
+  font-size: 11px;
+  font-weight: 1000;
+  box-shadow: 0 0 18px rgba(255,214,77,0.38);
+}
+
+.vehicle-showcase {
+  position: relative;
+  height: 156px;
+  margin: 8px auto 6px;
+  display: grid;
+  place-items: center;
+}
+
+.vehicle-art {
+  width: min(100%, 230px);
+  height: 156px;
+  overflow: visible;
+  filter: drop-shadow(0 12px 15px rgba(0,0,0,0.58));
+}
+
+.menu-sprite-car {
+  display: block;
+  width: min(100%, 174px);
+  height: 104px;
+  object-fit: contain;
+  image-rendering: auto;
+  filter:
+    drop-shadow(0 8px 10px rgba(0,0,0,0.52))
+    drop-shadow(0 0 12px color-mix(in srgb, var(--car-neon, #48d8ff) 28%, transparent));
+}
+
+.vehicle-shadow {
+  fill: rgba(0,0,0,0.54);
+  filter: blur(2px);
+}
+
+.vehicle-glow {
+  fill: var(--car-neon);
+  opacity: 0.24;
+  filter: blur(8px);
+}
+
+.sport-body-main,
+.kart-body-main {
+  fill: var(--car);
+  stroke: #03070a;
+  stroke-width: 5;
+}
+
+.sport-nose,
+.kart-body-top {
+  fill: color-mix(in srgb, var(--car-neon) 38%, var(--car) 62%);
+  opacity: 0.94;
+  stroke: rgba(255,255,255,0.28);
+  stroke-width: 1.5;
+}
+
+.sport-wheel,
+.kart-wheel {
+  fill: #06080b;
+  stroke: #151c24;
+  stroke-width: 5;
+}
+
+.sport-wheel + .sport-wheel,
+.kart-wheel + .kart-wheel {
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--car-neon) 42%, transparent));
+}
+
+.sport-cabin,
+.kart-seat {
+  fill: #070d15;
+  stroke: #dffcff;
+  stroke-opacity: 0.36;
+  stroke-width: 2;
+}
+
+.sport-glass,
+.kart-seat-glass {
+  fill: rgba(210,246,255,0.82);
+  opacity: 0.8;
+}
+
+.sport-stripe,
+.kart-stripe {
+  fill: none;
+  stroke: var(--car-stripe);
+  stroke-width: 7;
+  stroke-linecap: round;
+  opacity: 0.92;
+}
+
+.sport-side,
+.sport-highlight {
+  fill: none;
+  stroke: rgba(255,255,255,0.48);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.sport-wing,
+.kart-bumper,
+.kart-axle,
+.kart-exhaust,
+.kart-frame {
+  fill: none;
+  stroke: #bfc7cc;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.sport-lights,
+.vehicle-spark {
+  fill: none;
+  stroke: var(--car-neon);
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 9px var(--car-neon));
+}
+
+.premium-sport-art {
+  transform: translateY(2px);
+}
+
+.kart-art {
+  transform: translateY(9px) scale(1.2);
+  transform-origin: center;
+}
+
+.sport-card-body {
+  fill: var(--car);
+  stroke: #03070a;
+  stroke-width: 5.5;
+  stroke-linejoin: round;
+  filter:
+    drop-shadow(0 0 8px color-mix(in srgb, var(--car-neon) 32%, transparent))
+    drop-shadow(0 12px 10px rgba(0,0,0,0.42));
+}
+
+.sport-card-nose,
+.sport-card-side {
+  fill: color-mix(in srgb, var(--car-neon) 18%, var(--car) 82%);
+  stroke: rgba(255,255,255,0.24);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+
+.sport-card-cabin {
+  fill: #050911;
+  stroke: rgba(234,254,255,0.42);
+  stroke-width: 3;
+}
+
+.sport-card-glass {
+  fill: rgba(221, 239, 255, 0.86);
+  opacity: 0.78;
+}
+
+.sport-card-wheel {
+  fill: #05070a;
+  stroke: #161d26;
+  stroke-width: 5;
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--car-neon) 44%, transparent));
+}
+
+.sport-card-rim {
+  fill: none;
+  stroke: #d5dde2;
+  stroke-width: 3.5;
+  stroke-dasharray: 3 4;
+}
+
+.sport-card-stripe {
+  fill: none;
+  stroke: var(--car-stripe);
+  stroke-width: 6;
+  stroke-linecap: round;
+  opacity: 0.94;
+}
+
+.sport-card-highlight,
+.sport-card-intake,
+.sport-card-grill,
+.sport-card-wing {
+  fill: none;
+  stroke: rgba(255,255,255,0.52);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sport-card-intake,
+.sport-card-grill {
+  stroke: #05070a;
+  stroke-width: 4;
+  opacity: 0.78;
+}
+
+.sport-card-wing {
+  stroke: #050914;
+  stroke-width: 8;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--car-neon) 42%, transparent));
+}
+
+.sport-card-light,
+.sport-card-neon {
+  fill: none;
+  stroke: var(--car-neon);
+  stroke-width: 5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 10px var(--car-neon));
+}
+
+.sport-card-neon {
+  stroke-width: 4;
+  opacity: 0.88;
+}
+
+.sport-card-number {
+  fill: var(--car-stripe);
+  stroke: rgba(3,7,10,0.9);
+  stroke-width: 2.4;
+  paint-order: stroke fill;
+  font: 1000 22px Trebuchet MS, sans-serif;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--car-neon) 42%, transparent));
+}
+
+.sport-card-number-rear {
+  font-size: 17px;
+  opacity: 0.82;
+}
+
+.kart-helmet {
+  fill: var(--car-stripe);
+  stroke: #03070a;
+  stroke-width: 4;
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--car-neon) 42%, transparent));
+}
+
+.kart-visor,
+.kart-engine,
+.kart-driver-body {
+  fill: #05080e;
+}
+
+.kart-frame {
+  stroke: #090d12;
+  stroke-width: 6;
+  stroke-linejoin: round;
+}
+
+.kart-front-fairing,
+.kart-side-pod {
+  fill: color-mix(in srgb, var(--car-neon) 24%, var(--car) 76%);
+  stroke: #03070a;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+
+.kart-side-pod {
+  fill: var(--car);
+}
+
+.kart-rim {
+  fill: none;
+  stroke: #f4f7ff;
+  stroke-width: 4;
+  stroke-dasharray: 3 4;
+}
+
+.kart-driver-body {
+  fill: #ffd447;
+  stroke: #05080e;
+  stroke-width: 3;
+}
+
+.kart-number {
+  fill: #fffdf0;
+  stroke: #05080e;
+  stroke-width: 3;
+}
+
+.kart-number-text {
+  fill: var(--car);
+  font: 900 17px Trebuchet MS, sans-serif;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.kart-arms,
+.kart-steer {
+  fill: none;
+  stroke: #ffd447;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
+
+.kart-steer {
+  stroke: #ced7dc;
+  stroke-width: 3;
+}
+
+.levels,
+.players,
+.cameras,
+.control-grid {
+  grid-template-columns: 1fr;
+}
+
+.players .choice,
+.levels .choice,
+.cameras .choice {
+  min-height: 82px;
+}
+
+.control-card {
+  border-radius: 10px;
+}
+
+.control-card button,
+input:not([type]),
+input[type="text"],
+select,
+.music-toggle,
+.volume-control {
+  border-radius: 9px;
+}
+
+.start {
+  grid-column: 1 / -1;
+  min-height: 64px;
+  font-size: 26px;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.start:hover {
+  filter: brightness(1.06);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 1100px) {
+  .setup {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .setup > .panel:nth-child(n),
+  .start {
+    grid-column: auto;
+  }
+
+  .setup > .panel:nth-child(4),
+  .start {
+    grid-column: 1 / -1;
+  }
+
+  .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .menu-track-bg::before {
+    left: -22vw;
+    right: -26vw;
+    top: 42px;
+    height: 210px;
+  }
+
+  .menu-track-bg::after {
+    left: -4vw;
+    right: -8vw;
+    top: 90px;
+    height: 92px;
+  }
+
+  .setup,
+  .choices {
+    grid-template-columns: 1fr;
+  }
+
+  .radio-badge {
+    width: 190px;
+    height: 128px;
+  }
+
+  .choices .choice {
+    min-height: 230px;
+  }
+}
+
+/* Premium garage dashboard */
+.menu {
+  padding-bottom: 56px;
+}
+
+.intro {
+  max-width: 1180px;
+  min-height: 190px;
+  margin-bottom: 8px;
+}
+
+.intro h1 {
+  font-size: clamp(54px, 7vw, 92px);
+  line-height: 0.95;
+}
+
+.top-mode-bar {
+  max-width: 1180px;
+  margin-bottom: 14px;
+}
+
+.garage-console {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(220px, 300px) minmax(0, 1fr);
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto 42px;
+  overflow: hidden;
+  border: 1px solid rgba(122, 255, 240, 0.58);
+  border-radius: 18px;
+  background:
+    linear-gradient(90deg, rgba(5, 9, 24, 0.96) 0 28%, rgba(9, 13, 33, 0.86) 28% 100%),
+    radial-gradient(circle at 62% 14%, rgba(72, 216, 255, 0.18), transparent 34%),
+    rgba(3, 7, 17, 0.96);
+  box-shadow:
+    0 0 0 2px rgba(72, 216, 255, 0.1),
+    0 0 42px rgba(72, 216, 255, 0.28),
+    0 34px 82px rgba(0, 0, 0, 0.56),
+    inset 0 0 46px rgba(72, 216, 255, 0.07);
+  backdrop-filter: blur(18px);
+}
+
+.garage-console::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 28% 6%, rgba(255, 79, 216, 0.16), transparent 22%),
+    radial-gradient(ellipse at 55% 5%, rgba(255, 214, 77, 0.11), transparent 20%),
+    radial-gradient(ellipse at 82% 6%, rgba(72, 216, 255, 0.15), transparent 23%),
+    linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px) 0 0 / 44px 44px,
+    linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px) 0 0 / 44px 44px;
+  opacity: 0.86;
+}
+
+.garage-console::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  top: 24px;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(122,255,240,0.88), rgba(255,79,216,0.58), transparent);
+  box-shadow: 0 0 18px rgba(122, 255, 240, 0.72);
+}
+
+.garage-sidebar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 620px;
+  flex-direction: column;
+  padding: 36px 22px 22px;
+  border-right: 1px solid rgba(122, 255, 240, 0.18);
+  background:
+    linear-gradient(180deg, rgba(11, 12, 31, 0.88), rgba(7, 9, 22, 0.98)),
+    rgba(4, 7, 18, 0.92);
+}
+
+.garage-sidebar strong {
+  display: block;
+  margin-bottom: 72px;
+  color: #ffffff;
+  font-size: clamp(34px, 4.2vw, 58px);
+  line-height: 0.95;
+  letter-spacing: 0;
+  text-shadow:
+    0 0 12px rgba(255,255,255,0.72),
+    0 0 28px rgba(72,216,255,0.42);
+}
+
+.garage-sidebar nav {
+  display: grid;
+  gap: 20px;
+}
+
+.garage-sidebar a {
+  color: #f6fbff;
+  text-decoration: none;
+  font-size: clamp(24px, 2.6vw, 38px);
+  font-weight: 1000;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(72, 216, 255, 0.18);
+  transition: color 150ms ease, transform 150ms ease, text-shadow 150ms ease;
+}
+
+.garage-sidebar a:hover,
+.garage-sidebar a:focus-visible {
+  color: #7afff0;
+  outline: none;
+  transform: translateX(5px);
+  text-shadow: 0 0 18px rgba(122,255,240,0.74);
+}
+
+.garage-sidebar span {
+  display: block;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid rgba(122,255,240,0.16);
+  color: #ffffff;
+  font-size: clamp(20px, 2.1vw, 28px);
+  font-weight: 1000;
+  text-shadow: 0 0 14px rgba(255,255,255,0.35);
+}
+
+.garage-console .setup {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 34px;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.garage-console .setup > .panel {
+  border-radius: 10px;
+  border-color: rgba(122, 255, 240, 0.24);
+  background:
+    linear-gradient(180deg, rgba(19, 22, 45, 0.86), rgba(8, 10, 25, 0.82)),
+    rgba(3, 6, 17, 0.82);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.03),
+    0 18px 34px rgba(0,0,0,0.24);
+}
+
+.garage-console .setup > .panel h2 {
+  margin-bottom: 12px;
+  color: #f6fdff;
+  font-size: 20px;
+  letter-spacing: 0;
+  text-shadow: 0 0 14px rgba(122,255,240,0.42);
+}
+
+.garage-console .setup > .panel:nth-child(1) {
+  grid-column: 1 / span 5;
+}
+
+.garage-console .setup > .panel:nth-child(2) {
+  grid-column: 9 / span 4;
+  grid-row: 1 / span 2;
+}
+
+.garage-console .setup > .panel:nth-child(3) {
+  grid-column: 1 / span 8;
+  grid-row: 2 / span 4;
+}
+
+.garage-console .setup > .panel:nth-child(4) {
+  grid-column: 9 / span 4;
+  grid-row: 3;
+}
+
+.garage-console .setup > .panel:nth-child(5) {
+  grid-column: 9 / span 4;
+  grid-row: 4 / span 2;
+}
+
+.garage-console .setup > .panel:nth-child(6) {
+  grid-column: 1 / span 4;
+}
+
+.garage-console .setup > .panel:nth-child(7) {
+  grid-column: 5 / span 4;
+}
+
+.garage-console .setup > .panel:nth-child(8) {
+  grid-column: 9 / span 4;
+}
+
+.garage-console .start {
+  grid-column: 1 / -1;
+}
+
+.garage-console input:not([type]),
+.garage-console input[type="text"],
+.garage-console select,
+.garage-console .music-toggle,
+.garage-console .volume-control,
+.garage-console .control-card {
+  min-height: 42px;
+  border-color: rgba(122, 255, 240, 0.28);
+  background: rgba(3, 8, 18, 0.88);
+  box-shadow: inset 0 0 16px rgba(72,216,255,0.05);
+}
+
+.garage-console .radio-panel h2,
+.garage-console .controls-panel h2,
+.garage-console .setup > .panel:nth-child(5) h2 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 42px;
+  margin: -4px -4px 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(122,255,240,0.18);
+  border-radius: 8px;
+  background: linear-gradient(90deg, rgba(37, 48, 82, 0.92), rgba(13, 18, 39, 0.84));
+}
+
+.garage-console .radio-panel h2::after,
+.garage-console .controls-panel h2::after,
+.garage-console .setup > .panel:nth-child(5) h2::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  border-top: 10px solid #f7fbff;
+  filter: drop-shadow(0 0 8px rgba(122,255,240,0.55));
+}
+
+.garage-console .choices {
+  grid-template-columns: repeat(3, minmax(132px, 1fr));
+  gap: 12px;
+}
+
+.garage-console .choices .choice {
+  min-height: 188px;
+  border-radius: 7px;
+  padding: 10px;
+  border-color: rgba(122,255,240,0.19);
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.08), transparent 35%),
+    radial-gradient(circle at 50% 26%, color-mix(in srgb, var(--car-neon, #48d8ff) 24%, transparent), transparent 46%),
+    linear-gradient(180deg, rgba(20,24,47,0.88), rgba(5,8,19,0.94));
+}
+
+.garage-console .choices .choice.active {
+  border-color: rgba(122,255,240,0.94);
+  box-shadow:
+    inset 0 0 28px color-mix(in srgb, var(--car-neon, #48d8ff) 19%, transparent),
+    0 0 30px color-mix(in srgb, var(--car-neon, #48d8ff) 28%, transparent);
+}
+
+.garage-console .choices .choice.active::after {
+  top: 8px;
+  right: 8px;
+}
+
+.garage-console .vehicle-showcase {
+  height: 108px;
+  margin: 2px auto 4px;
+}
+
+.garage-console .vehicle-art {
+  width: min(100%, 186px);
+  height: 116px;
+}
+
+.garage-console .choices .choice strong {
+  color: var(--car-neon, #7afff0);
+  font-size: clamp(19px, 2vw, 27px);
+  line-height: 0.98;
+  text-shadow:
+    0 0 7px color-mix(in srgb, var(--car-neon, #48d8ff) 82%, transparent),
+    0 2px 0 rgba(0,0,0,0.75);
+}
+
+.garage-console .choices .choice small {
+  color: rgba(244, 254, 255, 0.78);
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.garage-console .players,
+.garage-console .levels,
+.garage-console .cameras,
+.garage-console .control-grid {
+  gap: 8px;
+}
+
+.garage-console .players .choice,
+.garage-console .levels .choice,
+.garage-console .cameras .choice {
+  min-height: 62px;
+  padding: 10px 12px;
+}
+
+.garage-console .control-card {
+  padding: 8px;
+}
+
+.garage-console .control-card button {
+  min-height: 32px;
+}
+
+.garage-console .hint {
+  color: rgba(236, 251, 255, 0.68);
+}
+
+.garage-console .start {
+  min-height: 60px;
+  border-radius: 10px;
+}
+
+@media (max-width: 1180px) {
+  .garage-console {
+    grid-template-columns: 1fr;
+  }
+
+  .garage-sidebar {
+    min-height: 0;
+    border-right: 0;
+    border-bottom: 1px solid rgba(122,255,240,0.18);
+  }
+
+  .garage-sidebar strong {
+    margin-bottom: 22px;
+  }
+
+  .garage-sidebar nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .garage-sidebar a {
+    padding: 10px;
+    border: 1px solid rgba(122,255,240,0.18);
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .garage-sidebar span {
+    margin-top: 16px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 980px) {
+  .garage-console .setup {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .garage-console .setup > .panel:nth-child(n),
+  .garage-console .start {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .garage-console .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .garage-console {
+    width: min(100% - 18px, 1180px);
+  }
+
+  .garage-sidebar nav,
+  .garage-console .choices {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Compact accordion setup */
+.intro {
+  min-height: 132px;
+  padding-top: 16px;
+}
+
+.intro h1 {
+  font-size: clamp(38px, 5.6vw, 68px);
+}
+
+.radio-badge {
+  width: 210px;
+  height: 135px;
+}
+
+.garage-console {
+  grid-template-columns: minmax(180px, 230px) minmax(0, 1fr);
+}
+
+.garage-sidebar {
+  min-height: 0;
+  padding: 26px 18px 18px;
+}
+
+.garage-sidebar strong {
+  margin-bottom: 34px;
+  font-size: clamp(26px, 2.8vw, 40px);
+}
+
+.garage-sidebar nav {
+  gap: 12px;
+}
+
+.garage-sidebar a {
+  font-size: clamp(17px, 1.7vw, 25px);
+}
+
+.garage-console .compact-setup {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-content: start;
+  gap: 12px;
+  padding: 22px;
+}
+
+.setup-group {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(122, 255, 240, 0.26);
+  border-radius: 12px;
+  background:
+    linear-gradient(145deg, rgba(14, 25, 43, 0.94), rgba(3, 9, 19, 0.9)),
+    rgba(3, 9, 19, 0.92);
+  box-shadow: inset 0 0 22px rgba(72,216,255,0.06), 0 12px 26px rgba(0,0,0,0.25);
+}
+
+.setup-group summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 11px 14px;
+  color: #f7fdff;
+  font-size: 17px;
+  font-weight: 1000;
+  cursor: pointer;
+  list-style: none;
+  text-shadow: 0 0 12px rgba(122,255,240,0.42);
+  background: linear-gradient(90deg, rgba(35, 48, 78, 0.86), rgba(6, 14, 28, 0.52));
+}
+
+.setup-group summary::-webkit-details-marker {
+  display: none;
+}
+
+.setup-group summary::after {
+  content: "+";
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(122,255,240,0.38);
+  border-radius: 7px;
+  color: #ffd64d;
+  background: rgba(2, 8, 18, 0.8);
+  box-shadow: 0 0 14px rgba(72,216,255,0.18);
+}
+
+.setup-group[open] summary::after {
+  content: "-";
+}
+
+.identity-group {
+  grid-column: 1 / span 5;
+}
+
+.vehicle-group {
+  grid-column: 1 / span 8;
+}
+
+.race-group,
+.controls-group {
+  grid-column: 9 / span 4;
+}
+
+.garage-console .start {
+  grid-column: 1 / -1;
+}
+
+.group-content {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.group-content.two-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.group-content.three-columns {
+  grid-template-columns: 1fr;
+}
+
+.setup-group > .panel,
+.setup-group .panel {
+  min-width: 0;
+  border-radius: 10px;
+  background:
+    linear-gradient(180deg, rgba(15, 24, 42, 0.8), rgba(4, 10, 20, 0.84)),
+    rgba(4, 10, 20, 0.82);
+}
+
+.setup-group .panel h2 {
+  margin-bottom: 9px;
+  font-size: 16px;
+}
+
+.garage-console .vehicle-group .choices {
+  grid-template-columns: repeat(4, minmax(108px, 1fr));
+  gap: 10px;
+}
+
+.garage-console .vehicle-group .choices .choice {
+  min-height: 148px;
+  padding: 8px;
+}
+
+.garage-console .vehicle-group .vehicle-showcase {
+  height: 72px;
+  margin: 0 auto 2px;
+}
+
+.garage-console .vehicle-group .vehicle-art {
+  width: min(100%, 142px);
+  height: 84px;
+}
+
+.garage-console .vehicle-group .choices .choice strong {
+  font-size: clamp(15px, 1.45vw, 20px);
+}
+
+.garage-console .vehicle-group .choices .choice small {
+  font-size: 9px;
+}
+
+.race-group .players .choice,
+.race-group .levels .choice,
+.race-group .cameras .choice {
+  min-height: 50px;
+}
+
+.controls-group .system-status {
+  max-height: 220px;
+  overflow: auto;
+}
+
+@media (max-width: 1180px) {
+  .garage-console {
+    grid-template-columns: 1fr;
+  }
+
+  .identity-group,
+  .vehicle-group,
+  .race-group,
+  .controls-group,
+  .garage-console .start {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 760px) {
+  .group-content.two-columns,
+  .garage-console .vehicle-group .choices {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Professional main menu redesign */
+#menu.menu {
+  min-height: 100vh;
+  height: 100vh;
+  overflow-y: auto;
+  display: block;
+  padding: 28px clamp(22px, 4vw, 64px) 44px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 236, 168, 0.12), transparent 22%),
+    radial-gradient(circle at 74% 12%, rgba(72, 216, 255, 0.13), transparent 22%),
+    linear-gradient(120deg, rgba(255, 236, 168, 0.07), transparent 34%),
+    linear-gradient(180deg, #070a18 0%, #070b19 42%, #030711 100%);
+}
+
+/* Fit the premium menu into the first screen */
+#menu.menu {
+  padding-top: 18px;
+}
+
+#menu .top-mode-bar {
+  margin-bottom: 10px;
+}
+
+#menu .intro {
+  min-height: 112px;
+  margin-bottom: 8px;
+}
+
+#menu .intro h1 {
+  font-size: clamp(44px, 5.2vw, 68px);
+}
+
+#menu .intro p:last-child {
+  margin-top: 4px;
+}
+
+#menu .garage-console {
+  min-height: 510px;
+}
+
+#menu .garage-sidebar {
+  min-height: 510px;
+}
+
+#menu .compact-setup {
+  padding: 18px;
+  gap: 12px;
+}
+
+#menu .setup-group summary {
+  min-height: 46px;
+  padding: 9px 12px;
+}
+
+#menu .vehicle-group > .panel {
+  padding: 12px;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  gap: 12px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice {
+  min-height: 196px;
+  padding: 10px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-showcase {
+  height: 112px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-art {
+  width: min(100%, 174px);
+  height: 120px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice strong {
+  font-size: clamp(17px, 1.35vw, 22px);
+}
+
+#menu .garage-console .start {
+  min-height: 58px;
+  font-size: 24px;
+}
+
+/* Final entry screen lock: this is the active menu layout. */
+#menu.menu:not(.hidden) {
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px clamp(18px, 3vw, 48px) 34px;
+}
+
+#menu .top-mode-bar {
+  position: relative;
+  top: auto;
+  z-index: 5;
+  width: min(620px, calc(100% - 24px));
+  margin: 0 auto 14px;
+  padding: 5px;
+  border-radius: 18px;
+}
+
+#menu .vehicle-modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#menu .mode-choice {
+  min-height: 56px;
+  padding: 9px 18px;
+  border-radius: 14px;
+}
+
+#menu .mode-choice strong {
+  font-size: clamp(15px, 1.25vw, 20px);
+}
+
+#menu .mode-choice small {
+  margin-top: 3px;
+  font-size: 10px;
+  line-height: 1.15;
+}
+
+#menu .intro {
+  width: min(1160px, calc(100% - 12px));
+  min-height: 122px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  align-items: center;
+  column-gap: 24px;
+  margin: 0 auto 12px;
+  padding: 0 8px;
+}
+
+#menu .intro h1 {
+  max-width: 620px;
+  font-size: clamp(48px, 5.4vw, 76px);
+  line-height: 0.94;
+}
+
+#menu .intro p:last-child {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  font-size: 15px;
+}
+
+#menu .radio-badge {
+  justify-self: end;
+  width: 142px;
+  min-height: 78px;
+}
+
+#menu .garage-console {
+  width: min(1160px, calc(100% - 12px));
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 0;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#menu .garage-sidebar {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 24px;
+}
+
+#menu .garage-sidebar strong {
+  max-width: 160px;
+  margin: 0;
+  font-size: clamp(25px, 2.1vw, 34px);
+  line-height: 0.98;
+}
+
+#menu .garage-sidebar nav {
+  display: grid;
+  gap: 9px;
+}
+
+#menu .garage-sidebar a {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: clamp(18px, 1.5vw, 25px);
+  line-height: 1.05;
+  text-align: left;
+  box-shadow: none;
+}
+
+#menu .garage-sidebar span {
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: 18px;
+}
+
+#menu .compact-setup {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(430px, 1.32fr) minmax(235px, 0.78fr);
+  grid-template-areas:
+    "identity vehicle race"
+    "controls vehicle race"
+    "start start start";
+  gap: 12px;
+  padding: 16px;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+#menu .identity-group {
+  grid-area: identity;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .vehicle-group {
+  grid-area: vehicle;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .race-group {
+  grid-area: race;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .controls-group {
+  grid-area: controls;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .start-dock {
+  grid-area: start;
+  grid-column: auto;
+  grid-row: auto;
+  align-self: center;
+  justify-self: center;
+  width: min(440px, 100%);
+  padding: 0;
+}
+
+#menu .setup-group {
+  min-height: 0;
+  border-radius: 14px;
+}
+
+#menu .setup-group summary {
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 13px;
+  font-size: 15px;
+}
+
+#menu .group-content,
+#menu .group-content.two-columns,
+#menu .group-content.three-columns,
+#menu .race-group .group-content.three-columns {
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+#menu .setup-group .panel {
+  padding: 10px;
+  border-radius: 12px;
+}
+
+#menu .setup-group .panel h2 {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+#menu .garage-console input:not([type]),
+#menu .garage-console input[type="text"],
+#menu .garage-console select,
+#menu .garage-console .music-toggle,
+#menu .garage-console .volume-control {
+  min-height: 38px;
+  border-radius: 9px;
+}
+
+#menu .radio-panel .volume-grid {
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+#menu .vehicle-group > .panel {
+  height: 100%;
+  padding: 12px;
+}
+
+#menu .vehicle-group > .panel h2 {
+  display: none;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice {
+  min-height: 158px;
+  padding: 9px;
+  border-radius: 13px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice.active::after {
+  right: 8px;
+  top: 8px;
+  padding: 4px 7px;
+  font-size: 9px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-showcase {
+  height: 82px;
+  margin: 3px auto 5px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-art {
+  width: min(100%, 150px);
+  height: 92px;
+}
+
+#menu .garage-console .vehicle-group .menu-sprite-car {
+  width: min(100%, 132px);
+  height: 78px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice strong {
+  font-size: clamp(15px, 1.15vw, 19px);
+  line-height: 0.96;
+}
+
+#menu .garage-console .vehicle-group .choices .choice small {
+  margin-top: 4px;
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+#menu .race-group[open] {
+  max-height: 492px;
+  overflow: hidden;
+}
+
+#menu .race-group[open] > .group-content {
+  max-height: 438px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#menu .controls-group[open] {
+  max-height: 360px;
+  overflow: hidden;
+}
+
+#menu .controls-group[open] > .group-content {
+  max-height: 306px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#menu .race-modes,
+#menu .players,
+#menu .levels,
+#menu .cameras,
+#menu .control-grid,
+#menu .system-status {
+  display: grid;
+  gap: 7px;
+}
+
+#menu .players {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#menu .levels {
+  max-height: 185px;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+#menu .race-modes .choice,
+#menu .players .choice,
+#menu .levels .choice,
+#menu .cameras .choice {
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+#menu .race-modes .choice strong,
+#menu .players .choice strong,
+#menu .levels .choice strong,
+#menu .cameras .choice strong {
+  font-size: 13px;
+  line-height: 1.08;
+}
+
+#menu .race-modes .choice small,
+#menu .players .choice small,
+#menu .levels .choice small,
+#menu .cameras .choice small {
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+#menu .start-dock .menu-start,
+#menu .garage-console .start,
+#menu:not(.hidden) #startBtn,
+#menu:not(.hidden) #startBtn.menu-start {
+  position: static;
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  border-radius: 16px;
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+@media (max-width: 1260px) {
+  #menu .garage-console {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  #menu .compact-setup {
+    grid-template-columns: minmax(210px, 0.8fr) minmax(420px, 1.25fr);
+    grid-template-areas:
+      "identity vehicle"
+      "race vehicle"
+      "controls controls"
+      "start start";
+  }
+}
+
+@media (max-width: 920px) {
+  #menu.menu:not(.hidden) {
+    padding: 12px;
+  }
+
+  #menu .intro {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  #menu .radio-badge {
+    display: none;
+  }
+
+  #menu .garage-console {
+    grid-template-columns: 1fr;
+  }
+
+  #menu .garage-sidebar {
+    padding: 18px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  #menu .garage-sidebar nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #menu .garage-sidebar a {
+    padding: 8px;
+    border: 1px solid rgba(255, 236, 168, 0.15);
+    border-radius: 9px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #menu .compact-setup {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "identity"
+      "vehicle"
+      "race"
+      "controls"
+      "start";
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Final fix 2026-06-04: one-screen menu on varied monitor heights. */
+#menu.menu:not(.hidden) {
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  align-items: start;
+  padding: clamp(8px, 1.3vh, 16px) clamp(12px, 2vw, 34px);
+}
+
+#menu .top-mode-bar {
+  width: min(560px, calc(100% - 12px));
+  margin-bottom: clamp(6px, 1vh, 10px);
+}
+
+#menu .mode-choice {
+  min-height: clamp(42px, 6vh, 54px);
+  padding: 7px 14px;
+}
+
+#menu .intro {
+  min-height: 0;
+  margin: 0 auto clamp(8px, 1.3vh, 12px);
+}
+
+#menu .intro h1 {
+  font-size: clamp(34px, 6vh, 58px);
+}
+
+#menu .intro p:last-child {
+  font-size: clamp(12px, 1.8vh, 15px);
+}
+
+#menu .radio-badge {
+  transform: scale(0.9);
+  transform-origin: center right;
+}
+
+#menu .garage-console {
+  height: min(560px, calc(100dvh - 178px));
+  min-height: 390px;
+  max-height: calc(100dvh - 178px);
+}
+
+#menu .garage-sidebar {
+  padding: clamp(16px, 2.5vh, 24px) 22px;
+}
+
+#menu .compact-setup {
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  padding-bottom: 88px;
+}
+
+#menu .vehicle-group > .panel {
+  min-height: 0;
+  overflow: hidden;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  max-height: calc(100dvh - 310px);
+  overflow-y: auto;
+}
+
+#menu .garage-console .vehicle-group .choices .choice {
+  min-height: clamp(128px, 18vh, 158px);
+}
+
+#menu .race-group[open] {
+  max-height: calc(100dvh - 250px);
+}
+
+#menu .race-group[open] > .group-content {
+  max-height: calc(100dvh - 302px);
+}
+
+#menu .start-dock {
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  z-index: 10;
+  width: min(360px, calc(100% - 32px));
+  transform: translateX(-50%);
+  padding: 0;
+}
+
+#menu .start-dock .plus-start,
+#menu:not(.hidden) #plusStartBtn.plus-start {
+  display: none !important;
+}
+
+#menu.menu:not(.hidden) #startBtn,
+#menu.menu:not(.hidden) #startBtn.menu-start,
+#menu .start-dock .menu-start {
+  position: static !important;
+  display: block;
+  width: 100%;
+  min-height: clamp(54px, 8vh, 68px);
+  border-radius: 18px;
+  font-size: clamp(22px, 3.2vh, 30px);
+  letter-spacing: 0.02em;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.2),
+    0 0 38px rgba(255, 236, 168, 0.34),
+    0 20px 48px rgba(0,0,0,0.5);
+}
+
+@media (max-height: 760px) {
+  #menu.menu:not(.hidden) {
+    grid-template-rows: auto auto minmax(0, 1fr);
+    padding-top: 6px !important;
+    padding-bottom: 8px !important;
+  }
+
+  #menu .top-mode-bar {
+    margin-bottom: 4px !important;
+  }
+
+  #menu .intro {
+    height: 108px !important;
+    min-height: 108px !important;
+    grid-template-columns: minmax(0, 1fr);
+    width: min(1060px, calc(100% - 12px));
+    margin: 0 auto 8px !important;
+    padding: 0 8px !important;
+    align-content: start;
+    row-gap: 2px;
+  }
+
+  #menu .radio-badge {
+    display: none;
+  }
+
+  #menu .intro .tag {
+    margin: 0 0 2px !important;
+  }
+
+  #menu .intro h1 {
+    margin: 0 !important;
+    font-size: clamp(34px, 6.2vh, 46px) !important;
+    line-height: 0.9 !important;
+  }
+
+  #menu .intro p:last-child {
+    margin: 4px 0 0 !important;
+    font-size: 12px !important;
+  }
+
+  #menu .garage-console {
+    height: calc(100dvh - 250px) !important;
+    min-height: 0 !important;
+    max-height: calc(100dvh - 250px) !important;
+  }
+
+  #menu .garage-sidebar strong {
+    font-size: 26px;
+  }
+
+  #menu .garage-sidebar {
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  #menu .garage-sidebar nav {
+    gap: 6px;
+  }
+
+  #menu .garage-sidebar a {
+    font-size: 18px;
+  }
+
+  #menu .garage-sidebar span {
+    display: none;
+  }
+
+  #menu .setup-group summary {
+    min-height: 34px !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+  }
+
+  #menu .compact-setup {
+    gap: 9px !important;
+    padding: 10px 10px 74px !important;
+  }
+
+  #menu .setup-group .panel {
+    padding: 8px !important;
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    max-height: calc(100dvh - 330px) !important;
+    gap: 8px !important;
+  }
+
+  #menu .garage-console .vehicle-group .choices .choice {
+    min-height: 112px !important;
+    padding: 7px !important;
+  }
+
+  #menu .garage-console .vehicle-group .vehicle-showcase {
+    height: 54px !important;
+    margin: 0 auto 3px !important;
+  }
+
+  #menu .garage-console .vehicle-group .menu-sprite-car {
+    max-height: 52px !important;
+  }
+
+  #menu .garage-console .vehicle-group .choices .choice strong {
+    font-size: 13px !important;
+  }
+
+  #menu .garage-console .vehicle-group .choices .choice small {
+    display: none;
+  }
+
+  #menu .start-dock {
+    bottom: 10px !important;
+    width: min(320px, calc(100% - 24px));
+  }
+
+  #menu.menu:not(.hidden) #startBtn,
+  #menu.menu:not(.hidden) #startBtn.menu-start {
+    min-height: 52px !important;
+    font-size: 23px !important;
+  }
+}
+
+/* DZ Racing Plus */
+#menu .start-dock {
+  display: grid;
+  gap: 10px;
+}
+
+#menu .start-dock .plus-start,
+#menu:not(.hidden) #plusStartBtn.plus-start {
+  position: static;
+  display: block;
+  width: 100%;
+  min-height: 54px;
+  border: 1px solid rgba(255, 214, 77, 0.72);
+  border-radius: 16px;
+  color: #061019;
+  background:
+    radial-gradient(circle at 18% 30%, rgba(255,255,255,0.86), transparent 26%),
+    linear-gradient(135deg, #48d8ff 0%, #fff38c 45%, #ffbd35 100%);
+  font-size: clamp(18px, 1.65vw, 24px);
+  font-weight: 1000;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.32),
+    0 0 32px rgba(255, 214, 77, 0.28),
+    inset 0 1px 0 rgba(255,255,255,0.72);
+}
+
+#menu .start-dock .plus-start:hover,
+#menu .start-dock .plus-start:focus-visible {
+  transform: translateY(-2px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.36),
+    0 0 40px rgba(72, 216, 255, 0.32),
+    0 0 34px rgba(255, 214, 77, 0.3);
+}
+
+#menu .vehicle-plus {
+  border-color: rgba(255, 214, 77, 0.32);
+  background:
+    radial-gradient(circle at 50% 28%, color-mix(in srgb, var(--car-neon, #48d8ff) 42%, transparent), transparent 43%),
+    linear-gradient(180deg, rgba(255, 246, 166, 0.22), rgba(12, 32, 48, 0.72) 44%, rgba(2, 7, 13, 0.98));
+  box-shadow:
+    inset 0 0 24px color-mix(in srgb, var(--car-neon, #48d8ff) 14%, transparent),
+    0 18px 34px rgba(0,0,0,0.32);
+}
+
+#menu .vehicle-plus.active {
+  border-color: #fff38c;
+  box-shadow:
+    inset 0 0 26px rgba(255, 214, 77, 0.16),
+    0 0 34px rgba(72, 216, 255, 0.24),
+    0 0 28px rgba(255, 214, 77, 0.2);
+}
+
+#menu .vehicle-plus strong::before {
+  content: "PLUS ";
+  color: #ffd64d;
+}
+
+#menu .plus-name-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 214, 77, 0.24);
+}
+
+#menu .plus-name-title {
+  grid-column: 1 / -1;
+  color: #fff38c;
+  font-size: 13px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+#menu .plus-name-field {
+  display: grid;
+  gap: 5px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, var(--car, #ffd64d) 50%, rgba(255,255,255,0.14));
+  border-radius: 10px;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--car, #48d8ff) 18%, transparent), rgba(255,255,255,0.05)),
+    rgba(3, 9, 17, 0.72);
+}
+
+#menu .plus-name-field span {
+  color: rgba(248, 251, 255, 0.78);
+  font-size: 10px;
+  font-weight: 1000;
+  text-transform: uppercase;
+}
+
+#menu .plus-name-field input {
+  width: 100%;
+  min-height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  padding: 6px 8px;
+  color: #f8fbff;
+  background: rgba(0, 0, 0, 0.28);
+  font-size: 12px;
+  font-weight: 1000;
+}
+
+#menu .vehicle-group[open] > .panel {
+  overflow-y: auto;
+}
+
+@media (max-width: 920px) {
+  #menu .plus-name-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* 2026 entry panel polish: cleaner garage, lighter buttons and compact setup */
+#menu.menu:not(.hidden) {
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px clamp(18px, 3vw, 48px) 34px;
+  background:
+    radial-gradient(circle at 16% 10%, rgba(255, 236, 168, 0.09), transparent 22%),
+    radial-gradient(circle at 75% 10%, rgba(72, 216, 255, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(7, 31, 55, 0.72), rgba(20, 8, 36, 0.64) 48%, rgba(2, 7, 15, 0.96)),
+    #050914;
+}
+
+#menu.menu:not(.hidden)::before {
+  inset: 16px;
+  border-radius: 22px;
+  border-color: rgba(122, 255, 240, 0.1);
+  opacity: 0.8;
+}
+
+#menu .menu-track-bg::before {
+  top: -70px;
+  left: 4vw;
+  right: 2vw;
+  height: 250px;
+  border-width: 22px;
+  border-color: rgba(38, 142, 195, 0.34);
+  box-shadow: 0 0 34px rgba(72, 216, 255, 0.16);
+}
+
+#menu .menu-track-bg::after {
+  top: 38px;
+  left: 7vw;
+  right: 4vw;
+  height: 2px;
+  opacity: 0.34;
+}
+
+#menu .top-mode-bar {
+  position: relative;
+  top: auto;
+  z-index: 5;
+  width: min(620px, calc(100% - 24px));
+  margin: 0 auto 14px;
+  padding: 5px;
+  border: 1px solid rgba(255, 236, 168, 0.18);
+  border-radius: 18px;
+  background:
+    linear-gradient(180deg, rgba(17, 20, 36, 0.9), rgba(7, 10, 23, 0.86)),
+    rgba(6, 10, 22, 0.86);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 14px 38px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(14px);
+}
+
+#menu .vehicle-modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#menu .mode-choice {
+  min-height: 56px;
+  padding: 9px 18px;
+  border-radius: 14px;
+  border-color: rgba(255, 255, 255, 0.13);
+  background:
+    radial-gradient(circle at 90% 25%, rgba(122, 255, 240, 0.11), transparent 30%),
+    linear-gradient(180deg, rgba(36, 42, 61, 0.82), rgba(11, 14, 29, 0.92));
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.025);
+}
+
+#menu .mode-choice::after {
+  right: 15px;
+  top: 16px;
+  width: 36px;
+  height: 20px;
+  opacity: 0.12;
+}
+
+#menu .mode-choice strong {
+  color: #f8fbff;
+  font-size: clamp(15px, 1.25vw, 20px);
+  text-shadow: none;
+}
+
+#menu .mode-choice small {
+  margin-top: 3px;
+  color: rgba(248, 251, 255, 0.58);
+  font-size: 10px;
+  line-height: 1.15;
+}
+
+#menu .mode-choice.active {
+  border-color: rgba(255, 236, 168, 0.72);
+  background:
+    radial-gradient(circle at 90% 25%, rgba(255, 236, 168, 0.22), transparent 30%),
+    linear-gradient(180deg, rgba(255, 236, 168, 0.42), rgba(84, 69, 44, 0.28)),
+    rgba(18, 17, 28, 0.94);
+  box-shadow:
+    inset 0 0 22px rgba(255, 236, 168, 0.17),
+    0 0 22px rgba(255, 236, 168, 0.17);
+}
+
+#menu .intro {
+  position: relative;
+  z-index: 2;
+  width: min(1160px, calc(100% - 12px));
+  min-height: 122px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  align-items: center;
+  column-gap: 24px;
+  margin: 0 auto 12px;
+  padding: 0 8px;
+}
+
+#menu .intro .tag {
+  grid-column: 1 / -1;
+  width: max-content;
+  margin: 0 0 6px;
+  padding: 6px 11px;
+  border-color: rgba(255, 236, 168, 0.24);
+  color: rgba(255, 236, 168, 0.94);
+  background: rgba(6, 10, 22, 0.66);
+}
+
+#menu .intro h1 {
+  max-width: 620px;
+  margin: 0;
+  color: #fffdf3;
+  font-size: clamp(48px, 5.4vw, 76px);
+  font-style: normal;
+  line-height: 0.94;
+  letter-spacing: 0;
+  text-shadow:
+    0 0 16px rgba(255, 255, 255, 0.38),
+    0 10px 30px rgba(72, 216, 255, 0.16);
+}
+
+#menu .intro p:last-child {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  color: rgba(248, 251, 255, 0.84);
+  font-size: 15px;
+  font-weight: 800;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.48);
+}
+
+#menu .radio-badge {
+  justify-self: end;
+  width: 142px;
+  min-height: 78px;
+  border-radius: 12px;
+  transform: rotate(2deg);
+  opacity: 0.92;
+}
+
+#menu .garage-console {
+  position: relative;
+  z-index: 3;
+  width: min(1160px, calc(100% - 12px));
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 0;
+  margin: 0 auto;
+  padding: 0;
+  border: 1px solid rgba(122, 255, 240, 0.24);
+  border-radius: 20px;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(9, 12, 28, 0.94), rgba(5, 11, 24, 0.92)),
+    rgba(5, 9, 20, 0.92);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.045),
+    0 22px 54px rgba(0, 0, 0, 0.42),
+    0 0 28px rgba(72, 216, 255, 0.1);
+}
+
+#menu .garage-console::before,
+#menu .garage-console::after {
+  opacity: 0.28;
+}
+
+#menu .garage-sidebar {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 24px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(9, 8, 24, 0.86), rgba(5, 5, 15, 0.94)),
+    radial-gradient(circle at 100% 8%, rgba(255, 53, 166, 0.16), transparent 34%);
+}
+
+#menu .garage-sidebar strong {
+  max-width: 160px;
+  color: #fffdf3;
+  font-size: clamp(25px, 2.1vw, 34px);
+  line-height: 0.98;
+  text-shadow: 0 0 16px rgba(255, 255, 255, 0.22);
+}
+
+#menu .garage-sidebar nav {
+  display: grid;
+  gap: 9px;
+  margin: 0;
+}
+
+#menu .garage-sidebar a {
+  padding: 0;
+  border: 0;
+  color: rgba(248, 251, 255, 0.9);
+  background: transparent;
+  font-size: clamp(18px, 1.5vw, 25px);
+  font-weight: 1000;
+  line-height: 1.05;
+  text-align: left;
+  box-shadow: none;
+}
+
+#menu .garage-sidebar a:hover {
+  color: #fff0b4;
+  transform: translateX(3px);
+}
+
+#menu .garage-sidebar span {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fffdf3;
+  font-size: 18px;
+  font-weight: 1000;
+}
+
+#menu .compact-setup {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(430px, 1.32fr) minmax(235px, 0.78fr);
+  grid-template-areas:
+    "identity vehicle race"
+    "controls vehicle race"
+    "start start start";
+  gap: 12px;
+  padding: 16px;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+#menu .identity-group {
+  grid-area: identity;
+}
+
+#menu .vehicle-group {
+  grid-area: vehicle;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .race-group {
+  grid-area: race;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .controls-group {
+  grid-area: controls;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .start-dock {
+  grid-area: start;
+  grid-column: auto;
+  grid-row: auto;
+  align-self: center;
+  justify-self: center;
+  width: min(440px, 100%);
+  padding: 0;
+}
+
+#menu .setup-group {
+  min-height: 0;
+  border: 1px solid rgba(122, 255, 240, 0.2);
+  border-radius: 14px;
+  background:
+    linear-gradient(180deg, rgba(17, 22, 38, 0.84), rgba(5, 10, 22, 0.9)),
+    rgba(6, 11, 23, 0.88);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.035),
+    0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+#menu .setup-group[open] {
+  border-color: rgba(122, 255, 240, 0.28);
+}
+
+#menu .setup-group summary {
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 13px;
+  color: #f8fbff;
+  font-size: 15px;
+  font-weight: 1000;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.01)),
+    rgba(5, 10, 22, 0.45);
+}
+
+#menu .setup-group summary::after {
+  width: 26px;
+  height: 26px;
+  border-radius: 8px;
+  color: #fff0b4;
+  border-color: rgba(255, 236, 168, 0.28);
+  background: rgba(3, 6, 14, 0.72);
+}
+
+#menu .group-content {
+  gap: 10px;
+  padding: 10px;
+}
+
+#menu .group-content.two-columns,
+#menu .group-content.three-columns {
+  grid-template-columns: 1fr;
+}
+
+#menu .setup-group .panel {
+  padding: 10px;
+  border-color: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.012)),
+    rgba(4, 8, 18, 0.68);
+  box-shadow: none;
+}
+
+#menu .setup-group .panel h2 {
+  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 13px;
+  letter-spacing: 0;
+}
+
+#menu .identity-group .panel:not(.radio-panel) {
+  padding: 12px;
+}
+
+#menu .compact-inner > summary {
+  min-height: 38px;
+  padding: 0 11px;
+  border-radius: 10px;
+  font-size: 13px;
+  background:
+    linear-gradient(135deg, rgba(255, 236, 168, 0.1), rgba(72, 216, 255, 0.1)),
+    rgba(5, 10, 22, 0.74);
+}
+
+#menu .compact-inner > summary::after {
+  border-left-width: 7px;
+  border-right-width: 7px;
+  border-top-width: 8px;
+}
+
+#menu .garage-console input:not([type]),
+#menu .garage-console input[type="text"],
+#menu .garage-console select,
+#menu .garage-console .music-toggle,
+#menu .garage-console .volume-control {
+  min-height: 38px;
+  border-radius: 9px;
+  border-color: rgba(122, 255, 240, 0.22);
+  color: #f8fbff;
+  background: rgba(2, 6, 16, 0.7);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+#menu .radio-panel .volume-grid {
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+#menu .volume-control {
+  padding: 8px;
+}
+
+#menu .volume-control span,
+#menu .hint {
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+#menu .vehicle-group > .panel {
+  height: 100%;
+  padding: 12px;
+}
+
+#menu .vehicle-group > .panel h2 {
+  display: none;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice {
+  min-height: 158px;
+  padding: 9px;
+  border-radius: 13px;
+  border-color: rgba(255, 236, 168, 0.2);
+  background:
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--car-neon, #48d8ff) 22%, transparent), transparent 50%),
+    linear-gradient(180deg, rgba(255, 236, 168, 0.16), rgba(255, 236, 168, 0.035) 34%, rgba(7, 10, 21, 0.9));
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+#menu .garage-console .vehicle-group .choices .choice:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--car-neon, #48d8ff) 45%, #fff0b4);
+  box-shadow:
+    inset 0 0 18px color-mix(in srgb, var(--car-neon, #48d8ff) 14%, transparent),
+    0 14px 28px rgba(0, 0, 0, 0.32);
+}
+
+#menu .garage-console .vehicle-group .choices .choice.active {
+  border-color: #fff0b4;
+  box-shadow:
+    inset 0 0 22px rgba(255, 236, 168, 0.12),
+    0 0 20px rgba(255, 236, 168, 0.18),
+    0 12px 26px rgba(0, 0, 0, 0.34);
+}
+
+#menu .garage-console .vehicle-group .choices .choice.active::after {
+  right: 8px;
+  top: 8px;
+  padding: 4px 7px;
+  border-radius: 7px;
+  font-size: 9px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-showcase {
+  height: 82px;
+  margin: 3px auto 5px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-art {
+  width: min(100%, 150px);
+  height: 92px;
+  filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.54));
+}
+
+#menu .garage-console .vehicle-group .choices .choice strong {
+  color: #fffdf3;
+  font-size: clamp(15px, 1.15vw, 19px);
+  line-height: 0.96;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--car-neon, #48d8ff) 42%, transparent);
+}
+
+#menu .garage-console .vehicle-group .choices .choice small {
+  margin-top: 4px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+#menu .race-group[open],
+#menu .controls-group[open] {
+  overflow: hidden;
+}
+
+#menu .race-group[open] {
+  max-height: 492px;
+}
+
+#menu .race-group[open] > .group-content {
+  max-height: 438px;
+  overflow-y: auto;
+  padding-right: 8px;
+  scrollbar-color: rgba(255, 236, 168, 0.45) rgba(255, 255, 255, 0.08);
+}
+
+#menu .controls-group[open] {
+  max-height: 360px;
+}
+
+#menu .controls-group[open] > .group-content {
+  max-height: 306px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#menu .race-modes,
+#menu .players,
+#menu .levels,
+#menu .cameras,
+#menu .control-grid,
+#menu .system-status {
+  display: grid;
+  gap: 7px;
+}
+
+#menu .players {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#menu .levels {
+  max-height: 185px;
+  overflow-y: auto;
+  padding-right: 3px;
+  scrollbar-color: rgba(255, 236, 168, 0.5) rgba(255, 255, 255, 0.08);
+}
+
+#menu .race-modes .choice,
+#menu .players .choice,
+#menu .levels .choice,
+#menu .cameras .choice {
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-align: left;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01)),
+    rgba(3, 8, 18, 0.7);
+  box-shadow: none;
+}
+
+#menu .race-modes .choice strong,
+#menu .players .choice strong,
+#menu .levels .choice strong,
+#menu .cameras .choice strong {
+  color: #f8fbff;
+  font-size: 13px;
+  line-height: 1.08;
+}
+
+#menu .race-modes .choice small,
+#menu .players .choice small,
+#menu .levels .choice small,
+#menu .cameras .choice small {
+  color: rgba(248, 251, 255, 0.58);
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+#menu .race-modes .choice.active,
+#menu .players .choice.active,
+#menu .levels .choice.active,
+#menu .cameras .choice.active {
+  border-color: rgba(255, 236, 168, 0.68);
+  background:
+    linear-gradient(90deg, rgba(255, 236, 168, 0.18), rgba(72, 216, 255, 0.08)),
+    rgba(3, 8, 18, 0.78);
+}
+
+#menu .control-card {
+  padding: 8px;
+  border-radius: 10px;
+  background: rgba(3, 8, 18, 0.72);
+}
+
+#menu .control-card button {
+  min-height: 32px;
+  border-radius: 8px;
+  font-size: 10px;
+}
+
+#menu .start-dock .menu-start,
+#menu .garage-console .start,
+#menu:not(.hidden) #startBtn,
+#menu:not(.hidden) #startBtn.menu-start {
+  position: static;
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  color: #10131a;
+  font-size: clamp(20px, 2vw, 28px);
+  font-weight: 1000;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #7afff0 0%, #fff0a8 48%, #ff8d7e 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 0 24px rgba(255, 236, 168, 0.2),
+    0 16px 36px rgba(0, 0, 0, 0.36);
+}
+
+#menu .start-dock .menu-start:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.72),
+    0 0 30px rgba(122, 255, 240, 0.24),
+    0 18px 40px rgba(0, 0, 0, 0.42);
+}
+
+@media (max-width: 1260px) {
+  #menu .garage-console {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  #menu .compact-setup {
+    grid-template-columns: minmax(210px, 0.8fr) minmax(420px, 1.25fr);
+    grid-template-areas:
+      "identity vehicle"
+      "race vehicle"
+      "controls controls"
+      "start start";
+  }
+}
+
+@media (max-width: 920px) {
+  #menu.menu:not(.hidden) {
+    padding: 12px;
+  }
+
+  #menu .intro {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  #menu .radio-badge {
+    display: none;
+  }
+
+  #menu .garage-console {
+    grid-template-columns: 1fr;
+  }
+
+  #menu .garage-sidebar {
+    padding: 18px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  #menu .garage-sidebar nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #menu .garage-sidebar a {
+    padding: 8px;
+    border: 1px solid rgba(255, 236, 168, 0.15);
+    border-radius: 9px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #menu .compact-setup {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "identity"
+      "vehicle"
+      "race"
+      "controls"
+      "start";
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Campeonato DZ Racing */
+#menu .race-group .group-content.three-columns {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+#menu .race-modes {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+#menu .race-mode-choice {
+  min-height: 72px;
+  align-items: flex-start;
+  text-align: left;
+  background:
+    linear-gradient(135deg, rgba(255,236,168,0.16), rgba(70,216,255,0.08)),
+    rgba(3, 9, 21, 0.78);
+}
+
+#menu .race-mode-choice strong {
+  font-size: 16px;
+}
+
+#menu .race-mode-choice.active {
+  border-color: #ffe36b;
+  box-shadow:
+    inset 0 0 24px rgba(255,227,107,0.12),
+    0 0 22px rgba(255,227,107,0.2);
+}
+
+.championship-hud {
+  position: fixed;
+  top: 156px;
+  right: 14px;
+  width: min(290px, calc(100vw - 28px));
+  padding: 13px;
+  border: 1px solid rgba(255, 227, 107, 0.44);
+  border-radius: 14px;
+  color: #f9fbff;
+  background:
+    linear-gradient(180deg, rgba(10, 17, 32, 0.92), rgba(2, 7, 17, 0.82)),
+    radial-gradient(circle at 18% 20%, rgba(255, 227, 107, 0.18), transparent 42%);
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.34),
+    0 0 22px rgba(255, 227, 107, 0.12);
+  z-index: 8;
+  pointer-events: none;
+}
+
+.championship-hud.hidden {
+  display: none;
+}
+
+.champ-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  align-items: baseline;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.champ-title strong {
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.champ-title span,
+.champ-next {
+  color: #ffe36b;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.championship-hud ol {
+  display: grid;
+  gap: 6px;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.championship-hud li {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 8px;
+  align-items: center;
+  min-height: 28px;
+  padding: 6px 8px;
+  border-left: 4px solid var(--champ-color, #48d8ff);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.championship-hud li span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.championship-hud li strong {
+  color: #ffe36b;
+}
+
+.championship-results {
+  position: fixed;
+  inset: 0;
+  z-index: 32;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  color: #f8fbff;
+  background:
+    radial-gradient(circle at 50% 36%, rgba(72, 216, 255, 0.18), transparent 34%),
+    linear-gradient(180deg, rgba(0, 5, 12, 0.34), rgba(0, 4, 10, 0.74));
+  pointer-events: auto;
+}
+
+.championship-results.hidden {
+  display: none;
+}
+
+.race-results-card {
+  width: min(920px, calc(100vw - 32px));
+  max-height: min(680px, calc(100vh - 32px));
+  overflow: auto;
+  padding: 24px;
+  border: 1px solid rgba(72, 216, 255, 0.42);
+  border-radius: 20px;
+  background:
+    linear-gradient(145deg, rgba(8, 16, 32, 0.96), rgba(3, 7, 17, 0.92)),
+    radial-gradient(circle at 16% 10%, rgba(255, 227, 107, 0.15), transparent 34%);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.55),
+    inset 0 0 34px rgba(72, 216, 255, 0.08),
+    0 0 30px rgba(72, 216, 255, 0.16);
+}
+
+.race-results-header {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.race-results-header span {
+  color: #ffe36b;
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.race-results-header strong {
+  color: #ffffff;
+  font-size: clamp(28px, 5vw, 48px);
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(72, 216, 255, 0.46);
+}
+
+.race-results-header em {
+  color: #aeeeff;
+  font-style: normal;
+  font-weight: 900;
+}
+
+.race-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 16px;
+}
+
+.race-results-grid section {
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.race-results-grid h2 {
+  margin: 0 0 10px;
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.race-result-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.race-result-list li {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 38px;
+  padding: 8px 10px;
+  border-left: 5px solid var(--result-color, #48d8ff);
+  border-radius: 10px;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--result-color, #48d8ff) 18%, transparent), rgba(255, 255, 255, 0.05));
+}
+
+.race-result-list li span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 900;
+}
+
+.race-result-list li strong {
+  color: #ffe36b;
+}
+
+.race-next-track {
+  margin: 16px 0 0;
+  color: #d6f8ff;
+  font-weight: 900;
+}
+
+.race-results-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.race-results-actions button {
+  min-width: 190px;
+  min-height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  color: #07101c;
+  background: linear-gradient(90deg, #7cf3ff, #ffe36b, #ff6b7d);
+  font-weight: 1000;
+  text-transform: uppercase;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.32);
+}
+
+.race-results-actions button + button {
+  color: #eefaff;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Final menu composition: keep the play button inside the console, never over panels. */
+#menu .start-dock {
+  grid-column: 9 / span 4;
+  grid-row: 3;
+  align-self: start;
+  position: relative;
+  z-index: 3;
+  padding-bottom: 82px;
+}
+
+#menu:not(.hidden) #startBtn.menu-start,
+#menu .start-dock .menu-start {
+  position: static;
+  display: block;
+  width: 100%;
+  min-height: 62px;
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 16px;
+  color: #11131b;
+  font-size: 26px;
+  font-weight: 1000;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #7afff0 0%, #fff0a8 48%, #ff8d7e 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.55),
+    0 0 30px rgba(255, 236, 168, 0.24),
+    0 18px 42px rgba(0,0,0,0.42);
+}
+
+#menu .start-dock .menu-start:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    0 0 42px rgba(122, 255, 240, 0.28),
+    0 22px 48px rgba(0,0,0,0.48);
+}
+
+#menu .vehicle-group {
+  grid-row: 1 / span 4;
+}
+
+#menu .race-group {
+  grid-row: 2;
+}
+
+#menu .controls-group {
+  grid-row: 4;
+}
+
+#menu .compact-inner {
+  padding: 0;
+}
+
+#menu .compact-inner > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  list-style: none;
+  cursor: pointer;
+  padding: 0 14px;
+  border-radius: 10px;
+  color: #fffdf3;
+  font-size: 16px;
+  font-weight: 1000;
+  background:
+    linear-gradient(135deg, rgba(255,236,168,0.15), rgba(72,216,255,0.14)),
+    rgba(7, 12, 25, 0.82);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.08),
+    0 8px 24px rgba(0,0,0,0.2);
+}
+
+#menu .compact-inner > summary::-webkit-details-marker {
+  display: none;
+}
+
+#menu .compact-inner > summary::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 9px solid transparent;
+  border-right: 9px solid transparent;
+  border-top: 10px solid #fffdf3;
+  filter: drop-shadow(0 0 8px rgba(255,236,168,0.45));
+}
+
+#menu .compact-inner[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+#menu .compact-inner .inner-panel-body {
+  display: grid;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+#menu .identity-group .panel:not(.radio-panel) {
+  padding: 14px;
+}
+
+#menu.menu {
+  padding-top: 12px;
+}
+
+#menu .intro {
+  min-height: 96px;
+  margin-top: -6px;
+  margin-bottom: 2px;
+}
+
+#menu .intro h1 {
+  font-size: clamp(40px, 4.6vw, 60px);
+  line-height: 0.96;
+}
+
+#menu .intro p:last-child {
+  margin-top: 2px;
+}
+
+@media (max-width: 1220px) {
+  #menu .start-dock {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+
+#menu .garage-console .start {
+  position: absolute;
+  right: 24px;
+  bottom: 22px;
+  z-index: 4;
+  width: min(330px, calc(100% - 48px));
+}
+
+#menu:not(.hidden) #startBtn {
+  position: fixed;
+  right: clamp(34px, 7vw, 106px);
+  bottom: 40px;
+  z-index: 50;
+  width: min(360px, calc(100vw - 68px));
+  display: block;
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.18),
+    0 0 32px rgba(255, 236, 168, 0.28),
+    0 20px 50px rgba(0,0,0,0.46);
+}
+
+#menu .menu-start {
+  min-height: 68px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  color: #11131b;
+  font-size: 28px;
+  font-weight: 1000;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #7afff0, #fff0a8 48%, #ff8d7e);
+}
+
+#menu .compact-setup {
+  padding-bottom: 92px;
+  position: static;
+}
+
+@media (max-width: 1220px) {
+  #menu .garage-console .start {
+    position: static;
+    width: 100%;
+  }
+
+  #menu .compact-setup {
+    padding-bottom: 18px;
+  }
+}
+
+#menu.menu::before {
+  inset: 20px;
+  border-color: rgba(255, 236, 168, 0.14);
+  border-radius: 18px;
+}
+
+#menu .menu-track-bg::before {
+  top: -20px;
+  left: 9vw;
+  right: 6vw;
+  height: 250px;
+  border-color: rgba(13, 38, 70, 0.62);
+  opacity: 0.9;
+}
+
+#menu .menu-track-bg::after {
+  top: 34px;
+  opacity: 0.42;
+}
+
+#menu .top-mode-bar {
+  position: relative;
+  top: auto;
+  z-index: 3;
+  width: min(620px, calc(100% - 24px));
+  margin: 0 auto 18px;
+  padding: 6px;
+  border-color: rgba(255, 236, 168, 0.2);
+  border-radius: 18px;
+  background: rgba(9, 11, 25, 0.76);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.05),
+    0 18px 44px rgba(0,0,0,0.36);
+}
+
+#menu .vehicle-modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#menu .mode-choice {
+  min-height: 58px;
+  border-radius: 14px;
+  border-color: rgba(255,255,255,0.16);
+  background:
+    linear-gradient(180deg, rgba(35, 40, 59, 0.9), rgba(12, 15, 29, 0.94));
+  box-shadow: inset 0 0 18px rgba(255,255,255,0.03);
+}
+
+#menu .mode-choice::after {
+  width: 40px;
+  height: 22px;
+  right: 16px;
+  top: 17px;
+  opacity: 0.14;
+}
+
+#menu .mode-choice strong {
+  font-size: 21px;
+  color: #f9fbff;
+  text-shadow: none;
+}
+
+#menu .mode-choice small {
+  margin-top: 4px;
+  color: rgba(248,251,255,0.66);
+}
+
+#menu .mode-choice.active {
+  border-color: rgba(255, 236, 168, 0.72);
+  background:
+    linear-gradient(180deg, rgba(255, 236, 168, 0.52), rgba(127, 97, 44, 0.34)),
+    rgba(22, 20, 31, 0.95);
+  box-shadow:
+    inset 0 0 22px rgba(255, 236, 168, 0.28),
+    0 0 24px rgba(255, 236, 168, 0.26);
+}
+
+#menu .intro {
+  width: min(1180px, calc(100% - 24px));
+  min-height: 150px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  align-items: center;
+  margin: 0 auto 12px;
+  padding: 0;
+}
+
+#menu .intro .tag {
+  grid-column: 1 / -1;
+  width: max-content;
+  margin-bottom: 8px;
+  color: rgba(255, 236, 168, 0.92);
+  border-color: rgba(255, 236, 168, 0.24);
+  background: rgba(6, 10, 20, 0.62);
+}
+
+#menu .intro h1 {
+  max-width: 660px;
+  color: #fffdf3;
+  font-size: clamp(54px, 6.6vw, 88px);
+  font-style: normal;
+  font-weight: 1000;
+  line-height: 0.92;
+  text-shadow:
+    0 0 9px rgba(255, 252, 229, 0.78),
+    0 0 26px rgba(255, 220, 142, 0.42),
+    0 12px 0 rgba(0,0,0,0.46);
+}
+
+#menu .intro p:last-child {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  font-size: 16px;
+  color: rgba(248,251,255,0.78);
+}
+
+#menu .radio-badge {
+  width: 142px;
+  height: 96px;
+  border-radius: 10px;
+  opacity: 0.82;
+}
+
+#menu .radio-badge::before,
+#menu .radio-badge::after {
+  width: 38px;
+  height: 38px;
+  bottom: 16px;
+  border-width: 5px;
+}
+
+#menu .radio-badge::before {
+  left: 10px;
+}
+
+#menu .radio-badge::after {
+  right: 10px;
+}
+
+#menu .radio-screen {
+  top: 24px;
+  font-size: 14px;
+  line-height: 0.88;
+}
+
+#menu .garage-console {
+  width: min(1180px, calc(100% - 24px));
+  min-height: 560px;
+  grid-template-columns: 265px minmax(0, 1fr);
+  margin: 0 auto 28px;
+  border-color: rgba(255, 236, 168, 0.28);
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, rgba(8, 9, 23, 0.96) 0 265px, rgba(10, 13, 30, 0.82) 265px),
+    radial-gradient(circle at 63% 14%, rgba(255, 236, 168, 0.1), transparent 34%);
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.05),
+    0 0 35px rgba(255, 236, 168, 0.12),
+    0 26px 80px rgba(0,0,0,0.58);
+}
+
+#menu .garage-sidebar {
+  min-height: 560px;
+  padding: 38px 28px 24px;
+  background: linear-gradient(180deg, rgba(8, 8, 22, 0.94), rgba(4, 5, 16, 0.98));
+}
+
+#menu .garage-sidebar strong {
+  margin-bottom: 40px;
+  color: #fffdf3;
+  font-size: 38px;
+  line-height: 1;
+  text-shadow: 0 0 18px rgba(255, 236, 168, 0.4);
+}
+
+#menu .garage-sidebar nav {
+  gap: 16px;
+}
+
+#menu .garage-sidebar a {
+  display: block;
+  color: rgba(255,255,255,0.92);
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.02;
+  text-shadow: none;
+}
+
+#menu .garage-sidebar a:hover {
+  color: #fff0b4;
+  text-shadow: 0 0 16px rgba(255,236,168,0.5);
+}
+
+#menu .garage-sidebar span {
+  color: #fffdf3;
+  font-size: 25px;
+  border-color: rgba(255, 236, 168, 0.18);
+}
+
+#menu .compact-setup {
+  padding: 24px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto auto auto 1fr auto;
+  gap: 14px;
+}
+
+#menu .setup-group {
+  border-color: rgba(255, 236, 168, 0.18);
+  border-radius: 16px;
+  background:
+    linear-gradient(180deg, rgba(22, 25, 44, 0.84), rgba(7, 10, 23, 0.9));
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.04),
+    0 12px 30px rgba(0,0,0,0.28);
+}
+
+#menu .setup-group summary {
+  min-height: 52px;
+  color: #fffdf3;
+  font-size: 18px;
+  background:
+    linear-gradient(90deg, rgba(255, 236, 168, 0.12), rgba(23, 30, 52, 0.76));
+}
+
+#menu .setup-group summary::after {
+  border-color: rgba(255, 236, 168, 0.38);
+  color: #fff0b4;
+}
+
+#menu .identity-group {
+  grid-column: 9 / span 4;
+  grid-row: 1;
+}
+
+#menu .vehicle-group {
+  grid-column: 1 / span 8;
+  grid-row: 1 / span 4;
+}
+
+#menu .race-group {
+  grid-column: 9 / span 4;
+  grid-row: 2;
+}
+
+#menu .controls-group {
+  grid-column: 9 / span 4;
+  grid-row: 3;
+}
+
+#menu .garage-console .start {
+  grid-column: 9 / span 4;
+  grid-row: 5;
+}
+
+#menu .identity-group .group-content.two-columns {
+  grid-template-columns: 1fr;
+}
+
+#menu .group-content {
+  padding: 12px;
+}
+
+#menu .setup-group .panel {
+  border-color: rgba(255,255,255,0.08);
+  background: rgba(5, 8, 18, 0.62);
+  box-shadow: none;
+}
+
+#menu .setup-group .panel h2 {
+  color: rgba(255,255,255,0.94);
+  font-size: 16px;
+}
+
+#menu .radio-panel .volume-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#menu .garage-console input:not([type]),
+#menu .garage-console input[type="text"],
+#menu .garage-console select,
+#menu .garage-console .music-toggle,
+#menu .garage-console .volume-control {
+  min-height: 40px;
+  border: 1px solid rgba(255,236,168,0.18);
+  color: #f9fbff;
+  background: rgba(2, 6, 16, 0.72);
+}
+
+#menu .vehicle-group > .panel {
+  padding: 16px;
+}
+
+#menu .vehicle-group > .panel h2 {
+  display: none;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice {
+  min-height: 222px;
+  padding: 14px;
+  border-radius: 16px;
+  border-color: rgba(255, 236, 168, 0.22);
+  background:
+    linear-gradient(180deg, rgba(255,236,168,0.24), rgba(255,236,168,0.06) 42%, rgba(8,10,21,0.88)),
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--car-neon, #48d8ff) 24%, transparent), transparent 48%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.06),
+    0 14px 34px rgba(0,0,0,0.34);
+}
+
+#menu .garage-console .vehicle-group .choices .choice:hover {
+  transform: translateY(-4px);
+  border-color: color-mix(in srgb, var(--car-neon, #48d8ff) 46%, #fff0b4);
+}
+
+#menu .garage-console .vehicle-group .choices .choice.active {
+  border-color: #fff0b4;
+  box-shadow:
+    inset 0 0 24px rgba(255,236,168,0.14),
+    0 0 26px rgba(255,236,168,0.2),
+    0 20px 38px rgba(0,0,0,0.4);
+}
+
+#menu .garage-console .vehicle-group .vehicle-showcase {
+  height: 118px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-art {
+  width: min(100%, 195px);
+  height: 122px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice strong {
+  color: #fffdf3;
+  font-size: clamp(20px, 1.7vw, 27px);
+  text-shadow:
+    0 0 9px color-mix(in srgb, var(--car-neon, #48d8ff) 54%, transparent),
+    0 2px 0 rgba(0,0,0,0.58);
+}
+
+#menu .garage-console .vehicle-group .choices .choice small {
+  color: rgba(255,255,255,0.78);
+  font-size: 10px;
+}
+
+#menu .race-group:not([open]),
+#menu .controls-group:not([open]) {
+  align-self: start;
+}
+
+#menu .race-group[open],
+#menu .controls-group[open] {
+  max-height: 338px;
+  overflow: auto;
+}
+
+#menu .garage-console .start {
+  min-height: 68px;
+  border: 1px solid rgba(255,255,255,0.18);
+  border-radius: 16px;
+  color: #11131b;
+  font-size: 28px;
+  font-weight: 1000;
+  background: linear-gradient(90deg, #7afff0, #fff0a8 48%, #ff8d7e);
+}
+
+@media (max-width: 1220px) {
+  #menu .garage-console {
+    grid-template-columns: 1fr;
+  }
+
+  #menu .garage-sidebar {
+    min-height: 0;
+    border-right: 0;
+  }
+
+  #menu .garage-sidebar nav {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  #menu .garage-sidebar a {
+    padding: 9px;
+    border: 1px solid rgba(255,236,168,0.18);
+    border-radius: 10px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #menu .identity-group,
+  #menu .vehicle-group,
+  #menu .race-group,
+  #menu .controls-group,
+  #menu .garage-console .start {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 760px) {
+  #menu .intro {
+    grid-template-columns: 1fr;
+  }
+
+  #menu .radio-badge {
+    display: none;
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Final viewport fit override: clean premium entry screen */
+#menu.menu:not(.hidden) {
+  min-height: 100vh;
+  height: auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 18px clamp(18px, 3vw, 48px) 34px;
+}
+
+#menu .top-mode-bar {
+  position: relative;
+  top: auto;
+  z-index: 5;
+  width: min(620px, calc(100% - 24px));
+  margin: 0 auto 14px;
+  padding: 5px;
+  border-radius: 18px;
+}
+
+#menu .vehicle-modes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+
+#menu .mode-choice {
+  min-height: 56px;
+  padding: 9px 18px;
+  border-radius: 14px;
+}
+
+#menu .mode-choice strong {
+  font-size: clamp(15px, 1.25vw, 20px);
+}
+
+#menu .mode-choice small {
+  margin-top: 3px;
+  font-size: 10px;
+  line-height: 1.15;
+}
+
+#menu .intro {
+  width: min(1160px, calc(100% - 12px));
+  min-height: 122px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px;
+  align-items: center;
+  column-gap: 24px;
+  margin: 0 auto 12px;
+  padding: 0 8px;
+}
+
+#menu .intro h1 {
+  max-width: 620px;
+  font-size: clamp(48px, 5.4vw, 76px);
+  line-height: 0.94;
+}
+
+#menu .intro p:last-child {
+  grid-column: 1 / -1;
+  margin: 8px 0 0;
+  font-size: 15px;
+}
+
+#menu .radio-badge {
+  justify-self: end;
+  width: 142px;
+  min-height: 78px;
+}
+
+#menu .garage-console {
+  width: min(1160px, calc(100% - 12px));
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 0;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#menu .garage-sidebar {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 26px 24px;
+}
+
+#menu .garage-sidebar strong {
+  max-width: 160px;
+  margin: 0;
+  font-size: clamp(25px, 2.1vw, 34px);
+  line-height: 0.98;
+}
+
+#menu .garage-sidebar nav {
+  display: grid;
+  gap: 9px;
+}
+
+#menu .garage-sidebar a {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font-size: clamp(18px, 1.5vw, 25px);
+  line-height: 1.05;
+  text-align: left;
+  box-shadow: none;
+}
+
+#menu .garage-sidebar span {
+  margin-top: auto;
+  padding-top: 16px;
+  font-size: 18px;
+}
+
+#menu .compact-setup {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(430px, 1.32fr) minmax(235px, 0.78fr);
+  grid-template-areas:
+    "identity vehicle race"
+    "controls vehicle race"
+    "start start start";
+  gap: 12px;
+  padding: 16px;
+  padding-bottom: 16px;
+  position: relative;
+}
+
+#menu .identity-group {
+  grid-area: identity;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .vehicle-group {
+  grid-area: vehicle;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .race-group {
+  grid-area: race;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .controls-group {
+  grid-area: controls;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .start-dock {
+  grid-area: start;
+  grid-column: auto;
+  grid-row: auto;
+  align-self: center;
+  justify-self: center;
+  width: min(440px, 100%);
+  padding: 0;
+}
+
+#menu .setup-group {
+  min-height: 0;
+  border-radius: 14px;
+}
+
+#menu .setup-group summary {
+  min-height: 42px;
+  padding: 8px 12px;
+  border-radius: 13px;
+  font-size: 15px;
+}
+
+#menu .group-content,
+#menu .group-content.two-columns,
+#menu .group-content.three-columns,
+#menu .race-group .group-content.three-columns {
+  grid-template-columns: 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+#menu .setup-group .panel {
+  padding: 10px;
+  border-radius: 12px;
+}
+
+#menu .setup-group .panel h2 {
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+#menu .garage-console input:not([type]),
+#menu .garage-console input[type="text"],
+#menu .garage-console select,
+#menu .garage-console .music-toggle,
+#menu .garage-console .volume-control {
+  min-height: 38px;
+  border-radius: 9px;
+}
+
+#menu .radio-panel .volume-grid {
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+#menu .vehicle-group > .panel {
+  height: 100%;
+  padding: 12px;
+}
+
+#menu .vehicle-group > .panel h2 {
+  display: none;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice {
+  min-height: 158px;
+  padding: 9px;
+  border-radius: 13px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice.active::after {
+  right: 8px;
+  top: 8px;
+  padding: 4px 7px;
+  font-size: 9px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-showcase {
+  height: 82px;
+  margin: 3px auto 5px;
+}
+
+#menu .garage-console .vehicle-group .vehicle-art {
+  width: min(100%, 150px);
+  height: 92px;
+}
+
+#menu .garage-console .vehicle-group .choices .choice strong {
+  font-size: clamp(15px, 1.15vw, 19px);
+  line-height: 0.96;
+}
+
+#menu .garage-console .vehicle-group .choices .choice small {
+  margin-top: 4px;
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+#menu .race-group[open] {
+  max-height: 492px;
+  overflow: hidden;
+}
+
+#menu .race-group[open] > .group-content {
+  max-height: 438px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#menu .controls-group[open] {
+  max-height: 360px;
+  overflow: hidden;
+}
+
+#menu .controls-group[open] > .group-content {
+  max-height: 306px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#menu .race-modes,
+#menu .players,
+#menu .levels,
+#menu .cameras,
+#menu .control-grid,
+#menu .system-status {
+  display: grid;
+  gap: 7px;
+}
+
+#menu .players {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+#menu .levels {
+  max-height: 185px;
+  overflow-y: auto;
+  padding-right: 3px;
+}
+
+#menu .race-modes .choice,
+#menu .players .choice,
+#menu .levels .choice,
+#menu .cameras .choice {
+  min-height: 40px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  text-align: left;
+}
+
+#menu .race-modes .choice strong,
+#menu .players .choice strong,
+#menu .levels .choice strong,
+#menu .cameras .choice strong {
+  font-size: 13px;
+  line-height: 1.08;
+}
+
+#menu .race-modes .choice small,
+#menu .players .choice small,
+#menu .levels .choice small,
+#menu .cameras .choice small {
+  font-size: 9px;
+  line-height: 1.2;
+}
+
+#menu .start-dock .menu-start,
+#menu .garage-console .start,
+#menu:not(.hidden) #startBtn,
+#menu:not(.hidden) #startBtn.menu-start {
+  position: static;
+  display: block;
+  width: 100%;
+  min-height: 58px;
+  border-radius: 16px;
+  font-size: clamp(20px, 2vw, 28px);
+}
+
+@media (max-width: 1260px) {
+  #menu .garage-console {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  #menu .compact-setup {
+    grid-template-columns: minmax(210px, 0.8fr) minmax(420px, 1.25fr);
+    grid-template-areas:
+      "identity vehicle"
+      "race vehicle"
+      "controls controls"
+      "start start";
+  }
+}
+
+@media (max-width: 920px) {
+  #menu.menu:not(.hidden) {
+    padding: 12px;
+  }
+
+  #menu .intro {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+
+  #menu .radio-badge {
+    display: none;
+  }
+
+  #menu .garage-console {
+    grid-template-columns: 1fr;
+  }
+
+  #menu .garage-sidebar {
+    padding: 18px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  #menu .garage-sidebar nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #menu .garage-sidebar a {
+    padding: 8px;
+    border: 1px solid rgba(255, 236, 168, 0.15);
+    border-radius: 9px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  #menu .compact-setup {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "identity"
+      "vehicle"
+      "race"
+      "controls"
+      "start";
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

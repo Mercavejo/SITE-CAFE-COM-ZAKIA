@@ -59,6 +59,15 @@ export function Footer() {
               </li>
               <li>
                 <a
+                  href="/jogos"
+                  className="flex items-center gap-2 text-text-secondary hover:text-zakia-maroon-light transition-colors"
+                >
+                  <span>CAR</span>
+                  <span>Jogos</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://www.instagram.com/cafecomzakia"
                   target="_blank"
                   rel="noopener noreferrer"

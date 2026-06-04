@@ -24,6 +24,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    {
+      url: `${baseUrl}/jogos`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.82,
+    },
     ...seoTopicList.map((topic) => ({
       url: `${baseUrl}/${topic.slug}`,
       lastModified: now,

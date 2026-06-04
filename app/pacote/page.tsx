@@ -215,6 +215,7 @@ export default function PackagePage() {
           <a href="/#programa">Programa</a>
           <a href="/pacote">Pacote</a>
           <a href="/spotify">Spotify</a>
+          <a href="/jogos">Jogos</a>
           <a href="/#episodios">Episódios</a>
           <a href="/#participar">Participar</a>
         </nav>
@@ -417,6 +418,7 @@ export default function PackagePage() {
             YouTube
           </a>
           <a href="/spotify">Spotify</a>
+          <a href="/jogos">Jogos</a>
           <a href={instagramUrl} target="_blank" rel="noopener">
             Instagram
           </a>

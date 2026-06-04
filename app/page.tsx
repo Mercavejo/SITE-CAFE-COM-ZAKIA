@@ -164,6 +164,7 @@ export default function Home() {
           <a href="#programa">Programa</a>
           <a href="/pacote">Pacote</a>
           <a href="/spotify">Spotify</a>
+          <a href="/jogos">Jogos</a>
           <a href="#episodios">Episódios</a>
           <a href="#participar">Participar</a>
         </nav>
@@ -426,6 +427,7 @@ export default function Home() {
         <div className="footer-links">
           <a href={channelUrl} target="_blank" rel="noopener">YouTube</a>
           <a href="/spotify">Spotify</a>
+          <a href="/jogos">Jogos</a>
           <a href={instagramUrl} target="_blank" rel="noopener">Instagram</a>
           <a href={presenterUrl} target="_blank" rel="noopener">Daniel Zákia</a>
           <a href={mercavejoUrl} target="_blank" rel="noopener">Mercavejo Consultoria</a>

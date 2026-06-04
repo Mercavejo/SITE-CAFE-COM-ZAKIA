@@ -11,6 +11,7 @@ const navLinks = [
   { href: "#diferencial", label: "Diferencial" },
   { href: "#pacotes", label: "Pacotes" },
   { href: "#parceiros", label: "Parceiros" },
+  { href: "/jogos", label: "Jogos" },
   { href: "#contato", label: "Contato" },
 ];
 

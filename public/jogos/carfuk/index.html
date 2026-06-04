@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DZ RANCING</title>
+    <link rel="stylesheet" href="styles.css?v=20260604-menu-fit" />
+  </head>
+  <body>
+    <main>
+      <section id="menu" class="menu">
+        <div class="menu-track-bg" aria-hidden="true">
+          <span class="track-ribbon track-ribbon-one"></span>
+          <span class="track-ribbon track-ribbon-two"></span>
+          <span class="track-ribbon track-ribbon-three"></span>
+        </div>
+        <div class="top-mode-bar" aria-label="Escolher modalidade">
+          <div id="vehicleModeChoices" class="vehicle-modes"></div>
+        </div>
+        <div class="intro">
+          <p class="tag">corrida arcade de carrinhos RC</p>
+          <h1>DZ RANCING</h1>
+          <div class="radio-badge" aria-hidden="true">
+            <span class="radio-antenna"></span>
+            <span class="radio-screen">Radio<br />Zákia<br />Stingers</span>
+          </div>
+          <p>Escolha seu RC, ajuste a radio, chame ate 4 jogadores e entre na pista.</p>
+        </div>
+
+        <div class="garage-console">
+          <aside class="garage-sidebar" aria-label="Navegacao da garagem">
+            <strong>Nome do piloto</strong>
+            <nav>
+              <a href="#pilotName">Configuracoes</a>
+              <a href="#controlChoices">Controles</a>
+              <a href="#levelChoices">Graficos</a>
+              <a href="#musicChoices">Som</a>
+              <a href="#menu">Sair</a>
+            </nav>
+            <span>Jogadores locais</span>
+          </aside>
+
+          <div class="setup compact-setup">
+            <details class="setup-group identity-group" open>
+              <summary>1. Piloto e Radio</summary>
+              <div class="group-content two-columns">
+          <div class="panel">
+            <h2>1. Nome do piloto</h2>
+            <input id="pilotName" maxlength="28" placeholder="Ex: Dani" autocomplete="off" />
+          </div>
+
+          <details class="panel radio-panel compact-inner">
+            <summary>Radio Zákia Stingers</summary>
+            <div class="inner-panel-body">
+            <label class="music-toggle">
+              <input id="musicEnabled" type="checkbox" />
+              <span>Ligar musica da radio</span>
+            </label>
+            <select id="musicChoices" aria-label="Escolher musica da Radio Zákia Stingers"></select>
+            <div class="volume-grid">
+              <label class="volume-control">
+                <span>Volume da musica</span>
+                <input id="musicVolume" type="range" min="0" max="100" value="16" />
+              </label>
+              <label class="volume-control">
+                <span>Sons do jogo</span>
+                <input id="gameVolume" type="range" min="0" max="100" value="34" />
+              </label>
+            </div>
+            <p class="hint">A musica comeca desligada e so toca se voce ligar a radio.</p>
+            </div>
+          </details>
+
+              </div>
+            </details>
+
+            <details class="setup-group vehicle-group" open>
+              <summary>2. Escolher veiculo</summary>
+          <div class="panel advanced">
+            <h2>Escolher veiculo</h2>
+            <div id="carChoices" class="choices"></div>
+            <div id="plusNameChoices" class="plus-name-grid hidden" aria-label="Editar nomes dos carros Plus"></div>
+          </div>
+
+            </details>
+
+            <details class="setup-group race-group" open>
+              <summary>3. Corrida: jogadores, fase e camera</summary>
+              <div class="group-content three-columns">
+          <div class="panel advanced">
+            <h2>Modo de corrida</h2>
+            <div id="raceModeChoices" class="race-modes"></div>
+            <p class="hint">No campeonato, somente as pistas deste jogo entram em sequência.</p>
+          </div>
+
+          <div class="panel advanced">
+            <h2>Jogadores locais</h2>
+            <div id="playerChoices" class="players"></div>
+            <p class="hint">P1 setas/Space/Enter, P2 WASD/E/Q, P3 IJKL/U/O, P4 TFGH/R/Y. Corrida, nitro e tiros na mesma pista.</p>
+          </div>
+
+          <div class="panel advanced">
+            <h2>5. Escolher pista do jogo</h2>
+            <div id="levelChoices" class="levels"></div>
+          </div>
+
+          <div class="panel advanced">
+            <h2>6. Camera do jogo</h2>
+            <div id="cameraChoices" class="cameras"></div>
+            <p class="hint">Aperte C durante a corrida para trocar a camera na hora.</p>
+          </div>
+
+              </div>
+            </details>
+
+            <details class="setup-group controls-group">
+              <summary>4. Controles e sistema</summary>
+              <div class="group-content two-columns">
+
+          <div class="panel advanced">
+            <h2>Configurar controles</h2>
+            <div id="controlChoices" class="control-grid"></div>
+            <p class="hint">Clique em um comando e aperte a nova tecla. Use Esc para cancelar.</p>
+          </div>
+
+          <div class="panel system-panel">
+            <h2>Status do sistema</h2>
+            <div id="systemStatus" class="system-status" aria-live="polite"></div>
+          </div>
+
+              </div>
+            </details>
+
+            <div class="start-dock">
+              <button id="startBtn" class="start menu-start" type="button">Jogar</button>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section id="game" class="game hidden">
+        <canvas id="trackCanvas" width="1280" height="720"></canvas>
+
+        <div class="hud left">
+          <span>Volta <b id="lapHud">1/5</b></span>
+          <span>Tempo <b id="timeHud">0:00.00</b></span>
+          <span>Posição <b id="positionHud">1º</b></span>
+        </div>
+
+        <div class="hud right">
+          <span>Fase <b id="levelHud">Ilha da Escola</b></span>
+          <span>Gasolina <b id="fuelHud">100%</b></span>
+          <span>Energia <b id="energyHud">100%</b></span>
+        </div>
+
+        <div id="powerHud" class="powers"></div>
+        <div id="championshipHud" class="championship-hud hidden"></div>
+        <div id="finishCountdownHud" class="finish-countdown hidden" aria-live="polite"></div>
+        <div id="championshipResults" class="championship-results hidden" aria-live="polite"></div>
+        <div id="playerHud" class="player-hud"></div>
+        <canvas id="miniMap" class="minimap" width="190" height="132"></canvas>
+        <div id="message" class="message"></div>
+        <div class="audio-mixer">
+          <label class="volume-control">
+            <span>Musica</span>
+            <input id="gameMusicVolume" type="range" min="0" max="100" value="16" />
+          </label>
+          <label class="volume-control">
+            <span>Jogo</span>
+            <input id="gameSoundVolume" type="range" min="0" max="100" value="34" />
+          </label>
+        </div>
+
+        <div class="buttons">
+          <button id="cameraBtn" type="button">Camera</button>
+          <button id="musicBtn" type="button">Musica</button>
+          <button id="nextMusicBtn" type="button">Proxima</button>
+          <button id="pauseBtn" type="button">Pausar</button>
+          <button id="menuBtn" type="button">Menu</button>
+        </div>
+
+        <div class="touch">
+          <button data-hold="ArrowUp" type="button">▲</button>
+          <div>
+            <button data-hold="ArrowLeft" type="button">◀</button>
+            <button data-hold="ArrowDown" type="button">▼</button>
+            <button data-hold="ArrowRight" type="button">▶</button>
+          </div>
+          <button data-hold="Space" type="button">N₂O</button>
+          <button data-hold="Enter" type="button">TIRO</button>
+        </div>
+      </section>
+    </main>
+
+    <script src="game.js?v=20260604-plus2-corrigida"></script>
+  </body>
+</html>
