@@ -1052,6 +1052,56 @@ const levels = [
     hazards: ["plus", "figura 8", "ponte central"],
   },
   {
+    name: "DZ Racing Plus 3",
+    difficulty: "plus",
+    theme: "racetrack",
+    road: 226,
+    roadColor: "#40464a",
+    sand: "#d2bb7c",
+    water: "#c1a96d",
+    bridgeSpeed: 0.74,
+    obstacles: 1,
+    cleanScenery: true,
+    plusFigureEightBase: true,
+    smoothRounds: 3,
+    maxOverpasses: 1,
+    manualOverpasses: [
+      { x: 1214, y: 607, progress: 975, underProgress: 3488, angle: 0.689, underAngle: 2.485, length: 470, width: 258 },
+    ],
+    overpassLength: 470,
+    overpassWidth: 258,
+    routeArrowStep: 690,
+    directionSignStep: 1040,
+    keyRouteArrows: [
+      { progress: 150, lane: -54, label: "Largada" },
+      { progress: 980, lane: 0, label: "Curva 1" },
+      { progress: 2050, lane: 42, label: "Curva 2" },
+      { progress: 3488, lane: -18, label: "Passagem" },
+      { progress: 4230, lane: -44, label: "Retorno" },
+    ],
+    collisionZones: [
+      { x: 1214, y: 607, radius: 130, label: "Encontro" },
+    ],
+    path: [
+      [350, 740],
+      [450, 470],
+      [790, 360],
+      [1120, 515],
+      [1510, 875],
+      [1840, 1040],
+      [2160, 910],
+      [2240, 640],
+      [2020, 390],
+      [1640, 350],
+      [1260, 555],
+      [900, 885],
+      [610, 1045],
+      [350, 940],
+    ],
+    bridges: [],
+    hazards: ["plus", "oito", "encontro central"],
+  },
+  {
     name: "Oficina Neon",
     difficulty: "cinematica",
     theme: "neonworkshop",
@@ -3835,6 +3885,10 @@ function drawTerrain() {
   }
 
   if (theme === "racetrack") {
+    if (level.plusFigureEightBase) {
+      drawPlusFigureEightBase();
+      return;
+    }
     if (level.plusArenaBase) {
       drawPlusArenaBase();
       return;
@@ -4288,6 +4342,10 @@ function drawWatersGrassPatches() {
 }
 
 function drawRacewayBase() {
+  if (state.track?.level?.plusFigureEightBase) {
+    drawPlusFigureEightBase();
+    return;
+  }
   if (state.track?.level?.plusArenaBase) {
     drawPlusArenaBase();
     return;
@@ -4353,6 +4411,82 @@ function drawPlusCircuitBase() {
   drawSpectatorStand(1680, 1340, 420, 78, "RACING PLUS");
   drawBillboard(2050, 500, "PLUS 1", "#ffd64d");
   drawBillboard(520, 520, "DZ RANCING", "#48d8ff");
+}
+
+function drawPlusFigureEightBase() {
+  const sand = ctx.createLinearGradient(0, 0, WORLD.w, WORLD.h);
+  sand.addColorStop(0, "#d8c48a");
+  sand.addColorStop(0.48, "#cbb171");
+  sand.addColorStop(1, "#b9985c");
+  ctx.fillStyle = sand;
+  ctx.fillRect(0, 0, WORLD.w, WORLD.h);
+
+  ctx.save();
+  ctx.globalAlpha = 0.13;
+  ctx.fillStyle = "#746342";
+  for (let i = 0; i < 30; i++) {
+    const x = 95 + ((i * 251) % (WORLD.w - 190));
+    const y = 80 + ((i * 173) % (WORLD.h - 170));
+    ctx.beginPath();
+    ctx.ellipse(x, y, 92 + (i % 4) * 22, 34 + (i % 3) * 13, i * 0.38, 0, TAU);
+    ctx.fill();
+  }
+  ctx.restore();
+
+  ctx.save();
+  ctx.globalAlpha = 0.78;
+  ctx.strokeStyle = "rgba(68, 132, 79, 0.42)";
+  ctx.lineWidth = 34;
+  drawPlusFigureEightGuide();
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(25, 29, 32, 0.38)";
+  ctx.lineWidth = 164;
+  drawPlusFigureEightGuide();
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(255,255,255,0.16)";
+  ctx.lineWidth = 2;
+  for (const offset of [-38, 38]) {
+    ctx.save();
+    ctx.translate(0, offset * 0.08);
+    drawPlusFigureEightGuide();
+    ctx.stroke();
+    ctx.restore();
+  }
+  ctx.restore();
+
+  ctx.save();
+  ctx.globalAlpha = 0.18;
+  ctx.fillStyle = "#ffdf54";
+  ctx.beginPath();
+  ctx.arc(1214, 607, 136, 0, TAU);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(20,20,20,0.34)";
+  ctx.lineWidth = 4;
+  ctx.setLineDash([20, 16]);
+  ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.restore();
+
+  drawPlusArenaPalm(180, 1225, 0.92);
+  drawPlusArenaPalm(500, 180, 0.68);
+  drawPlusArenaPalm(1290, 165, 0.78);
+  drawPlusArenaPalm(2090, 250, 0.76);
+  drawPlusArenaPalm(2140, 1140, 0.82);
+  drawBillboard(1060, 1365, "PLUS 3", "#ffd64d");
+  drawBillboard(1225, 250, "ENCONTRO", "#48d8ff");
+}
+
+function drawPlusFigureEightGuide() {
+  ctx.beginPath();
+  ctx.moveTo(350, 740);
+  ctx.bezierCurveTo(420, 430, 760, 285, 1095, 495);
+  ctx.bezierCurveTo(1340, 650, 1440, 910, 1780, 1015);
+  ctx.bezierCurveTo(2135, 1125, 2320, 815, 2190, 595);
+  ctx.bezierCurveTo(2065, 360, 1705, 285, 1270, 540);
+  ctx.bezierCurveTo(1065, 660, 930, 885, 620, 1035);
+  ctx.bezierCurveTo(390, 1145, 235, 965, 350, 740);
 }
 
 function drawPlusArenaBase() {
@@ -5486,7 +5620,7 @@ function drawRoadLightingPass(track, road, theme) {
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase;
+  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
 
   ctx.globalAlpha = cleanPlus ? 0.075 : theme === "death" ? 0.08 : 0.13;
   ctx.strokeStyle = theme === "kartarena" || theme === "waters" || theme === "jungle" || theme === "ancient" || theme === "morro"
@@ -5519,6 +5653,13 @@ function drawRouteGuidance() {
   const track = state.track;
   const road = track.level.road;
   const theme = track.level.theme;
+  if (Array.isArray(track.level.keyRouteArrows)) {
+    for (const arrow of track.level.keyRouteArrows) {
+      const p = pointAt(track, arrow.progress, arrow.lane || 0);
+      drawLaneDirectionArrow(p.x, p.y, p.angle, theme, arrow.label || "");
+    }
+  }
+
   const arrowStep = track.level.routeArrowStep || (theme === "kartarena" ? 520 : ["racetrack", "fantasy"].includes(theme) ? 560 : 460);
   for (let d = 230; d < track.length; d += arrowStep) {
     const lane = Math.floor(d / arrowStep) % 2 ? road * 0.18 : -road * 0.18;
@@ -5538,7 +5679,7 @@ function drawRouteGuidance() {
   }
 }
 
-function drawLaneDirectionArrow(x, y, angle, theme) {
+function drawLaneDirectionArrow(x, y, angle, theme, label = "") {
   ctx.save();
   ctx.translate(x, y);
   ctx.rotate(angle);
@@ -5575,6 +5716,17 @@ function drawLaneDirectionArrow(x, y, angle, theme) {
   ctx.moveTo(-18, -2);
   ctx.lineTo(14, -2);
   ctx.stroke();
+  if (label) {
+    ctx.rotate(-angle);
+    ctx.font = "900 18px Trebuchet MS";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = "rgba(0,0,0,0.72)";
+    ctx.fillStyle = "#ffffff";
+    ctx.strokeText(label, 0, -48);
+    ctx.fillText(label, 0, -48);
+  }
   ctx.restore();
 }
 
@@ -5684,7 +5836,7 @@ function drawRacewayRoadTexture() {
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase;
+  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
   const textureCount = cleanPlus ? 4 : 8;
   for (let i = 0; i < textureCount; i++) {
     ctx.strokeStyle = cleanPlus
@@ -5721,7 +5873,7 @@ function drawRacewayRoadTexture() {
 
 function drawRacewayRaceDetails() {
   const track = state.track;
-  if (track.level.plusArenaBase || track.level.plusCircuitBase) {
+  if (track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase) {
     drawCleanPlusRaceDetails();
     return;
   }
@@ -6220,7 +6372,7 @@ function drawTrain(offset) {
 function drawCurbs() {
   const track = state.track;
   const theme = track.level.theme;
-  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase;
+  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
   const step = cleanPlus ? 96 : theme === "amc" ? 42 : 58;
   for (let d = 0; d < track.length; d += step) {
     for (const side of [-1, 1]) {
@@ -9156,3 +9308,9 @@ if (bootParams.get("auto") === "1") {
   pilotName.value = "Preview";
   setTimeout(startRace, 120);
 }
+
+
+
+
+
+
