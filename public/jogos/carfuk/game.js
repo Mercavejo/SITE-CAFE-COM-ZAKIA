@@ -9621,10 +9621,53 @@ function bindGarageSidebar() {
       const compactPanel = target.closest(".compact-inner");
       if (group) group.open = true;
       if (compactPanel) compactPanel.open = true;
-      target.scrollIntoView({ block: "nearest", inline: "nearest" });
+      revealMenuSector(target);
       if (typeof target.focus === "function") target.focus({ preventScroll: true });
     });
   });
+}
+
+function revealMenuSector(target) {
+  const group = target?.closest?.(".setup-group") || target;
+  const scroller = document.querySelector("#menu .compact-setup");
+  if (!group || !scroller) return;
+  requestAnimationFrame(() => {
+    const top = Math.max(0, group.offsetTop - scroller.offsetTop - 8);
+    scroller.scrollTo({ top, behavior: "smooth" });
+  });
+}
+
+function bindMenuSectorVisibility() {
+  document.querySelectorAll("#menu .setup-group").forEach((group) => {
+    if (group.dataset.revealReady) return;
+    group.addEventListener("toggle", () => {
+      if (group.open) {
+        if (isMobileMenuLayout()) {
+          document.querySelectorAll("#menu .setup-group").forEach((other) => {
+            if (other !== group) other.open = false;
+          });
+        }
+        revealMenuSector(group);
+      }
+    });
+    group.dataset.revealReady = "1";
+  });
+}
+
+function isMobileMenuLayout() {
+  return window.matchMedia("(max-width: 520px)").matches;
+}
+
+function prepareMobileMenuSectors(force = false) {
+  if (!isMobileMenuLayout()) {
+    if (menu) delete menu.dataset.mobileSectorsPrepared;
+    return;
+  }
+  if (!force && menu?.dataset.mobileSectorsPrepared) return;
+  document.querySelectorAll("#menu .setup-group").forEach((group) => {
+    group.open = false;
+  });
+  if (menu) menu.dataset.mobileSectorsPrepared = "1";
 }
 
 startBtn.addEventListener("click", startRace);
@@ -9652,6 +9695,7 @@ if (championshipResults) {
   });
 }
 window.addEventListener("resize", resize);
+window.addEventListener("resize", () => prepareMobileMenuSectors());
 window.addEventListener("pagehide", () => shutdownGameSession({ showMenu: true, closeContext: true }));
 window.addEventListener("beforeunload", () => shutdownGameSession({ showMenu: false, closeContext: true }));
 window.addEventListener("unload", () => shutdownGameSession({ showMenu: false, closeContext: true }));
@@ -9673,6 +9717,8 @@ loadControlBindings();
 setupMenu();
 bindControls();
 bindGarageSidebar();
+bindMenuSectorVisibility();
+prepareMobileMenuSectors(true);
 
 const bootParams = new URLSearchParams(window.location.search);
 if (bootParams.has("category")) {

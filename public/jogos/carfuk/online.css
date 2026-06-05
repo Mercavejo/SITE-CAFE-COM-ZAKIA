@@ -156,3 +156,253 @@
       "start";
   }
 }
+
+/* Menu reliability pass: every sector must be reachable on any monitor size. */
+#menu.menu:not(.hidden) {
+  height: 100dvh !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  padding: 10px 16px 94px !important;
+}
+
+#menu .top-mode-bar {
+  top: 8px !important;
+}
+
+#menu .intro {
+  width: min(1040px, calc(100vw - 32px)) !important;
+  min-height: 168px !important;
+  margin: 96px auto 12px !important;
+  padding: 0 !important;
+}
+
+#menu .intro h1 {
+  font-size: clamp(44px, 5.2vw, 76px) !important;
+}
+
+#menu .intro p:last-child {
+  margin-top: 10px !important;
+}
+
+#menu .garage-console {
+  width: min(1160px, calc(100vw - 32px)) !important;
+  height: auto !important;
+  max-height: calc(100dvh - 340px) !important;
+  min-height: 320px !important;
+  margin: 0 auto !important;
+  overflow: hidden !important;
+}
+
+#menu .garage-sidebar {
+  min-height: 0 !important;
+}
+
+#menu .compact-setup {
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  padding-bottom: 96px !important;
+  scroll-padding: 14px 0 108px !important;
+}
+
+#menu .setup-group {
+  min-height: 0 !important;
+}
+
+#menu .setup-group[open] {
+  max-height: none !important;
+}
+
+#menu .setup-group[open] > .group-content,
+#menu .vehicle-group[open] > .panel {
+  max-height: min(360px, calc(100dvh - 430px)) !important;
+  overflow-y: auto !important;
+}
+
+#menu .vehicle-group[open] > .panel {
+  padding-right: 8px !important;
+}
+
+#menu .garage-console .vehicle-group .choices {
+  max-height: min(280px, calc(100dvh - 500px)) !important;
+  overflow-y: auto !important;
+}
+
+#menu .race-group[open] > .group-content,
+#menu .controls-group[open] > .group-content,
+#menu .online-group[open] > .group-content {
+  padding-right: 8px !important;
+}
+
+#menu .menu-start-dock {
+  left: 50% !important;
+  right: auto !important;
+  bottom: 14px !important;
+  transform: translateX(-50%) !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  width: min(680px, calc(100vw - 24px)) !important;
+}
+
+@media (max-height: 780px) {
+  #menu .intro {
+    min-height: 118px !important;
+    margin-top: 74px !important;
+  }
+
+  #menu .intro h1 {
+    font-size: clamp(36px, 4.8vw, 58px) !important;
+  }
+
+  #menu .radio-badge {
+    transform: scale(0.78) !important;
+    transform-origin: right center !important;
+  }
+
+  #menu .garage-console {
+    max-height: calc(100dvh - 250px) !important;
+    min-height: 260px !important;
+  }
+
+  #menu .setup-group[open] > .group-content,
+  #menu .vehicle-group[open] > .panel {
+    max-height: min(280px, calc(100dvh - 350px)) !important;
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    max-height: min(220px, calc(100dvh - 420px)) !important;
+  }
+}
+
+@media (max-width: 920px) {
+  #menu.menu:not(.hidden) {
+    overflow-y: auto !important;
+    padding-bottom: 104px !important;
+  }
+
+  #menu .intro {
+    min-height: 116px !important;
+    margin-top: 128px !important;
+  }
+
+  #menu .garage-console {
+    max-height: calc(100dvh - 265px) !important;
+    min-height: 320px !important;
+  }
+
+  #menu .compact-setup {
+    padding-bottom: 112px !important;
+  }
+}
+
+@media (max-width: 520px) {
+  #menu.menu:not(.hidden) {
+    padding: 12px 12px 116px !important;
+  }
+
+  #menu .top-mode-bar {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    margin: 0 auto 18px !important;
+  }
+
+  #menu .vehicle-modes {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  #menu .intro {
+    min-height: 128px !important;
+    margin: 0 auto 12px !important;
+  }
+
+  #menu .intro .tag {
+    font-size: 12px !important;
+  }
+
+  #menu .intro h1 {
+    font-size: clamp(38px, 12vw, 52px) !important;
+  }
+
+  #menu .intro p:last-child {
+    font-size: 13px !important;
+  }
+
+  #menu .garage-console {
+    display: block !important;
+    max-height: calc(100dvh - 360px) !important;
+    min-height: 280px !important;
+    border-radius: 14px !important;
+  }
+
+  #menu .garage-sidebar {
+    display: none !important;
+  }
+
+  #menu .compact-setup {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    height: 100% !important;
+    padding: 10px 10px 116px !important;
+    overflow-y: auto !important;
+  }
+
+  #menu .identity-group,
+  #menu .vehicle-group,
+  #menu .race-group,
+  #menu .controls-group,
+  #menu .online-group {
+    grid-area: auto !important;
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: 100% !important;
+    max-height: none !important;
+    min-height: 52px !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  #menu .setup-group > summary {
+    position: relative !important;
+    z-index: 2 !important;
+    min-height: 44px !important;
+  }
+
+  #menu .setup-group:not([open]) {
+    height: 52px !important;
+    max-height: 52px !important;
+    overflow: hidden !important;
+  }
+
+  #menu .setup-group[open] {
+    height: auto !important;
+    min-height: 52px !important;
+    overflow: hidden !important;
+  }
+
+  #menu .setup-group[open] > .group-content,
+  #menu .vehicle-group[open] > .panel {
+    max-height: 210px !important;
+    overflow-y: auto !important;
+  }
+
+  #menu .garage-console .vehicle-group .choices {
+    max-height: 165px !important;
+  }
+
+  #menu .menu-start-dock {
+    grid-template-columns: 1fr !important;
+    gap: 8px !important;
+    bottom: 10px !important;
+    width: calc(100vw - 24px) !important;
+  }
+
+  #menu .menu-start-dock #startBtn,
+  #menu .menu-start-dock #onlineQuickBtn {
+    min-height: 48px !important;
+    font-size: 20px !important;
+  }
+}
