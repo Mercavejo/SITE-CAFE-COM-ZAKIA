@@ -67,8 +67,8 @@ export function JogosGate() {
         ) : null}
 
         <div className="game-note">
-          <strong>Modo atual:</strong> corrida arcade com ate 4 jogadores no mesmo dispositivo.
-          O multiplayer online com salas sera uma etapa propria, com servidor de rede.
+          <strong>Modo atual:</strong> corrida arcade com ate 4 jogadores no mesmo dispositivo
+          e entrada online rapida para salas vivas do CARFUK.
         </div>
       </div>
     </section>
