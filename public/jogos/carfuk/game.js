@@ -1060,24 +1060,20 @@ const levels = [
     sand: "#d2bb7c",
     water: "#c1a96d",
     bridgeSpeed: 0.74,
-    obstacles: 1,
+    obstacles: 0,
     cleanScenery: true,
     plusFigureEightBase: true,
+    noCurbs: true,
+    noOverpasses: true,
     smoothRounds: 3,
-    maxOverpasses: 1,
-    manualOverpasses: [
-      { x: 1214, y: 607, progress: 975, underProgress: 3488, angle: 0.689, underAngle: 2.485, length: 470, width: 258 },
-    ],
-    overpassLength: 470,
-    overpassWidth: 258,
     routeArrowStep: 690,
     directionSignStep: 1040,
     keyRouteArrows: [
       { progress: 150, lane: -54, label: "Largada" },
       { progress: 980, lane: 0, label: "Curva 1" },
       { progress: 2050, lane: 42, label: "Curva 2" },
-      { progress: 3488, lane: -18, label: "Passagem" },
-      { progress: 4230, lane: -44, label: "Retorno" },
+      { progress: 3488, lane: -18, label: "Cruzamento" },
+      { progress: 4230, lane: -44, label: "Curva 3" },
     ],
     collisionZones: [
       { x: 1214, y: 607, radius: 130, label: "Encontro" },
@@ -4434,36 +4430,13 @@ function drawPlusFigureEightBase() {
   ctx.restore();
 
   ctx.save();
-  ctx.globalAlpha = 0.78;
-  ctx.strokeStyle = "rgba(68, 132, 79, 0.42)";
-  ctx.lineWidth = 34;
-  drawPlusFigureEightGuide();
-  ctx.stroke();
-
-  ctx.strokeStyle = "rgba(25, 29, 32, 0.38)";
-  ctx.lineWidth = 164;
-  drawPlusFigureEightGuide();
-  ctx.stroke();
-
-  ctx.strokeStyle = "rgba(255,255,255,0.16)";
-  ctx.lineWidth = 2;
-  for (const offset of [-38, 38]) {
-    ctx.save();
-    ctx.translate(0, offset * 0.08);
-    drawPlusFigureEightGuide();
-    ctx.stroke();
-    ctx.restore();
-  }
-  ctx.restore();
-
-  ctx.save();
-  ctx.globalAlpha = 0.18;
+  ctx.globalAlpha = 0.1;
   ctx.fillStyle = "#ffdf54";
   ctx.beginPath();
-  ctx.arc(1214, 607, 136, 0, TAU);
+  ctx.arc(1214, 607, 112, 0, TAU);
   ctx.fill();
   ctx.strokeStyle = "rgba(20,20,20,0.34)";
-  ctx.lineWidth = 4;
+  ctx.lineWidth = 3;
   ctx.setLineDash([20, 16]);
   ctx.stroke();
   ctx.setLineDash([]);
@@ -4475,7 +4448,6 @@ function drawPlusFigureEightBase() {
   drawPlusArenaPalm(2090, 250, 0.76);
   drawPlusArenaPalm(2140, 1140, 0.82);
   drawBillboard(1060, 1365, "PLUS 3", "#ffd64d");
-  drawBillboard(1225, 250, "ENCONTRO", "#48d8ff");
 }
 
 function drawPlusFigureEightGuide() {
@@ -5544,6 +5516,11 @@ function drawTrack() {
 
   drawTrackDropShadow(track, road, theme);
 
+  if (track.level.plusFigureEightBase) {
+    drawPlusFigureEightTrack(track, road, theme);
+    return;
+  }
+
   if (["amc", "model", "neonworkshop"].includes(theme)) {
     ctx.strokeStyle = theme === "amc" ? "rgba(36,226,77,0.52)" : "rgba(72,216,255,0.22)";
     ctx.lineWidth = road + 86;
@@ -5613,6 +5590,59 @@ function drawTrack() {
   drawBridges();
   drawStartLine();
   drawObstacles();
+  drawTracksideProps();
+}
+
+function drawPlusFigureEightTrack(track, road, theme) {
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  ctx.strokeStyle = "rgba(37, 43, 45, 0.36)";
+  ctx.lineWidth = road + 34;
+  closedPath(ctx, track.points);
+  ctx.stroke();
+
+  const roadGradient = ctx.createLinearGradient(0, 230, WORLD.w, WORLD.h - 180);
+  roadGradient.addColorStop(0, "#62696c");
+  roadGradient.addColorStop(0.48, track.level.roadColor || "#40464a");
+  roadGradient.addColorStop(1, "#31373a");
+  ctx.strokeStyle = roadGradient;
+  ctx.lineWidth = road;
+  closedPath(ctx, track.points);
+  ctx.stroke();
+
+  ctx.strokeStyle = "rgba(246, 240, 204, 0.34)";
+  ctx.lineWidth = 3;
+  for (const lane of [-road * 0.42, road * 0.42]) {
+    closedOffsetPath(ctx, track, lane);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = "rgba(226, 214, 142, 0.62)";
+  ctx.lineWidth = 4;
+  ctx.setLineDash([44, 54]);
+  closedOffsetPath(ctx, track, 0);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  ctx.strokeStyle = "rgba(0,0,0,0.16)";
+  ctx.lineWidth = 6;
+  for (let d = 160; d < track.length; d += 260) {
+    const p = pointAt(track, d, (Math.floor(d / 260) % 2 ? 1 : -1) * road * 0.22);
+    ctx.save();
+    ctx.translate(p.x, p.y);
+    ctx.rotate(p.angle);
+    ctx.beginPath();
+    ctx.moveTo(-62, 0);
+    ctx.lineTo(62, 0);
+    ctx.stroke();
+    ctx.restore();
+  }
+  ctx.restore();
+
+  drawRouteGuidance();
+  drawStartLine();
   drawTracksideProps();
 }
 
@@ -6371,6 +6401,7 @@ function drawTrain(offset) {
 
 function drawCurbs() {
   const track = state.track;
+  if (track.level.noCurbs) return;
   const theme = track.level.theme;
   const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
   const step = cleanPlus ? 96 : theme === "amc" ? 42 : 58;
