@@ -1105,6 +1105,162 @@ const levels = [
     hazards: ["plus", "oito", "encontro central"],
   },
   {
+    name: "DZ Racing Plus 4",
+    difficulty: "plus",
+    theme: "racetrack",
+    road: 174,
+    roadColor: "#3f4648",
+    sand: "#f7fbf5",
+    water: "#e4f6e1",
+    bridgeSpeed: 0.74,
+    obstacles: 0,
+    cleanScenery: true,
+    plusGardenCircuitBase: true,
+    noOverpasses: true,
+    smoothRounds: 3,
+    routeArrowStep: 620,
+    directionSignStep: 960,
+    keyRouteArrows: [
+      { progress: 120, lane: -38, label: "Largada" },
+      { progress: 760, lane: 32, label: "Reta dos boxes" },
+      { progress: 1540, lane: -30, label: "Miolo verde" },
+      { progress: 2420, lane: 36, label: "Curva direita" },
+      { progress: 3320, lane: -34, label: "Retorno" },
+    ],
+    path: [
+      [355, 520],
+      [910, 505],
+      [1410, 505],
+      [1840, 515],
+      [2185, 650],
+      [2245, 905],
+      [2065, 1120],
+      [1690, 1170],
+      [1370, 1080],
+      [1275, 880],
+      [1435, 725],
+      [1230, 650],
+      [990, 720],
+      [945, 960],
+      [710, 1048],
+      [510, 930],
+      [565, 725],
+      [330, 630],
+    ],
+    bridges: [],
+    hazards: ["plus", "parque verde", "boxes"],
+  },
+  {
+    name: "DZ Racing Plus 5",
+    difficulty: "plus",
+    theme: "racetrack",
+    road: 166,
+    roadColor: "#72797a",
+    sand: "#f5e6c9",
+    water: "#d9efd6",
+    bridgeSpeed: 0.74,
+    obstacles: 0,
+    cleanScenery: true,
+    plusVillageCircuitBase: true,
+    noOverpasses: true,
+    smoothRounds: 3,
+    routeArrowStep: 540,
+    directionSignStep: 820,
+    keyRouteArrows: [
+      { progress: 140, lane: -34, label: "Largada" },
+      { progress: 820, lane: 36, label: "Curva das casas" },
+      { progress: 1530, lane: -28, label: "S fechado" },
+      { progress: 2330, lane: 34, label: "Miolo" },
+      { progress: 3180, lane: -36, label: "Retorno" },
+      { progress: 4150, lane: 30, label: "Reta final" },
+    ],
+    path: [
+      [380, 1190],
+      [235, 930],
+      [330, 690],
+      [560, 540],
+      [465, 275],
+      [780, 175],
+      [1125, 300],
+      [1320, 520],
+      [1130, 750],
+      [1205, 1065],
+      [1470, 1120],
+      [1595, 865],
+      [1430, 650],
+      [1535, 410],
+      [1850, 365],
+      [2070, 535],
+      [1925, 750],
+      [2145, 900],
+      [2030, 1145],
+      [1650, 1260],
+      [1180, 1198],
+      [780, 1260],
+    ],
+    bridges: [],
+    hazards: ["plus", "bairro tropical", "curvas"],
+  },
+  {
+    name: "DZ Racing Plus 6",
+    difficulty: "plus",
+    theme: "racetrack",
+    road: 158,
+    roadColor: "#50575a",
+    sand: "#345432",
+    water: "#27392f",
+    bridgeSpeed: 0.74,
+    obstacles: 0,
+    cleanScenery: true,
+    plusAerialMazeBase: true,
+    noOverpasses: true,
+    smoothRounds: 3,
+    shortcutRoadWidth: 130,
+    allowProgressCuts: true,
+    routeArrowStep: 660,
+    directionSignStep: 980,
+    keyRouteArrows: [
+      { progress: 120, lane: -34, label: "Start" },
+      { progress: 840, lane: 30, label: "Entrada livre" },
+      { progress: 1600, lane: -28, label: "Circuito interno" },
+      { progress: 2660, lane: 34, label: "Corte arriscado" },
+      { progress: 3820, lane: -30, label: "Volta externa" },
+      { progress: 4860, lane: 30, label: "Retorno" },
+    ],
+    path: [
+      [380, 760],
+      [460, 410],
+      [760, 285],
+      [1080, 315],
+      [1300, 430],
+      [1540, 350],
+      [1990, 260],
+      [2220, 430],
+      [2180, 820],
+      [2010, 1115],
+      [2140, 1300],
+      [1705, 1335],
+      [1290, 1210],
+      [910, 1285],
+      [580, 1180],
+      [445, 990],
+      [295, 905],
+    ],
+    shortcutRoads: [
+      [[560, 745], [790, 600], [1040, 590], [1260, 710], [1515, 640], [1790, 545], [2050, 620]],
+      [[745, 310], [730, 760], [790, 1110]],
+      [[1030, 360], [985, 730], [1030, 1095]],
+      [[1265, 520], [1185, 780], [1260, 1015], [1455, 1100]],
+      [[1510, 470], [1585, 710], [1480, 910], [1595, 1090]],
+      [[1760, 380], [1885, 620], [1810, 860], [1905, 1060]],
+      [[615, 930], [860, 850], [1130, 880], [1390, 835], [1660, 900], [1920, 845]],
+      [[500, 1130], [820, 980], [1120, 1010], [1370, 930], [1635, 1000], [2000, 1120]],
+      [[1345, 420], [1360, 610], [1310, 790], [1395, 960]],
+    ],
+    bridges: [],
+    hazards: ["plus", "labirinto aereo", "cortes livres"],
+  },
+  {
     name: "Oficina Neon",
     difficulty: "cinematica",
     theme: "neonworkshop",
@@ -1458,6 +1614,11 @@ function makeOnlinePlayerId() {
   return `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
 }
 
+function firstOnlineLevelIndex(categoryId = state.vehicleCategory) {
+  const [first = 0] = levelIndexesForCategory(categoryId);
+  return first;
+}
+
 function setOnlineStatus(text, tone = "info") {
   if (!onlineStatus) return;
   onlineStatus.textContent = text;
@@ -1532,7 +1693,7 @@ function connectOnline(role, requestedRoomCode = "") {
   state.online.mode = "online";
   state.online.role = role;
   state.online.playerId = state.online.playerId || makeOnlinePlayerId();
-  state.online.roomCode = role === "host" ? makeOnlineRoomCode() : onlineRoomId(requestedRoomCode);
+  state.online.roomCode = role === "quick" ? "" : role === "host" ? makeOnlineRoomCode() : onlineRoomId(requestedRoomCode);
   if (onlineRoomCode) onlineRoomCode.value = state.online.roomCode;
   const socket = new WebSocket(serverUrl);
   state.online.socket = socket;
@@ -1540,6 +1701,11 @@ function connectOnline(role, requestedRoomCode = "") {
 
   socket.addEventListener("open", () => {
     state.online.connected = true;
+    if (role === "quick") {
+      onlineSend({ type: "quick-play", player: onlinePlayerPayload(), preferredLevel: firstOnlineLevelIndex() });
+      setOnlineStatus("Procurando corrida online com vaga...", "ok");
+      return;
+    }
     const type = role === "host" ? "create-room" : "join-room";
     onlineSend({ type, roomCode: state.online.roomCode, player: onlinePlayerPayload() });
     setOnlineStatus(role === "host" ? `Sala ${state.online.roomCode} criada. Envie este codigo para os amigos.` : `Entrando na sala ${state.online.roomCode}...`, "ok");
@@ -1562,11 +1728,36 @@ function connectOnline(role, requestedRoomCode = "") {
 function handleOnlineMessage(data) {
   if (!data || !data.type) return;
   if (data.type === "room-state") {
+    const previousCount = state.online.players.length;
     state.online.roomCode = data.roomCode || state.online.roomCode;
     state.online.players = Array.isArray(data.players) ? data.players.slice(0, 4) : [];
+    const currentPlayer = state.online.players.find((player) => player.id === state.online.playerId);
+    if (currentPlayer?.host) state.online.role = "host";
     if (onlineRoomCode) onlineRoomCode.value = state.online.roomCode;
     setOnlineStatus(`Sala ${state.online.roomCode}: ${state.online.players.length}/4 jogador(es).`, "ok");
     renderOnlinePlayers();
+    if (state.online.role === "host" && state.online.raceActive && state.online.players.length > previousCount) {
+      applyOnlineRosterToRunningRace();
+    }
+  }
+  if (data.type === "quick-play-result") {
+    state.online.roomCode = data.roomCode || state.online.roomCode;
+    state.online.role = data.role || state.online.role;
+    state.online.players = Array.isArray(data.players) ? data.players.slice(0, 4) : state.online.players;
+    if (onlineRoomCode) onlineRoomCode.value = state.online.roomCode;
+    renderOnlinePlayers();
+    if (data.autoStart) {
+      state.selectedLevel = firstOnlineLevelIndex();
+      setOnlineStatus(`Criando corrida nova na primeira pista: sala ${state.online.roomCode}.`, "ok");
+      startOnlineRaceFromLobby();
+      return;
+    }
+    if (data.config) {
+      setOnlineStatus(`Entrando na corrida viva ${state.online.roomCode}.`, "ok");
+      startOnlineRaceFromConfig({ ...data.config, players: state.online.players }, data.snapshot || null);
+      return;
+    }
+    setOnlineStatus(`Sala ${state.online.roomCode}: aguardando largada do host.`, "ok");
   }
   if (data.type === "error") {
     setOnlineStatus(data.message || "Erro na sala online.", "error");
@@ -1576,6 +1767,9 @@ function handleOnlineMessage(data) {
   }
   if (data.type === "start-race") {
     startOnlineRaceFromConfig(data.config || {});
+  }
+  if (data.type === "live-race") {
+    startOnlineRaceFromConfig(data.config || {}, data.snapshot || null);
   }
   if (data.type === "snapshot" && state.online.role === "client") {
     applyOnlineSnapshot(data.snapshot || {});
@@ -1593,6 +1787,14 @@ function joinOnlineRoom() {
     return;
   }
   connectOnline("client", code);
+}
+
+function quickPlayOnline() {
+  state.raceMode = "single";
+  state.selectedLevel = firstOnlineLevelIndex();
+  setOnlineStatus("Entrando no online automatico...", "ok");
+  openOnlinePanel();
+  connectOnline("quick");
 }
 
 function openOnlinePanel() {
@@ -1626,7 +1828,7 @@ function startOnlineRaceFromLobby() {
   startOnlineRaceFromConfig(config);
 }
 
-function startOnlineRaceFromConfig(config) {
+function startOnlineRaceFromConfig(config, snapshot = null) {
   state.online.mode = "online";
   state.online.raceActive = true;
   state.online.players = Array.isArray(config.players) ? config.players.slice(0, 4) : state.online.players;
@@ -1638,6 +1840,7 @@ function startOnlineRaceFromConfig(config) {
   state.raceMode = "single";
   state.playerCount = clamp(state.online.players.length || 1, 1, 4);
   startRace({ onlineStart: true });
+  if (snapshot) applyOnlineSnapshot(snapshot);
   showMessage(state.online.role === "host" ? `Sala ${state.online.roomCode}: corrida online iniciada.` : `Conectado na sala ${state.online.roomCode}. Boa corrida!`, 3.4);
 }
 
@@ -1653,6 +1856,32 @@ function applyOnlineRosterToRace() {
     racer.car = car;
     racer.radius = car.dynamics?.radius || racer.radius;
   });
+}
+
+function applyOnlineRosterToRunningRace() {
+  if (!state.track || !state.racers.length || !state.online.players.length) return;
+  state.online.players.slice(0, 4).forEach((player, index) => {
+    let racer = state.racers[index];
+    if (!racer) return;
+    const wasRival = !racer.player;
+    const car = createRacerCar(player.carIndex ?? index, player.category || state.vehicleCategory);
+    racer.player = true;
+    racer.humanIndex = index;
+    racer.controls = playerControls[index] || playerControls[0];
+    racer.onlinePlayerId = player.id;
+    racer.onlineRemote = state.online.role === "host" && player.id !== state.online.playerId;
+    racer.name = player.name || racer.name;
+    racer.car = car;
+    racer.radius = car.dynamics?.radius || racer.radius;
+    if (wasRival) {
+      racer.energy = Math.max(racer.energy || 0, 70);
+      racer.fuel = Math.max(racer.fuel || 0, 70);
+      racer.ammo = Math.max(racer.ammo || 0, 6);
+      racer.nitro = Math.max(racer.nitro || 0, 1);
+      showMessage(`${racer.name} entrou online no carro livre!`, 2.4);
+    }
+  });
+  state.playerCount = clamp(state.online.players.length || state.playerCount, 1, 4);
 }
 
 function localInputState(controls) {
@@ -2472,6 +2701,35 @@ function project(track, x, y, expectedProgress = null, searchWindow = Infinity) 
   return best.distance < Infinity ? best : fallback;
 }
 
+function projectShortcutRoads(level, x, y) {
+  if (!Array.isArray(level.shortcutRoads) || !level.shortcutRoads.length) return null;
+  let best = null;
+  for (const road of level.shortcutRoads) {
+    for (let i = 0; i < road.length - 1; i++) {
+      const a = road[i];
+      const b = road[i + 1];
+      const vx = b[0] - a[0];
+      const vy = b[1] - a[1];
+      const lenSq = vx * vx + vy * vy;
+      if (lenSq <= 0.001) continue;
+      const t = clamp(((x - a[0]) * vx + (y - a[1]) * vy) / lenSq, 0, 1);
+      const px = a[0] + vx * t;
+      const py = a[1] + vy * t;
+      const distanceToRoad = Math.hypot(x - px, y - py);
+      if (!best || distanceToRoad < best.distance) {
+        best = {
+          x: px,
+          y: py,
+          distance: distanceToRoad,
+          angle: Math.atan2(vy, vx),
+          side: Math.sign(cross2(vx, vy, x - px, y - py)) * distanceToRoad,
+        };
+      }
+    }
+  }
+  return best;
+}
+
 function projectRacer(racer, searchWindow = null) {
   if (!ensureRacerPose(racer, "project")) return { distance: 0, progress: 0, angle: 0, side: 0 };
   const expected = Number.isFinite(racer.progress) ? racer.progress : racer.startProgress || 0;
@@ -2545,6 +2803,13 @@ function constrainToTrackBarriers(racer) {
   if (!ensureRacerPose(racer, "barrier")) return;
   const p = projectRacer(racer);
   racer.trackProjection = p;
+  const shortcut = projectShortcutRoads(state.track.level, racer.x, racer.y);
+  const shortcutLimit = (state.track.level.shortcutRoadWidth || state.track.level.road * 0.78) / 2 - racer.radius * 0.08;
+  if (shortcut && shortcut.distance <= shortcutLimit) {
+    racer.offTrack = false;
+    racer.wallContact = false;
+    return;
+  }
   const limit = state.track.level.road / 2 - racer.radius * 0.08;
   if (Math.abs(p.side) <= limit) {
     racer.offTrack = false;
@@ -2573,6 +2838,11 @@ function preventRacerStall(racer, dt, wantsMove) {
   const moved = Math.hypot(racer.x - (racer.prevX ?? racer.x), racer.y - (racer.prevY ?? racer.y));
   const pushing = wantsMove && Math.abs(racer.speed) > 18;
   const p = racer.trackProjection || projectRacer(racer);
+  const shortcut = projectShortcutRoads(state.track.level, racer.x, racer.y);
+  if (shortcut && shortcut.distance <= (state.track.level.shortcutRoadWidth || state.track.level.road * 0.78) / 2) {
+    racer.stuckTimer = 0;
+    return;
+  }
   if (p.distance > state.track.level.road * 0.58) {
     const lane = clamp(racer.lane || 0, -state.track.level.road * 0.22, state.track.level.road * 0.22);
     moveRacerToTrackProgress(racer, p.progress - 24, true);
@@ -3364,7 +3634,7 @@ function updateProgress(racer) {
   let progressDelta = racer.progress - racer.lastProgress;
   if (progressDelta < -length / 2) progressDelta += length;
   if (progressDelta > length / 2) progressDelta -= length;
-  const suspiciousJump = progressDelta > Math.max(650, length * 0.18) || progressDelta < -260;
+  const suspiciousJump = !state.track.level.allowProgressCuts && (progressDelta > Math.max(650, length * 0.18) || progressDelta < -260);
   racer.cutWarningTimer = Math.max(0, (racer.cutWarningTimer || 0) - 0.04);
 
   if (!racer.finished && suspiciousJump && state.time > 2) {
@@ -4245,6 +4515,18 @@ function drawTerrain() {
       drawPlusFigureEightBase();
       return;
     }
+    if (level.plusVillageCircuitBase) {
+      drawPlusVillageCircuitBase();
+      return;
+    }
+    if (level.plusAerialMazeBase) {
+      drawPlusAerialMazeBase();
+      return;
+    }
+    if (level.plusGardenCircuitBase) {
+      drawPlusGardenCircuitBase();
+      return;
+    }
     if (level.plusArenaBase) {
       drawPlusArenaBase();
       return;
@@ -4702,6 +4984,18 @@ function drawRacewayBase() {
     drawPlusFigureEightBase();
     return;
   }
+  if (state.track?.level?.plusVillageCircuitBase) {
+    drawPlusVillageCircuitBase();
+    return;
+  }
+  if (state.track?.level?.plusAerialMazeBase) {
+    drawPlusAerialMazeBase();
+    return;
+  }
+  if (state.track?.level?.plusGardenCircuitBase) {
+    drawPlusGardenCircuitBase();
+    return;
+  }
   if (state.track?.level?.plusArenaBase) {
     drawPlusArenaBase();
     return;
@@ -4767,6 +5061,336 @@ function drawPlusCircuitBase() {
   drawSpectatorStand(1680, 1340, 420, 78, "RACING PLUS");
   drawBillboard(2050, 500, "PLUS 1", "#ffd64d");
   drawBillboard(520, 520, "DZ RANCING", "#48d8ff");
+}
+
+function drawPlusGardenCircuitBase() {
+  ctx.fillStyle = "#fbfdf9";
+  ctx.fillRect(0, 0, WORLD.w, WORLD.h);
+
+  const turf = ctx.createLinearGradient(0, 120, WORLD.w, WORLD.h - 80);
+  turf.addColorStop(0, "#9bdc75");
+  turf.addColorStop(0.52, "#61bd4f");
+  turf.addColorStop(1, "#3d9f43");
+  ctx.fillStyle = turf;
+  roundRect(ctx, 148, 258, WORLD.w - 296, WORLD.h - 465, 78);
+  ctx.fill();
+
+  ctx.save();
+  ctx.strokeStyle = "rgba(255,255,255,0.82)";
+  ctx.lineWidth = 18;
+  roundRect(ctx, 150, 260, WORLD.w - 300, WORLD.h - 470, 78);
+  ctx.stroke();
+  ctx.strokeStyle = "rgba(41,129,54,0.64)";
+  ctx.lineWidth = 14;
+  roundRect(ctx, 174, 282, WORLD.w - 348, WORLD.h - 514, 70);
+  ctx.stroke();
+  ctx.restore();
+
+  drawPlusGardenPitBuilding(830, 312, 590, 120, 0);
+  drawPlusGardenPitBuilding(520, 1120, 360, 150, 0);
+  drawPlusGardenPitBuilding(2020, 605, 330, 132, -0.62);
+  drawPlusGardenStand(1150, 464, 760, 86, 0);
+  drawPlusGardenStand(1040, 1235, 520, 104, -0.18);
+  drawPlusGardenStand(725, 955, 310, 84, -0.78);
+
+  const groves = [
+    [590, 620, 1.08], [690, 685, 0.82], [1610, 560, 1], [1720, 655, 0.9],
+    [1850, 760, 1.02], [1755, 980, 0.84], [1460, 925, 0.72], [805, 880, 0.76],
+    [620, 520, 0.72], [2015, 910, 0.8],
+  ];
+  groves.forEach(([x, y, s], index) => drawPlusGardenTree(x, y, s, index));
+
+  ctx.save();
+  ctx.globalAlpha = 0.34;
+  ctx.fillStyle = "#ffffff";
+  for (let i = 0; i < 16; i++) {
+    const x = 250 + (i * 137) % 1880;
+    const y = 360 + (i * 97) % 770;
+    ctx.beginPath();
+    ctx.ellipse(x, y, 62 + (i % 4) * 14, 22 + (i % 3) * 9, i * 0.42, 0, TAU);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawPlusGardenPitBuilding(x, y, w, h, angle = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.fillStyle = "rgba(72,102,130,0.26)";
+  roundRect(ctx, -w / 2 + 22, -h / 2 + 22, w, h, 8);
+  ctx.fill();
+  ctx.fillStyle = "#efe2d3";
+  roundRect(ctx, -w / 2, -h / 2, w, h, 8);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(170,118,88,0.34)";
+  ctx.lineWidth = 3;
+  for (let xx = -w / 2 + 14; xx < w / 2; xx += 18) {
+    ctx.beginPath();
+    ctx.moveTo(xx, -h / 2);
+    ctx.lineTo(xx, h / 2);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawPlusGardenStand(x, y, w, h, angle = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.fillStyle = "#ead9c6";
+  roundRect(ctx, -w / 2, -h / 2, w, h, 10);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(122,84,54,0.28)";
+  ctx.lineWidth = 4;
+  for (let yy = -h / 2 + 14; yy < h / 2; yy += 17) {
+    ctx.beginPath();
+    ctx.moveTo(-w / 2 + 12, yy);
+    ctx.lineTo(w / 2 - 12, yy);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+function drawPlusGardenTree(x, y, s = 1, seed = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(s, s);
+  ctx.fillStyle = "rgba(48,92,42,0.20)";
+  ctx.beginPath();
+  ctx.ellipse(18, 22, 58, 32, 0.2, 0, TAU);
+  ctx.fill();
+  const colors = ["#5fba42", "#72cc4c", "#438f39"];
+  for (let i = 0; i < 7; i++) {
+    const a = i * TAU / 7 + seed * 0.14;
+    ctx.fillStyle = colors[(i + seed) % colors.length];
+    ctx.beginPath();
+    ctx.ellipse(Math.cos(a) * 24, Math.sin(a) * 20, 30, 20, a, 0, TAU);
+    ctx.fill();
+  }
+  ctx.fillStyle = "#79d15a";
+  ctx.beginPath();
+  ctx.arc(0, 0, 24, 0, TAU);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawPlusVillageCircuitBase() {
+  const grass = ctx.createLinearGradient(0, 0, WORLD.w, WORLD.h);
+  grass.addColorStop(0, "#4aa845");
+  grass.addColorStop(0.55, "#69ba54");
+  grass.addColorStop(1, "#3d953c");
+  ctx.fillStyle = grass;
+  ctx.fillRect(0, 0, WORLD.w, WORLD.h);
+
+  ctx.fillStyle = "#f0dfbd";
+  roundRect(ctx, 86, 86, WORLD.w - 172, WORLD.h - 172, 38);
+  ctx.fill();
+
+  const islands = [
+    [370, 365, 190, 135, -0.65], [585, 770, 150, 270, 0.08], [945, 395, 160, 145, 0.45],
+    [1125, 820, 150, 265, 0.12], [1515, 355, 175, 145, -0.18], [1690, 820, 135, 250, -0.04],
+    [2040, 520, 180, 145, 0.24], [1965, 1125, 260, 150, 0.02], [620, 1120, 170, 150, 0.08],
+  ];
+  islands.forEach(([x, y, rx, ry, rot]) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    const island = ctx.createLinearGradient(-rx, -ry, rx, ry);
+    island.addColorStop(0, "#f7e9cc");
+    island.addColorStop(1, "#d6bd8f");
+    ctx.fillStyle = island;
+    roundRect(ctx, -rx, -ry, rx * 2, ry * 2, 26);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(255,255,255,0.72)";
+    ctx.lineWidth = 8;
+    ctx.stroke();
+    ctx.restore();
+  });
+
+  const buildings = [
+    [350, 330, 180, 190, 0], [710, 360, 132, 122, 0.08], [1010, 250, 160, 150, -0.05],
+    [1370, 305, 142, 134, 0.02], [1780, 340, 175, 160, 0], [2050, 690, 160, 150, 0.04],
+    [1625, 870, 170, 210, -0.03], [1245, 1145, 520, 118, 0], [760, 1095, 150, 126, 0.04],
+    [480, 790, 130, 134, -0.05], [2150, 1140, 165, 120, 0.05],
+  ];
+  buildings.forEach(([x, y, w, h, rot], index) => drawPlusVillageBuilding(x, y, w, h, rot, index));
+
+  const palms = [
+    [120, 116, 0.8], [240, 1320, 0.92], [560, 560, 0.86], [735, 980, 0.92], [940, 745, 0.78],
+    [1210, 365, 0.9], [1410, 1110, 0.92], [1665, 540, 0.82], [1880, 675, 0.78],
+    [2115, 390, 0.82], [2220, 1240, 0.9], [375, 1035, 0.78],
+  ];
+  palms.forEach(([x, y, s]) => drawPlusArenaPalm(x, y, s));
+
+  const pads = [
+    [495, 640, -0.55], [730, 620, 0.9], [1135, 610, 0.15], [1560, 610, 0.05],
+    [1815, 1000, -0.4], [395, 925, 0.2], [2050, 920, 0.35],
+  ];
+  pads.forEach(([x, y, angle], index) => drawPlusVillageStripedPad(x, y, angle, index));
+
+  ctx.save();
+  ctx.fillStyle = "#e7d1a7";
+  for (let i = 0; i < 7; i++) {
+    const x = 310 + i * 280;
+    roundRect(ctx, x, 1260 + (i % 2) * 12, 155, 32, 8);
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+function drawPlusVillageBuilding(x, y, w, h, angle = 0, seed = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.fillStyle = "rgba(47,77,88,0.24)";
+  roundRect(ctx, -w / 2 + 18, -h / 2 + 18, w, h, 6);
+  ctx.fill();
+  ctx.fillStyle = ["#d8e2dd", "#e5e0d6", "#cdd6d8", "#efe7d8"][seed % 4];
+  roundRect(ctx, -w / 2, -h / 2, w, h, 7);
+  ctx.fill();
+  ctx.fillStyle = seed % 2 ? "#8b9191" : "#a0a6a2";
+  ctx.beginPath();
+  ctx.moveTo(-w / 2, -h / 2);
+  ctx.lineTo(0, -h / 2 - Math.min(w, h) * 0.28);
+  ctx.lineTo(w / 2, -h / 2);
+  ctx.lineTo(w / 2, h / 2);
+  ctx.lineTo(-w / 2, h / 2);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255,255,255,0.5)";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, -h / 2 - Math.min(w, h) * 0.25);
+  ctx.lineTo(0, h / 2);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawPlusVillageStripedPad(x, y, angle = 0, seed = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.fillStyle = "#fff7e7";
+  roundRect(ctx, -48, -34, 96, 68, 8);
+  ctx.fill();
+  for (let i = -48; i < 48; i += 24) {
+    ctx.fillStyle = (i / 24 + seed) % 2 ? "#e33434" : "#f7f7f7";
+    ctx.fillRect(i, -34, 20, 68);
+  }
+  ctx.restore();
+}
+
+function drawPlusAerialMazeBase() {
+  const field = ctx.createLinearGradient(0, 0, WORLD.w, WORLD.h);
+  field.addColorStop(0, "#263726");
+  field.addColorStop(0.48, "#466b3a");
+  field.addColorStop(1, "#1f2f22");
+  ctx.fillStyle = field;
+  ctx.fillRect(0, 0, WORLD.w, WORLD.h);
+
+  ctx.save();
+  ctx.globalAlpha = 0.25;
+  ctx.strokeStyle = "#111714";
+  ctx.lineWidth = 48;
+  ctx.beginPath();
+  ctx.moveTo(0, 128);
+  ctx.lineTo(1010, 40);
+  ctx.lineTo(2440, 118);
+  ctx.stroke();
+  ctx.lineWidth = 36;
+  ctx.beginPath();
+  ctx.moveTo(140, 0);
+  ctx.lineTo(420, 500);
+  ctx.stroke();
+  ctx.restore();
+
+  drawPlusAerialWater(335, 890, 70, 170, -0.08);
+  drawPlusAerialWater(2160, 720, 90, 245, 0.02);
+  drawPlusAerialForest(2050, 1160, 380, 260);
+  drawPlusAerialForest(150, 1330, 260, 160);
+  drawPlusAerialPaddock();
+  drawPlusAerialInfieldIslands();
+}
+
+function drawPlusAerialPaddock() {
+  ctx.save();
+  ctx.translate(1570, 210);
+  ctx.fillStyle = "rgba(0,0,0,0.28)";
+  roundRect(ctx, -270, -34, 560, 180, 10);
+  ctx.fill();
+  ctx.fillStyle = "#d6d9d2";
+  roundRect(ctx, -250, -60, 330, 122, 8);
+  ctx.fill();
+  ctx.fillStyle = "#11151c";
+  roundRect(ctx, 15, -76, 210, 132, 8);
+  ctx.fill();
+  ctx.fillStyle = "#c9cdd0";
+  for (let i = 0; i < 11; i++) {
+    ctx.fillRect(45 + (i % 4) * 38, -48 + Math.floor(i / 4) * 34, 24, 7);
+  }
+  ctx.fillStyle = "#edf0ed";
+  for (let i = 0; i < 18; i++) {
+    ctx.fillRect(-230 + (i % 9) * 44, 86 + Math.floor(i / 9) * 28, 24, 11);
+  }
+  ctx.restore();
+
+  drawBillboard(900, 345, "START", "#4cff48");
+  drawSpectatorStand(785, 215, 420, 70, "PLUS 6");
+  drawSpectatorStand(1985, 355, 420, 70, "DZ RACING");
+}
+
+function drawPlusAerialInfieldIslands() {
+  const islands = [
+    [640, 560, 110, 300, -0.04], [870, 685, 95, 355, 0.04], [1110, 670, 90, 325, -0.03],
+    [1335, 660, 80, 250, 0.22], [1560, 670, 78, 210, -0.18], [1760, 665, 95, 270, 0.28],
+    [670, 1010, 110, 275, -0.18], [1035, 1045, 110, 190, 0.06], [1390, 1040, 84, 175, -0.06],
+    [1780, 1040, 116, 180, 0.12], [2060, 470, 118, 315, -0.02],
+  ];
+  islands.forEach(([x, y, rx, ry, rot], index) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(rot);
+    const g = ctx.createLinearGradient(-rx, -ry, rx, ry);
+    g.addColorStop(0, index % 2 ? "#7dba56" : "#91cf61");
+    g.addColorStop(1, "#346d32");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, rx, ry, 0, 0, TAU);
+    ctx.fill();
+    ctx.strokeStyle = "rgba(23,34,23,0.35)";
+    ctx.lineWidth = 12;
+    ctx.stroke();
+    ctx.restore();
+  });
+}
+
+function drawPlusAerialWater(x, y, rx, ry, rot = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(rot);
+  ctx.fillStyle = "#1d2b2e";
+  ctx.beginPath();
+  ctx.ellipse(0, 0, rx, ry, 0, 0, TAU);
+  ctx.fill();
+  ctx.strokeStyle = "rgba(212,187,151,0.5)";
+  ctx.lineWidth = 12;
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawPlusAerialForest(x, y, w, h) {
+  ctx.save();
+  ctx.globalAlpha = 0.96;
+  for (let i = 0; i < 52; i++) {
+    const px = x - w / 2 + ((i * 53) % w);
+    const py = y - h / 2 + ((i * 91) % h);
+    ctx.fillStyle = ["#203c22", "#385b2a", "#6a522d", "#74452c"][i % 4];
+    ctx.beginPath();
+    ctx.arc(px, py, 18 + (i % 5) * 4, 0, TAU);
+    ctx.fill();
+  }
+  ctx.restore();
 }
 
 function drawPlusFigureEightBase() {
@@ -5875,6 +6499,7 @@ function drawTrack() {
   ctx.lineJoin = "round";
 
   drawTrackDropShadow(track, road, theme);
+  drawShortcutRoads(track);
 
   if (track.level.plusFigureEightBase) {
     drawPlusFigureEightTrack(track, road, theme);
@@ -6006,11 +6631,46 @@ function drawPlusFigureEightTrack(track, road, theme) {
   drawTracksideProps();
 }
 
+function drawShortcutRoads(track) {
+  if (!Array.isArray(track.level.shortcutRoads) || !track.level.shortcutRoads.length) return;
+  const width = track.level.shortcutRoadWidth || track.level.road * 0.78;
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  for (const road of track.level.shortcutRoads) {
+    if (!Array.isArray(road) || road.length < 2) continue;
+    ctx.beginPath();
+    road.forEach(([x, y], index) => {
+      if (index === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    });
+    ctx.strokeStyle = "rgba(18,24,23,0.30)";
+    ctx.lineWidth = width + 44;
+    ctx.stroke();
+    ctx.strokeStyle = "#d6d1c4";
+    ctx.lineWidth = width + 24;
+    ctx.stroke();
+    const shortcutGradient = ctx.createLinearGradient(0, 250, WORLD.w, WORLD.h);
+    shortcutGradient.addColorStop(0, "#686f70");
+    shortcutGradient.addColorStop(0.5, track.level.roadColor || "#50575a");
+    shortcutGradient.addColorStop(1, "#3b4244");
+    ctx.strokeStyle = shortcutGradient;
+    ctx.lineWidth = width;
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(255,255,255,0.46)";
+    ctx.lineWidth = 3;
+    ctx.setLineDash([42, 58]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  ctx.restore();
+}
+
 function drawRoadLightingPass(track, road, theme) {
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
+  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase || track.level.plusGardenCircuitBase || track.level.plusVillageCircuitBase || track.level.plusAerialMazeBase;
 
   ctx.globalAlpha = cleanPlus ? 0.075 : theme === "death" ? 0.08 : 0.13;
   ctx.strokeStyle = theme === "kartarena" || theme === "waters" || theme === "jungle" || theme === "ancient" || theme === "morro"
@@ -6226,7 +6886,7 @@ function drawRacewayRoadTexture() {
   ctx.save();
   ctx.lineCap = "round";
   ctx.lineJoin = "round";
-  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
+  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase || track.level.plusGardenCircuitBase || track.level.plusVillageCircuitBase || track.level.plusAerialMazeBase;
   const textureCount = cleanPlus ? 4 : 8;
   for (let i = 0; i < textureCount; i++) {
     ctx.strokeStyle = cleanPlus
@@ -6263,7 +6923,7 @@ function drawRacewayRoadTexture() {
 
 function drawRacewayRaceDetails() {
   const track = state.track;
-  if (track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase) {
+  if (track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase || track.level.plusGardenCircuitBase || track.level.plusVillageCircuitBase || track.level.plusAerialMazeBase) {
     drawCleanPlusRaceDetails();
     return;
   }
@@ -6763,7 +7423,7 @@ function drawCurbs() {
   const track = state.track;
   if (track.level.noCurbs) return;
   const theme = track.level.theme;
-  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase;
+  const cleanPlus = track.level.plusArenaBase || track.level.plusCircuitBase || track.level.plusFigureEightBase || track.level.plusGardenCircuitBase || track.level.plusVillageCircuitBase || track.level.plusAerialMazeBase;
   const step = cleanPlus ? 96 : theme === "amc" ? 42 : 58;
   for (let d = 0; d < track.length; d += step) {
     for (const side of [-1, 1]) {
@@ -9671,7 +10331,7 @@ function prepareMobileMenuSectors(force = false) {
 }
 
 startBtn.addEventListener("click", startRace);
-onlineQuickBtn?.addEventListener("click", openOnlinePanel);
+onlineQuickBtn?.addEventListener("click", quickPlayOnline);
 onlineCreateBtn?.addEventListener("click", createOnlineRoom);
 onlineJoinBtn?.addEventListener("click", joinOnlineRoom);
 onlineStartBtn?.addEventListener("click", startOnlineRaceFromLobby);

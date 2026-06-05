@@ -35,6 +35,99 @@
   z-index: 5 !important;
 }
 
+/* Button polish: compact tire-like controls that do not cover the car cards. */
+#menu .menu-start-dock {
+  bottom: 12px !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  width: min(430px, calc(100vw - 28px)) !important;
+  pointer-events: none !important;
+}
+
+#menu .menu-start-dock #startBtn,
+#menu .menu-start-dock #onlineQuickBtn {
+  min-height: 46px !important;
+  padding: 8px 18px !important;
+  border: 3px solid rgba(10, 17, 28, 0.92) !important;
+  border-radius: 999px !important;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.16),
+    inset 0 -10px 18px rgba(10, 12, 18, 0.18),
+    0 10px 24px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(255, 236, 168, 0.42) !important;
+  font-size: clamp(16px, 1.45vw, 21px) !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  pointer-events: auto !important;
+  text-transform: uppercase !important;
+}
+
+#menu .menu-start-dock #startBtn::before,
+#menu .menu-start-dock #onlineQuickBtn::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 7px !important;
+  border-radius: 999px !important;
+  border: 1px dashed rgba(7, 13, 22, 0.4) !important;
+  pointer-events: none !important;
+}
+
+#menu .menu-start-dock #startBtn:hover,
+#menu .menu-start-dock #onlineQuickBtn:hover,
+#menu .menu-start-dock #startBtn:focus-visible,
+#menu .menu-start-dock #onlineQuickBtn:focus-visible {
+  transform: translateY(-2px) scale(1.025) !important;
+  filter: saturate(1.08) brightness(1.04) !important;
+}
+
+#menu .setup-group > summary,
+#menu .mode-choice,
+#menu .choice,
+#menu .online-actions button,
+#menu .online-start,
+#menu .control-card button,
+#menu .music-toggle,
+#menu .volume-control,
+#menu .garage-console input:not([type]),
+#menu .garage-console input[type="text"],
+#menu .garage-console select {
+  border-radius: 999px !important;
+}
+
+#menu .setup-group > summary {
+  min-height: 40px !important;
+  padding: 8px 42px 8px 14px !important;
+}
+
+#menu .race-modes .choice,
+#menu .players .choice,
+#menu .levels .choice,
+#menu .cameras .choice,
+#menu .online-actions button,
+#menu .online-start,
+#menu .control-card button {
+  min-height: 36px !important;
+  padding: 7px 12px !important;
+}
+
+#menu .setup-group summary::after,
+#menu .compact-inner > summary::after {
+  border-radius: 50% !important;
+}
+
+#menu .garage-console {
+  padding-bottom: 56px !important;
+}
+
+#menu .compact-setup {
+  padding-bottom: 132px !important;
+}
+
+#menu .vehicle-group[open] > .panel,
+#menu .race-group[open] > .group-content {
+  padding-bottom: 78px !important;
+}
+
 #menu .menu-start-dock #onlineQuickBtn {
   border: 1px solid rgba(255, 221, 104, 0.55) !important;
   background: linear-gradient(135deg, rgba(91, 239, 255, 0.92), rgba(255, 221, 104, 0.96), rgba(255, 131, 166, 0.86)) !important;
@@ -404,5 +497,124 @@
   #menu .menu-start-dock #onlineQuickBtn {
     min-height: 48px !important;
     font-size: 20px !important;
+  }
+}
+
+/* Final button alignment override requested 2026-06-05. */
+#menu .menu-start-dock {
+  left: clamp(230px, 17vw, 300px) !important;
+  right: auto !important;
+  bottom: 10px !important;
+  transform: none !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  width: min(300px, calc(100vw - 28px)) !important;
+  max-width: 300px !important;
+  pointer-events: none !important;
+}
+
+#menu .menu-start-dock #startBtn,
+#menu .menu-start-dock #onlineQuickBtn {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 42px !important;
+  padding: 7px 11px !important;
+  border: 3px solid rgba(8, 14, 24, 0.92) !important;
+  border-radius: 999px !important;
+  box-shadow:
+    inset 0 0 0 3px rgba(255, 255, 255, 0.16),
+    inset 0 -10px 18px rgba(7, 10, 16, 0.2),
+    0 10px 24px rgba(0, 0, 0, 0.36),
+    0 0 0 1px rgba(255, 236, 168, 0.42) !important;
+  font-size: clamp(14px, 1.1vw, 17px) !important;
+  line-height: 1 !important;
+  letter-spacing: 0 !important;
+  pointer-events: auto !important;
+  text-transform: uppercase !important;
+}
+
+#menu .menu-start-dock #startBtn::before,
+#menu .menu-start-dock #onlineQuickBtn::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 7px !important;
+  border: 1px dashed rgba(7, 13, 22, 0.42) !important;
+  border-radius: 999px !important;
+  pointer-events: none !important;
+}
+
+#menu .menu-start-dock #startBtn:hover,
+#menu .menu-start-dock #onlineQuickBtn:hover,
+#menu .menu-start-dock #startBtn:focus-visible,
+#menu .menu-start-dock #onlineQuickBtn:focus-visible {
+  transform: translateY(-2px) scale(1.025) !important;
+  filter: saturate(1.08) brightness(1.04) !important;
+}
+
+#menu .setup-group > summary,
+#menu .mode-choice,
+#menu .choice,
+#menu .online-actions button,
+#menu .online-start,
+#menu .control-card button,
+#menu .music-toggle,
+#menu .volume-control,
+#menu .garage-console input:not([type]),
+#menu .garage-console input[type="text"],
+#menu .garage-console select {
+  border-radius: 999px !important;
+}
+
+#menu .setup-group > summary {
+  min-height: 40px !important;
+  padding: 8px 42px 8px 14px !important;
+}
+
+#menu .race-modes .choice,
+#menu .players .choice,
+#menu .levels .choice,
+#menu .cameras .choice,
+#menu .online-actions button,
+#menu .online-start,
+#menu .control-card button {
+  min-height: 36px !important;
+  padding: 7px 12px !important;
+}
+
+#menu .setup-group summary::after,
+#menu .compact-inner > summary::after {
+  border-radius: 50% !important;
+}
+
+#menu .garage-console {
+  padding-bottom: 56px !important;
+}
+
+#menu .compact-setup {
+  padding-bottom: 132px !important;
+  scroll-padding-bottom: 132px !important;
+}
+
+#menu .vehicle-group[open] > .panel,
+#menu .race-group[open] > .group-content {
+  padding-bottom: 78px !important;
+}
+
+@media (max-width: 520px) {
+  #menu .menu-start-dock {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    grid-template-columns: 1fr !important;
+    width: calc(100vw - 24px) !important;
+    max-width: none !important;
+    bottom: 10px !important;
+    gap: 8px !important;
+  }
+
+  #menu .menu-start-dock #startBtn,
+  #menu .menu-start-dock #onlineQuickBtn {
+    min-height: 46px !important;
+    font-size: 18px !important;
   }
 }
