@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DZ RANCING</title>
     <link rel="stylesheet" href="styles.css?v=20260604-menu-fit" />
+    <link rel="stylesheet" href="online.css?v=20260605-online-base" />
   </head>
   <body>
     <main>
@@ -131,11 +132,37 @@
               </div>
             </details>
 
-            <div class="start-dock">
-              <button id="startBtn" class="start menu-start" type="button">Jogar</button>
-            </div>
+            <details class="setup-group online-group">
+              <summary>5. CARFUK Online</summary>
+              <div class="group-content two-columns">
+                <div class="panel online-panel">
+                  <h2>Jogar Online</h2>
+                  <p class="hint">Crie uma sala, envie o codigo para seus amigos e corram juntos pela internet.</p>
+                  <div class="online-actions">
+                    <button id="onlineCreateBtn" type="button">Criar sala online</button>
+                    <label>
+                      <span>Codigo da sala</span>
+                      <input id="onlineRoomCode" maxlength="8" placeholder="Ex: DZ4821" autocomplete="off" />
+                    </label>
+                    <button id="onlineJoinBtn" type="button">Entrar na sala</button>
+                  </div>
+                  <div id="onlineStatus" class="online-status" aria-live="polite">Online aguardando conexao.</div>
+                </div>
+
+                <div class="panel online-panel">
+                  <h2>Sala</h2>
+                  <div id="onlinePlayers" class="online-players"></div>
+                  <p class="hint">O dono da sala escolhe pista e inicia. O host sincroniza posicoes, batidas e chegada.</p>
+                  <button id="onlineStartBtn" class="start online-start" type="button">Jogar Online</button>
+                </div>
+              </div>
+            </details>
 
           </div>
+        </div>
+        <div class="start-dock menu-start-dock">
+          <button id="startBtn" class="start menu-start" type="button">Jogar</button>
+          <button id="onlineQuickBtn" class="start online-quick" type="button">Jogar Online</button>
         </div>
       </section>
 
@@ -193,6 +220,6 @@
       </section>
     </main>
 
-    <script src="game.js?v=20260605-plus3-plana"></script>
+    <script src="game.js?v=20260605-online-base"></script>
   </body>
 </html>

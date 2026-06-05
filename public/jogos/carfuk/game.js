@@ -20,6 +20,13 @@ const musicVolume = document.getElementById("musicVolume");
 const gameVolume = document.getElementById("gameVolume");
 const gameMusicVolume = document.getElementById("gameMusicVolume");
 const gameSoundVolume = document.getElementById("gameSoundVolume");
+const onlineCreateBtn = document.getElementById("onlineCreateBtn");
+const onlineJoinBtn = document.getElementById("onlineJoinBtn");
+const onlineStartBtn = document.getElementById("onlineStartBtn");
+const onlineQuickBtn = document.getElementById("onlineQuickBtn");
+const onlineRoomCode = document.getElementById("onlineRoomCode");
+const onlineStatus = document.getElementById("onlineStatus");
+const onlinePlayers = document.getElementById("onlinePlayers");
 const startBtn = document.getElementById("startBtn");
 const cameraBtn = document.getElementById("cameraBtn");
 const musicBtn = document.getElementById("musicBtn");
@@ -1262,6 +1269,21 @@ const state = {
   lastRuntimeErrorAt: 0,
   lastDrawErrorAt: 0,
   disableDetailedCarSprites: false,
+  online: {
+    mode: "local",
+    socket: null,
+    connected: false,
+    roomCode: "",
+    playerId: "",
+    role: "guest",
+    players: [],
+    remoteInputs: {},
+    raceActive: false,
+    lastInputSentAt: 0,
+    lastSnapshotSentAt: 0,
+    lastSnapshotAt: 0,
+    lastInputSignature: "",
+  },
   championship: {
     active: false,
     completed: false,
@@ -1411,6 +1433,332 @@ function duplicateControlKeys() {
     });
   });
   return [...duplicates];
+}
+
+function onlineDefaultServerUrl() {
+  const param = new URLSearchParams(window.location.search).get("onlineServer");
+  const configured = window.CARFUK_ONLINE_SERVER || param || localStorage.getItem("carfukOnlineServer") || "";
+  if (configured) return configured;
+  if (["localhost", "127.0.0.1"].includes(window.location.hostname)) return "ws://localhost:8787";
+  return "";
+}
+
+function onlineRoomId(value = "") {
+  return String(value || "")
+    .toUpperCase()
+    .replace(/[^A-Z0-9]/g, "")
+    .slice(0, 8);
+}
+
+function makeOnlineRoomCode() {
+  return `DZ${Math.floor(1000 + Math.random() * 9000)}`;
+}
+
+function makeOnlinePlayerId() {
+  return `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 7)}`;
+}
+
+function setOnlineStatus(text, tone = "info") {
+  if (!onlineStatus) return;
+  onlineStatus.textContent = text;
+  onlineStatus.dataset.status = tone;
+}
+
+function onlinePlayerPayload() {
+  const vehicles = currentVehicles();
+  const car = vehicles[state.selectedCar] || vehicles[0] || cars[0];
+  const name = (pilotName.value || car.name || "Piloto Online").trim().slice(0, 18) || "Piloto Online";
+  return {
+    id: state.online.playerId || makeOnlinePlayerId(),
+    name,
+    category: state.vehicleCategory,
+    carIndex: clamp(state.selectedCar, 0, vehicles.length - 1),
+    color: car.color || "#ffd95f",
+    host: state.online.role === "host",
+  };
+}
+
+function renderOnlinePlayers() {
+  if (!onlinePlayers) return;
+  const players = state.online.players.length ? state.online.players : [onlinePlayerPayload()];
+  onlinePlayers.innerHTML = players.slice(0, 4).map((player, index) => {
+    const seat = index + 1;
+    const host = player.host ? "Host" : "Piloto";
+    return `<div class="online-player" style="--car:${htmlSafe(player.color || "#ffd95f")}"><i></i><strong>${seat}. ${htmlSafe(player.name || "Piloto Online")}</strong><small>${host}</small></div>`;
+  }).join("");
+  if (onlineStartBtn) {
+    onlineStartBtn.disabled = !state.online.connected || state.online.role !== "host" || state.online.players.length < 1;
+    onlineStartBtn.textContent = state.online.role === "host" ? "Largar Online" : "Aguardando Host";
+  }
+}
+
+function onlineSend(payload) {
+  const socket = state.online.socket;
+  if (!socket || socket.readyState !== WebSocket.OPEN) return false;
+  socket.send(JSON.stringify(payload));
+  return true;
+}
+
+function syncOnlineProfile() {
+  if (!state.online.connected) return;
+  onlineSend({ type: "player-update", roomCode: state.online.roomCode, player: onlinePlayerPayload() });
+}
+
+function closeOnlineConnection(messageText = "Online desconectado.") {
+  if (state.online.socket) {
+    try {
+      state.online.socket.close();
+    } catch (error) {
+      // Ignore disconnect errors; the lobby will show the offline status.
+    }
+  }
+  state.online.socket = null;
+  state.online.connected = false;
+  state.online.raceActive = false;
+  state.online.remoteInputs = {};
+  state.online.players = [];
+  setOnlineStatus(messageText, "warn");
+  renderOnlinePlayers();
+}
+
+function connectOnline(role, requestedRoomCode = "") {
+  const serverUrl = onlineDefaultServerUrl();
+  if (!serverUrl) {
+    setOnlineStatus("Servidor online ainda nao configurado. Defina window.CARFUK_ONLINE_SERVER ou use ?onlineServer=wss://seu-servidor.", "warn");
+    renderOnlinePlayers();
+    return;
+  }
+  closeOnlineConnection("Conectando ao servidor online...");
+  state.online.mode = "online";
+  state.online.role = role;
+  state.online.playerId = state.online.playerId || makeOnlinePlayerId();
+  state.online.roomCode = role === "host" ? makeOnlineRoomCode() : onlineRoomId(requestedRoomCode);
+  if (onlineRoomCode) onlineRoomCode.value = state.online.roomCode;
+  const socket = new WebSocket(serverUrl);
+  state.online.socket = socket;
+  setOnlineStatus(`Conectando em ${serverUrl}...`, "info");
+
+  socket.addEventListener("open", () => {
+    state.online.connected = true;
+    const type = role === "host" ? "create-room" : "join-room";
+    onlineSend({ type, roomCode: state.online.roomCode, player: onlinePlayerPayload() });
+    setOnlineStatus(role === "host" ? `Sala ${state.online.roomCode} criada. Envie este codigo para os amigos.` : `Entrando na sala ${state.online.roomCode}...`, "ok");
+  });
+
+  socket.addEventListener("message", (event) => {
+    let data = null;
+    try {
+      data = JSON.parse(event.data);
+    } catch (error) {
+      return;
+    }
+    handleOnlineMessage(data);
+  });
+
+  socket.addEventListener("close", () => closeOnlineConnection("Servidor online desconectado."));
+  socket.addEventListener("error", () => setOnlineStatus("Nao foi possivel conectar ao servidor online.", "error"));
+}
+
+function handleOnlineMessage(data) {
+  if (!data || !data.type) return;
+  if (data.type === "room-state") {
+    state.online.roomCode = data.roomCode || state.online.roomCode;
+    state.online.players = Array.isArray(data.players) ? data.players.slice(0, 4) : [];
+    if (onlineRoomCode) onlineRoomCode.value = state.online.roomCode;
+    setOnlineStatus(`Sala ${state.online.roomCode}: ${state.online.players.length}/4 jogador(es).`, "ok");
+    renderOnlinePlayers();
+  }
+  if (data.type === "error") {
+    setOnlineStatus(data.message || "Erro na sala online.", "error");
+  }
+  if (data.type === "input" && state.online.role === "host" && data.playerId) {
+    state.online.remoteInputs[data.playerId] = data.input || {};
+  }
+  if (data.type === "start-race") {
+    startOnlineRaceFromConfig(data.config || {});
+  }
+  if (data.type === "snapshot" && state.online.role === "client") {
+    applyOnlineSnapshot(data.snapshot || {});
+  }
+}
+
+function createOnlineRoom() {
+  connectOnline("host");
+}
+
+function joinOnlineRoom() {
+  const code = onlineRoomId(onlineRoomCode?.value || "");
+  if (!code) {
+    setOnlineStatus("Digite o codigo da sala para entrar.", "warn");
+    return;
+  }
+  connectOnline("client", code);
+}
+
+function openOnlinePanel() {
+  const group = onlineCreateBtn?.closest?.(".setup-group");
+  if (group) {
+    group.open = true;
+    group.scrollIntoView({ block: "nearest", inline: "nearest" });
+  }
+  setOnlineStatus(state.online.connected ? `Sala ${state.online.roomCode}: pronta para jogar online.` : "Crie uma sala online ou entre com o codigo enviado pelo host.", state.online.connected ? "ok" : "info");
+  renderOnlinePlayers();
+}
+
+function onlineRaceConfig() {
+  return {
+    category: state.vehicleCategory,
+    selectedLevel: state.selectedLevel,
+    selectedCar: state.selectedCar,
+    cameraMode,
+    players: state.online.players.slice(0, 4),
+    plusCarNames: state.plusCarNames,
+  };
+}
+
+function startOnlineRaceFromLobby() {
+  if (!state.online.connected || state.online.role !== "host") {
+    setOnlineStatus("Apenas o dono da sala pode iniciar a corrida online.", "warn");
+    return;
+  }
+  const config = onlineRaceConfig();
+  onlineSend({ type: "start-race", roomCode: state.online.roomCode, config });
+  startOnlineRaceFromConfig(config);
+}
+
+function startOnlineRaceFromConfig(config) {
+  state.online.mode = "online";
+  state.online.raceActive = true;
+  state.online.players = Array.isArray(config.players) ? config.players.slice(0, 4) : state.online.players;
+  state.vehicleCategory = config.category || state.vehicleCategory;
+  state.selectedLevel = clamp(Number(config.selectedLevel) || 0, 0, levels.length - 1);
+  state.selectedCar = clamp(Number(config.selectedCar) || 0, 0, currentVehicles().length - 1);
+  state.plusCarNames = Array.isArray(config.plusCarNames) ? config.plusCarNames.slice(0, plusCars.length) : state.plusCarNames;
+  cameraMode = clamp(Number(config.cameraMode) || cameraMode, 0, cameraModes.length - 1);
+  state.raceMode = "single";
+  state.playerCount = clamp(state.online.players.length || 1, 1, 4);
+  startRace({ onlineStart: true });
+  showMessage(state.online.role === "host" ? `Sala ${state.online.roomCode}: corrida online iniciada.` : `Conectado na sala ${state.online.roomCode}. Boa corrida!`, 3.4);
+}
+
+function applyOnlineRosterToRace() {
+  if (!state.online.raceActive || !state.online.players.length) return;
+  state.racers.slice(0, state.playerCount).forEach((racer, index) => {
+    const player = state.online.players[index];
+    if (!player) return;
+    const car = createRacerCar(player.carIndex || index, player.category || state.vehicleCategory);
+    racer.onlinePlayerId = player.id;
+    racer.onlineRemote = state.online.role === "host" && player.id !== state.online.playerId;
+    racer.name = player.name || racer.name;
+    racer.car = car;
+    racer.radius = car.dynamics?.radius || racer.radius;
+  });
+}
+
+function localInputState(controls) {
+  return {
+    up: state.keys.has(controls.up),
+    down: state.keys.has(controls.down),
+    left: state.keys.has(controls.left),
+    right: state.keys.has(controls.right),
+    action: state.keys.has(controls.action),
+    fire: state.keys.has(controls.fire),
+  };
+}
+
+function racerInputState(racer) {
+  if (state.online.raceActive && state.online.role === "host" && racer.onlineRemote) {
+    return state.online.remoteInputs[racer.onlinePlayerId] || {};
+  }
+  return localInputState(racer.controls);
+}
+
+function currentOnlineInputSignature(input) {
+  return ["up", "down", "left", "right", "action", "fire"].map((key) => (input[key] ? "1" : "0")).join("");
+}
+
+function sendOnlineInput(now = performance.now()) {
+  if (!state.online.raceActive || state.online.role !== "client") return;
+  const localIndex = Math.max(0, state.online.players.findIndex((player) => player.id === state.online.playerId));
+  const racer = state.racers[localIndex];
+  if (!racer) return;
+  const input = localInputState(racer.controls);
+  const signature = currentOnlineInputSignature(input);
+  if (signature === state.online.lastInputSignature && now - state.online.lastInputSentAt < 80) return;
+  state.online.lastInputSentAt = now;
+  state.online.lastInputSignature = signature;
+  onlineSend({ type: "input", roomCode: state.online.roomCode, playerId: state.online.playerId, input });
+}
+
+function onlineRacerSnapshot(racer) {
+  return {
+    x: racer.x,
+    y: racer.y,
+    angle: racer.angle,
+    speed: racer.speed,
+    progress: racer.progress,
+    lastProgress: racer.lastProgress,
+    total: racer.total,
+    lap: racer.lap,
+    fuel: racer.fuel,
+    energy: racer.energy,
+    nitro: racer.nitro,
+    ammo: racer.ammo,
+    turbo: racer.turbo,
+    ram: racer.ram,
+    shield: racer.shield,
+    stun: racer.stun,
+    cooldown: racer.cooldown,
+    weaponCooldown: racer.weaponCooldown,
+    finished: racer.finished,
+    finishTime: racer.finishTime,
+    score: racer.score,
+    kills: racer.kills,
+  };
+}
+
+function sendOnlineSnapshot(now = performance.now()) {
+  if (!state.online.raceActive || state.online.role !== "host" || now - state.online.lastSnapshotSentAt < 50) return;
+  state.online.lastSnapshotSentAt = now;
+  onlineSend({
+    type: "snapshot",
+    roomCode: state.online.roomCode,
+    snapshot: {
+      time: state.time,
+      ended: state.ended,
+      racers: state.racers.map(onlineRacerSnapshot),
+    },
+  });
+}
+
+function applyOnlineSnapshot(snapshot) {
+  if (!state.running || !state.online.raceActive || !Array.isArray(snapshot.racers)) return;
+  state.online.lastSnapshotAt = performance.now();
+  if (Number.isFinite(snapshot.time)) state.time = Math.max(state.time, snapshot.time);
+  state.ended = Boolean(snapshot.ended);
+  snapshot.racers.forEach((remote, index) => {
+    const racer = state.racers[index];
+    if (!racer || !remote) return;
+    ["x", "y", "angle", "speed", "progress", "lastProgress", "total", "lap", "fuel", "energy", "nitro", "ammo", "turbo", "ram", "shield", "stun", "cooldown", "weaponCooldown", "finishTime", "score", "kills"].forEach((key) => {
+      if (Number.isFinite(remote[key])) racer[key] = remote[key];
+    });
+    racer.finished = Boolean(remote.finished);
+  });
+}
+
+function updateOnlineClientRace(dt) {
+  sendOnlineInput();
+  for (const racer of state.racers) {
+    racer.weaponCooldown = Math.max(0, (racer.weaponCooldown || 0) - dt);
+    racer.hitFlash = Math.max(0, (racer.hitFlash || 0) - dt);
+  }
+  if (state.msgTimer > 0) {
+    state.msgTimer -= dt;
+    if (state.msgTimer <= 0) message.classList.remove("show");
+  }
+  updateCamera(dt, false, humanRacers());
+  updateEngineSound();
+  updateHud();
 }
 
 function systemCheckItem(title, detail, status = "ok") {
@@ -2307,6 +2655,7 @@ function setupMenu() {
       btn.addEventListener("click", () => {
         state.vehicleCategory = category.id;
         state.selectedCar = 0;
+        syncOnlineProfile();
         setupMenu();
       });
       vehicleModeChoices.appendChild(btn);
@@ -2346,6 +2695,7 @@ function setupMenu() {
     btn.innerHTML = `<div class="vehicle-showcase">${menuVehicleArt(car)}</div><strong>${car.name}</strong><small>${car.note}</small>`;
     btn.addEventListener("click", () => {
       state.selectedCar = i;
+      syncOnlineProfile();
       setupMenu();
     });
     carChoices.appendChild(btn);
@@ -2446,6 +2796,7 @@ function setupMenu() {
   updateMusicButton();
   probeMusicAssets();
   updateSystemStatus();
+  renderOnlinePlayers();
 }
 
 function activatePlusMode() {
@@ -2650,6 +3001,8 @@ function cycleCameraMode() {
 
 function startRace(options = {}) {
   const championshipContinue = options.championshipContinue === true;
+  const onlineStart = options.onlineStart === true;
+  if (!onlineStart) state.online.raceActive = false;
   ensureSelectedLevelForCategory();
   if (state.raceMode === "championship" && !championshipContinue) {
     beginChampionship();
@@ -2666,7 +3019,9 @@ function startRace(options = {}) {
   const track = buildTrack(levels[state.selectedLevel]);
   state.track = track;
   state.racers = [];
+  if (onlineStart) state.playerCount = clamp(state.online.players.length || 1, 1, 4);
   for (let i = 0; i < state.playerCount; i++) state.racers.push(createPlayer(track, i));
+  if (onlineStart) applyOnlineRosterToRace();
   for (let i = state.playerCount; i < 6; i++) state.racers.push(createRival(track, i));
   state.items = generateItems(track);
   state.projectiles = [];
@@ -2884,13 +3239,13 @@ function updatePlayer(racer, dt) {
     preventRacerStall(racer, dt, true);
     return;
   }
-  const controls = racer.controls;
-  const up = state.keys.has(controls.up);
-  const down = state.keys.has(controls.down);
-  const left = state.keys.has(controls.left);
-  const right = state.keys.has(controls.right);
-  const action = state.keys.has(controls.action);
-  const fire = state.keys.has(controls.fire);
+  const input = racerInputState(racer);
+  const up = Boolean(input.up);
+  const down = Boolean(input.down);
+  const left = Boolean(input.left);
+  const right = Boolean(input.right);
+  const action = Boolean(input.action);
+  const fire = Boolean(input.fire);
   const dynamics = racer.car.dynamics || {};
   const boost = racer.turbo > 0 ? 1.54 : 1;
   const maxSpeed = (racer.fuel <= 0 ? 260 : 620) * boost * (dynamics.maxSpeed || 1);
@@ -3637,6 +3992,10 @@ function update(dt) {
   if (!state.running || state.paused) return;
   state.time += dt;
   const humans = humanRacers();
+  if (state.online.raceActive && state.online.role === "client") {
+    updateOnlineClientRace(dt);
+    return;
+  }
   if (state.ended) {
     updateChampionshipTransition(dt);
     if (state.msgTimer > 0) {
@@ -3682,6 +4041,7 @@ function update(dt) {
   updateCamera(dt, false, humans);
   updateEngineSound();
   updateHud();
+  sendOnlineSnapshot();
 }
 
 function updateHud() {
@@ -9268,6 +9628,14 @@ function bindGarageSidebar() {
 }
 
 startBtn.addEventListener("click", startRace);
+onlineQuickBtn?.addEventListener("click", openOnlinePanel);
+onlineCreateBtn?.addEventListener("click", createOnlineRoom);
+onlineJoinBtn?.addEventListener("click", joinOnlineRoom);
+onlineStartBtn?.addEventListener("click", startOnlineRaceFromLobby);
+onlineRoomCode?.addEventListener("input", () => {
+  onlineRoomCode.value = onlineRoomId(onlineRoomCode.value);
+});
+pilotName?.addEventListener("input", syncOnlineProfile);
 cameraBtn.addEventListener("click", cycleCameraMode);
 musicBtn.addEventListener("click", toggleMusic);
 nextMusicBtn.addEventListener("click", nextMusic);

@@ -1,0 +1,158 @@
+/* CARFUK Online final overrides loaded after the legacy menu CSS. */
+#menu .online-group {
+  grid-area: online;
+}
+
+#menu .compact-setup {
+  grid-template-areas:
+    "identity vehicle race"
+    "online vehicle race"
+    "controls controls controls"
+    "start start start";
+}
+
+#menu .menu-start-dock {
+  position: fixed !important;
+  right: 22px !important;
+  bottom: 18px !important;
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(180px, 1fr)) !important;
+  gap: 12px !important;
+  width: min(680px, calc(100vw - 44px)) !important;
+  max-width: 680px !important;
+  z-index: 80 !important;
+}
+
+#menu .menu-start-dock #startBtn,
+#menu .menu-start-dock #onlineQuickBtn {
+  grid-column: auto !important;
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  min-height: 58px !important;
+  border-radius: 16px !important;
+  z-index: 5 !important;
+}
+
+#menu .menu-start-dock #onlineQuickBtn {
+  border: 1px solid rgba(255, 221, 104, 0.55) !important;
+  background: linear-gradient(135deg, rgba(91, 239, 255, 0.92), rgba(255, 221, 104, 0.96), rgba(255, 131, 166, 0.86)) !important;
+  color: #07101a !important;
+  font-size: clamp(18px, 1.7vw, 25px) !important;
+  font-weight: 950 !important;
+  text-shadow: none !important;
+  text-transform: uppercase !important;
+}
+
+#menu .online-group[open] {
+  max-height: 286px;
+  overflow: hidden;
+}
+
+#menu .online-group[open] > .group-content {
+  max-height: 232px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+#menu .online-actions,
+#menu .online-players {
+  display: grid;
+  gap: 8px;
+}
+
+#menu .online-actions label {
+  display: grid;
+  gap: 5px;
+  color: rgba(245, 248, 255, 0.82);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+#menu .online-actions button,
+#menu .online-start {
+  min-height: 38px;
+  border: 1px solid rgba(255, 221, 104, 0.55);
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(255, 221, 104, 0.92), rgba(127, 255, 224, 0.9));
+  color: #07101a;
+  cursor: pointer;
+  font-weight: 950;
+  padding: 9px 12px;
+  text-transform: uppercase;
+}
+
+#menu .online-start {
+  width: 100%;
+  margin-top: 10px;
+}
+
+#menu .online-status {
+  margin-top: 10px;
+  border: 1px solid rgba(127, 216, 255, 0.24);
+  border-radius: 10px;
+  background: rgba(5, 11, 21, 0.74);
+  color: rgba(244, 250, 255, 0.9);
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  padding: 10px;
+}
+
+#menu .online-player {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 9px;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 11px;
+  background: rgba(8, 16, 30, 0.78);
+  padding: 8px 10px;
+}
+
+#menu .online-player i {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: var(--car, #ffd95f);
+  box-shadow: 0 0 13px var(--car, #ffd95f);
+}
+
+#menu .online-player strong {
+  color: #fff7cf;
+  font-size: 12px;
+  line-height: 1.1;
+}
+
+#menu .online-player small {
+  color: rgba(238, 246, 255, 0.72);
+  font-size: 10px;
+  font-weight: 800;
+}
+
+@media (max-width: 1260px) {
+  #menu .compact-setup {
+    grid-template-columns: minmax(210px, 0.8fr) minmax(420px, 1.25fr);
+    grid-template-areas:
+      "identity vehicle"
+      "race vehicle"
+      "online online"
+      "controls controls"
+      "start start";
+  }
+}
+
+@media (max-width: 920px) {
+  #menu .compact-setup {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "identity"
+      "vehicle"
+      "race"
+      "online"
+      "controls"
+      "start";
+  }
+}
