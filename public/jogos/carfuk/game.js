@@ -25,6 +25,8 @@ const onlineJoinBtn = document.getElementById("onlineJoinBtn");
 const onlineStartBtn = document.getElementById("onlineStartBtn");
 const onlineQuickBtn = document.getElementById("onlineQuickBtn");
 const onlineRoomCode = document.getElementById("onlineRoomCode");
+const onlineServerUrl = document.getElementById("onlineServerUrl");
+const onlineSaveServerBtn = document.getElementById("onlineSaveServerBtn");
 const onlineStatus = document.getElementById("onlineStatus");
 const onlinePlayers = document.getElementById("onlinePlayers");
 const startBtn = document.getElementById("startBtn");
@@ -1594,9 +1596,35 @@ function duplicateControlKeys() {
 function onlineDefaultServerUrl() {
   const param = new URLSearchParams(window.location.search).get("onlineServer");
   const configured = window.CARFUK_ONLINE_SERVER || param || localStorage.getItem("carfukOnlineServer") || "";
-  if (configured) return configured;
+  if (configured) return normalizeOnlineServerUrl(configured);
   if (["localhost", "127.0.0.1"].includes(window.location.hostname)) return "ws://localhost:8787";
   return "";
+}
+
+function normalizeOnlineServerUrl(value = "") {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return "";
+  if (/^wss?:\/\//i.test(trimmed)) return trimmed;
+  if (/^https?:\/\//i.test(trimmed)) return trimmed.replace(/^http/i, "ws");
+  return `wss://${trimmed.replace(/^\/+/, "")}`;
+}
+
+function updateOnlineServerInput() {
+  if (!onlineServerUrl) return;
+  onlineServerUrl.value = onlineDefaultServerUrl();
+}
+
+function saveOnlineServerUrl() {
+  const serverUrl = normalizeOnlineServerUrl(onlineServerUrl?.value || "");
+  if (!serverUrl) {
+    localStorage.removeItem("carfukOnlineServer");
+    setOnlineStatus("Servidor online removido. Para internet real, publique o online-server e informe um endereco wss://.", "warn");
+    updateOnlineServerInput();
+    return;
+  }
+  localStorage.setItem("carfukOnlineServer", serverUrl);
+  if (onlineServerUrl) onlineServerUrl.value = serverUrl;
+  setOnlineStatus(`Servidor online salvo: ${serverUrl}`, "ok");
 }
 
 function onlineRoomId(value = "") {
@@ -1628,12 +1656,14 @@ function setOnlineStatus(text, tone = "info") {
 function onlinePlayerPayload() {
   const vehicles = currentVehicles();
   const car = vehicles[state.selectedCar] || vehicles[0] || cars[0];
+  const currentPlayer = state.online.players.find((player) => player.id === state.online.playerId);
   const name = (pilotName.value || car.name || "Piloto Online").trim().slice(0, 18) || "Piloto Online";
   return {
     id: state.online.playerId || makeOnlinePlayerId(),
     name,
-    category: state.vehicleCategory,
-    carIndex: clamp(state.selectedCar, 0, vehicles.length - 1),
+    category: currentPlayer?.category || state.vehicleCategory,
+    carIndex: Number.isFinite(Number(currentPlayer?.carIndex)) ? Number(currentPlayer.carIndex) : clamp(state.selectedCar, 0, vehicles.length - 1),
+    seatIndex: Number.isFinite(Number(currentPlayer?.seatIndex)) ? Number(currentPlayer.seatIndex) : null,
     color: car.color || "#ffd95f",
     host: state.online.role === "host",
   };
@@ -1685,7 +1715,8 @@ function closeOnlineConnection(messageText = "Online desconectado.") {
 function connectOnline(role, requestedRoomCode = "") {
   const serverUrl = onlineDefaultServerUrl();
   if (!serverUrl) {
-    setOnlineStatus("Servidor online ainda nao configurado. Defina window.CARFUK_ONLINE_SERVER ou use ?onlineServer=wss://seu-servidor.", "warn");
+    setOnlineStatus("Servidor online ainda nao configurado. Publique a pasta online-server em um host Node/WebSocket e salve o endereco wss:// aqui.", "warn");
+    updateOnlineServerInput();
     renderOnlinePlayers();
     return;
   }
@@ -1803,6 +1834,7 @@ function openOnlinePanel() {
     group.open = true;
     group.scrollIntoView({ block: "nearest", inline: "nearest" });
   }
+  updateOnlineServerInput();
   setOnlineStatus(state.online.connected ? `Sala ${state.online.roomCode}: pronta para jogar online.` : "Crie uma sala online ou entre com o codigo enviado pelo host.", state.online.connected ? "ok" : "info");
   renderOnlinePlayers();
 }
@@ -1816,6 +1848,24 @@ function onlineRaceConfig() {
     players: state.online.players.slice(0, 4),
     plusCarNames: state.plusCarNames,
   };
+}
+
+function onlinePlayerSeatIndex(player, fallback = 0) {
+  const value = Number(player?.seatIndex);
+  if (Number.isFinite(value)) return clamp(Math.floor(value), 0, 3);
+  return clamp(fallback, 0, 3);
+}
+
+function onlinePlayerSlotsCount(players = state.online.players) {
+  if (!Array.isArray(players) || !players.length) return 1;
+  const maxSeat = players.reduce((highest, player, index) => Math.max(highest, onlinePlayerSeatIndex(player, index)), 0);
+  return clamp(maxSeat + 1, 1, 4);
+}
+
+function currentOnlineSeatIndex() {
+  const playerIndex = Math.max(0, state.online.players.findIndex((player) => player.id === state.online.playerId));
+  const player = state.online.players[playerIndex];
+  return onlinePlayerSeatIndex(player, playerIndex);
 }
 
 function startOnlineRaceFromLobby() {
@@ -1846,10 +1896,16 @@ function startOnlineRaceFromConfig(config, snapshot = null) {
 
 function applyOnlineRosterToRace() {
   if (!state.online.raceActive || !state.online.players.length) return;
-  state.racers.slice(0, state.playerCount).forEach((racer, index) => {
-    const player = state.online.players[index];
+  state.online.players.slice(0, 4).forEach((player, fallbackIndex) => {
+    const index = onlinePlayerSeatIndex(player, fallbackIndex);
+    const racer = state.racers[index];
     if (!player) return;
-    const car = createRacerCar(player.carIndex || index, player.category || state.vehicleCategory);
+    if (!racer) return;
+    const carIndex = Number.isFinite(Number(player.carIndex)) ? Number(player.carIndex) : state.selectedCar + index;
+    const car = createRacerCar(carIndex, player.category || state.vehicleCategory);
+    racer.player = true;
+    racer.humanIndex = index;
+    racer.controls = playerControls[index] || playerControls[0];
     racer.onlinePlayerId = player.id;
     racer.onlineRemote = state.online.role === "host" && player.id !== state.online.playerId;
     racer.name = player.name || racer.name;
@@ -1860,11 +1916,13 @@ function applyOnlineRosterToRace() {
 
 function applyOnlineRosterToRunningRace() {
   if (!state.track || !state.racers.length || !state.online.players.length) return;
-  state.online.players.slice(0, 4).forEach((player, index) => {
+  state.online.players.slice(0, 4).forEach((player, fallbackIndex) => {
+    const index = onlinePlayerSeatIndex(player, fallbackIndex);
     let racer = state.racers[index];
     if (!racer) return;
     const wasRival = !racer.player;
-    const car = createRacerCar(player.carIndex ?? index, player.category || state.vehicleCategory);
+    const carIndex = Number.isFinite(Number(player.carIndex)) ? Number(player.carIndex) : state.selectedCar + index;
+    const car = createRacerCar(carIndex, player.category || state.vehicleCategory);
     racer.player = true;
     racer.humanIndex = index;
     racer.controls = playerControls[index] || playerControls[0];
@@ -1881,7 +1939,7 @@ function applyOnlineRosterToRunningRace() {
       showMessage(`${racer.name} entrou online no carro livre!`, 2.4);
     }
   });
-  state.playerCount = clamp(state.online.players.length || state.playerCount, 1, 4);
+  state.playerCount = Math.max(state.playerCount, onlinePlayerSlotsCount());
 }
 
 function localInputState(controls) {
@@ -1908,7 +1966,7 @@ function currentOnlineInputSignature(input) {
 
 function sendOnlineInput(now = performance.now()) {
   if (!state.online.raceActive || state.online.role !== "client") return;
-  const localIndex = Math.max(0, state.online.players.findIndex((player) => player.id === state.online.playerId));
+  const localIndex = currentOnlineSeatIndex();
   const racer = state.racers[localIndex];
   if (!racer) return;
   const input = localInputState(racer.controls);
@@ -1921,6 +1979,9 @@ function sendOnlineInput(now = performance.now()) {
 
 function onlineRacerSnapshot(racer) {
   return {
+    seatIndex: Number.isFinite(Number(racer.humanIndex)) ? Number(racer.humanIndex) : null,
+    carIndex: Number.isFinite(Number(racer.car?.rosterIndex)) ? Number(racer.car.rosterIndex) : null,
+    category: racer.car?.category || state.vehicleCategory,
     x: racer.x,
     y: racer.y,
     angle: racer.angle,
@@ -3289,7 +3350,7 @@ function startRace(options = {}) {
   const track = buildTrack(levels[state.selectedLevel]);
   state.track = track;
   state.racers = [];
-  if (onlineStart) state.playerCount = clamp(state.online.players.length || 1, 1, 4);
+  if (onlineStart) state.playerCount = onlinePlayerSlotsCount();
   for (let i = 0; i < state.playerCount; i++) state.racers.push(createPlayer(track, i));
   if (onlineStart) applyOnlineRosterToRace();
   for (let i = state.playerCount; i < 6; i++) state.racers.push(createRival(track, i));
@@ -10335,9 +10396,11 @@ onlineQuickBtn?.addEventListener("click", quickPlayOnline);
 onlineCreateBtn?.addEventListener("click", createOnlineRoom);
 onlineJoinBtn?.addEventListener("click", joinOnlineRoom);
 onlineStartBtn?.addEventListener("click", startOnlineRaceFromLobby);
+onlineSaveServerBtn?.addEventListener("click", saveOnlineServerUrl);
 onlineRoomCode?.addEventListener("input", () => {
   onlineRoomCode.value = onlineRoomId(onlineRoomCode.value);
 });
+onlineServerUrl?.addEventListener("change", saveOnlineServerUrl);
 pilotName?.addEventListener("input", syncOnlineProfile);
 cameraBtn.addEventListener("click", cycleCameraMode);
 musicBtn.addEventListener("click", toggleMusic);
@@ -10379,6 +10442,7 @@ bindControls();
 bindGarageSidebar();
 bindMenuSectorVisibility();
 prepareMobileMenuSectors(true);
+updateOnlineServerInput();
 
 const bootParams = new URLSearchParams(window.location.search);
 if (bootParams.has("category")) {

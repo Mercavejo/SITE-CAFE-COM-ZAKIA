@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DZ RANCING</title>
     <link rel="stylesheet" href="styles.css?v=20260604-menu-fit" />
-    <link rel="stylesheet" href="online.css?v=20260605-multiplatform" />
+    <link rel="stylesheet" href="online.css?v=20260606-online-seat-server" />
   </head>
   <body>
     <main>
@@ -139,6 +139,11 @@
                   <h2>Jogar Online</h2>
                   <p class="hint">Crie uma sala, envie o codigo para seus amigos e corram juntos pela internet.</p>
                   <div class="online-actions">
+                    <label>
+                      <span>Servidor online</span>
+                      <input id="onlineServerUrl" placeholder="wss://servidor-carfuk" autocomplete="off" />
+                    </label>
+                    <button id="onlineSaveServerBtn" type="button">Salvar servidor</button>
                     <button id="onlineCreateBtn" type="button">Criar sala online</button>
                     <label>
                       <span>Codigo da sala</span>
@@ -220,6 +225,6 @@
       </section>
     </main>
 
-    <script src="game.js?v=20260605-multiplatform"></script>
+    <script src="game.js?v=20260606-online-seat-server"></script>
   </body>
 </html>

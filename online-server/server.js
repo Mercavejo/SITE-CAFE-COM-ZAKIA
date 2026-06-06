@@ -45,8 +45,12 @@ function makeRoomCode() {
   return code;
 }
 
-function nextFreeCarIndex(room, requested = 0) {
-  const used = new Set([...room.clients.values()].map((client) => Number(client.player.carIndex)));
+function nextFreeCarIndex(room, requested = 0, ignoreId = "") {
+  const used = new Set(
+    [...room.clients.values()]
+      .filter((client) => client.id !== ignoreId)
+      .map((client) => Number(client.player.carIndex))
+  );
   const wanted = Number.isFinite(Number(requested)) ? Number(requested) : 0;
   if (!used.has(wanted)) return wanted;
   for (let i = 0; i < 12; i++) {
@@ -55,15 +59,38 @@ function nextFreeCarIndex(room, requested = 0) {
   return wanted;
 }
 
+function nextFreeSeatIndex(room) {
+  const used = new Set([...room.clients.values()].map((client) => Number(client.player.seatIndex)));
+  for (let i = 0; i < MAX_PLAYERS; i++) {
+    if (!used.has(i)) return i;
+  }
+  return Math.max(0, room.clients.size);
+}
+
+function liveCarIndexForSeat(room, seatIndex, requested = 0) {
+  const snapshotRacer = room.latestSnapshot?.racers?.[seatIndex];
+  const snapshotCarIndex = Number(snapshotRacer?.carIndex);
+  if (Number.isFinite(snapshotCarIndex)) return snapshotCarIndex;
+  const base = Number(room.raceConfig?.selectedCar);
+  if (Number.isFinite(base)) return base + seatIndex;
+  return Number.isFinite(Number(requested)) ? Number(requested) : seatIndex;
+}
+
 function addClientToRoom(room, ws, player, host = false) {
   const id = player.id || `p${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
-  const carIndex = nextFreeCarIndex(room, player.carIndex);
+  const seatIndex = nextFreeSeatIndex(room);
+  const liveJoin = Boolean(room.raceConfig) && !host;
+  const carIndex = liveJoin ? liveCarIndexForSeat(room, seatIndex, player.carIndex) : nextFreeCarIndex(room, player.carIndex);
+  const category = room.raceConfig?.category || player.category;
   ws.roomCode = room.code;
   ws.playerId = id;
   const normalizedPlayer = {
     ...player,
     id,
+    category,
     carIndex,
+    seatIndex,
+    liveJoin,
     host,
   };
   room.clients.set(id, { id, ws, player: normalizedPlayer });
@@ -179,10 +206,15 @@ function updatePlayer(ws, data) {
   const room = rooms.get(ws.roomCode);
   if (!room || !ws.playerId || !room.clients.has(ws.playerId)) return;
   const client = room.clients.get(ws.playerId);
+  const incoming = data.player || {};
   client.player = {
     ...client.player,
-    ...(data.player || {}),
+    ...incoming,
     id: ws.playerId,
+    category: room.raceConfig?.category || incoming.category || client.player.category,
+    carIndex: room.raceConfig ? client.player.carIndex : nextFreeCarIndex(room, incoming.carIndex, ws.playerId),
+    seatIndex: client.player.seatIndex,
+    liveJoin: client.player.liveJoin,
     host: ws.playerId === room.hostId,
   };
   publishRoom(room);
