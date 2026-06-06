@@ -10315,7 +10315,7 @@ function bindMenuSectorVisibility() {
 }
 
 function isMobileMenuLayout() {
-  return window.matchMedia("(max-width: 520px)").matches;
+  return window.matchMedia("(max-width: 920px), (max-height: 620px)").matches;
 }
 
 function prepareMobileMenuSectors(force = false) {
@@ -10325,7 +10325,7 @@ function prepareMobileMenuSectors(force = false) {
   }
   if (!force && menu?.dataset.mobileSectorsPrepared) return;
   document.querySelectorAll("#menu .setup-group").forEach((group) => {
-    group.open = false;
+    group.open = group.classList.contains("vehicle-group");
   });
   if (menu) menu.dataset.mobileSectorsPrepared = "1";
 }
