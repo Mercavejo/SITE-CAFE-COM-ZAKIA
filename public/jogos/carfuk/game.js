@@ -2386,9 +2386,11 @@ function updateEngineSound() {
   const racers = humanRacers().length ? humanRacers() : state.racers;
   const avgSpeed = racers.reduce((sum, racer) => sum + Math.abs(racer.speed || 0), 0) / Math.max(1, racers.length);
   const drive = clamp(avgSpeed / 430, 0, 1);
+  const silent = !state.running || state.paused || state.ended || avgSpeed < 8;
+  const targetGain = silent ? 0 : 0.012 + drive * 0.06;
   audio.engineOsc.frequency.setTargetAtTime(58 + drive * 128 + Math.sin(state.time * 22) * 5, ctxAudio.currentTime, 0.045);
   audio.engineFilter.frequency.setTargetAtTime(400 + drive * 1120, ctxAudio.currentTime, 0.06);
-  audio.engineGain.gain.setTargetAtTime(state.paused ? 0.004 : 0.02 + drive * 0.052, ctxAudio.currentTime, 0.08);
+  audio.engineGain.gain.setTargetAtTime(targetGain, ctxAudio.currentTime, silent ? 0.06 : 0.08);
 }
 
 function clamp(v, min, max) {
@@ -3767,7 +3769,7 @@ function finishRace(racer) {
 function completeRaceFinal() {
   if (state.ended) return;
   state.ended = true;
-  if (audio.engineGain && audio.ctx) audio.engineGain.gain.setTargetAtTime(0.004, audio.ctx.currentTime, 0.35);
+  if (audio.engineGain && audio.ctx) audio.engineGain.gain.setTargetAtTime(0, audio.ctx.currentTime, 0.18);
   completeChampionshipRace();
   showRaceResults();
 }
