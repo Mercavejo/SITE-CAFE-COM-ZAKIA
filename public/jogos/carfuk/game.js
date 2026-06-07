@@ -14,6 +14,9 @@ const playerChoices = document.getElementById("playerChoices");
 const controlChoices = document.getElementById("controlChoices");
 const levelChoices = document.getElementById("levelChoices");
 const cameraChoices = document.getElementById("cameraChoices");
+const graphicsChoices = document.getElementById("graphicsChoices");
+const showFpsToggle = document.getElementById("showFpsToggle");
+const reducedEffectsToggle = document.getElementById("reducedEffectsToggle");
 const musicChoices = document.getElementById("musicChoices");
 const musicEnabled = document.getElementById("musicEnabled");
 const musicVolume = document.getElementById("musicVolume");
@@ -1387,6 +1390,12 @@ const raceModes = [
   { id: "championship", label: "Campeonato DZ", note: "todas as pistas valem pontos" },
 ];
 
+const graphicsModes = [
+  { id: "auto", label: "Automatico", note: "equilibra beleza e desempenho", dpr: null },
+  { id: "quality", label: "Alta qualidade", note: "carros e pista mais nitidos", dpr: 1.28 },
+  { id: "performance", label: "Desempenho", note: "mais leve para celular e TV", dpr: 0.9 },
+];
+
 const state = {
   vehicleCategory: "sport",
   selectedCar: 0,
@@ -1399,6 +1408,9 @@ const state = {
   musicPaused: true,
   musicVolume: 0.16,
   gameVolume: 0.34,
+  graphicsMode: localStorage.getItem("carfukGraphicsMode") || "auto",
+  showFps: localStorage.getItem("carfukShowFps") === "1",
+  reducedEffects: localStorage.getItem("carfukReducedEffects") === "1",
   keys: new Set(),
   running: false,
   paused: false,
@@ -2074,6 +2086,9 @@ function updateSystemStatus() {
   const fpsStatus = state.running ? (state.fps >= 45 || state.fps === 0 ? "ok" : "warn") : "ok";
   const fpsDetail = state.running ? `${Math.round(state.fps || 0)} FPS durante a corrida` : "aguardando corrida";
   const selectedLevel = levels[state.selectedLevel] || levels[0];
+  const graphicsMode = currentGraphicsMode();
+  const effectsDetail = state.reducedEffects ? "modo leve ligado" : "efeitos completos";
+  const fpsVisibility = state.showFps ? "FPS visivel no status" : "FPS oculto quando parado";
 
   systemStatus.innerHTML = [
     systemCheckItem("Botoes", `${requiredButtons}/6 botoes principais ativos`, requiredButtons === 6 ? "ok" : "error"),
@@ -2084,8 +2099,9 @@ function updateSystemStatus() {
     systemCheckItem("Veiculos", `${cars.length} carros + ${karts.length} karts com armas`, cars.length >= 8 && karts.length >= 4 ? "ok" : "warn"),
     systemCheckItem("Anti-corte", `${CHECKPOINTS_PER_LAP - 1} checkpoints obrigatorios por volta`, "ok"),
     systemCheckItem("Controles", duplicates.length ? `teclas repetidas: ${duplicates.join(", ")}` : `${playerControls.length} jogadores configuraveis`, duplicates.length ? "warn" : "ok"),
+    systemCheckItem("Graficos", `${graphicsMode.label}; ${effectsDetail}; ${fpsVisibility}`, "ok"),
     systemCheckItem("Desligamento", "som para ao sair, ocultar ou voltar ao menu", "ok"),
-    systemCheckItem("Performance", fpsDetail, fpsStatus),
+    systemCheckItem("Performance", state.showFps || state.running ? fpsDetail : "pronto para medir na corrida", fpsStatus),
     systemCheckItem("Musica atual", selectedTrack ? selectedTrack.title : "nenhuma selecionada", selectedTrack ? "ok" : "error"),
   ].join("");
 }
@@ -3097,6 +3113,8 @@ function setupMenu() {
     controlChoices.appendChild(card);
   });
 
+  renderGraphicsChoices();
+
   levelChoices.innerHTML = "";
   levelIndexesForCategory().forEach((levelIndex) => {
     const level = levels[levelIndex];
@@ -3130,6 +3148,56 @@ function setupMenu() {
   probeMusicAssets();
   updateSystemStatus();
   renderOnlinePlayers();
+}
+
+function currentGraphicsMode() {
+  return graphicsModes.find((mode) => mode.id === state.graphicsMode) || graphicsModes[0];
+}
+
+function renderGraphicsChoices() {
+  if (!graphicsChoices) return;
+  graphicsChoices.innerHTML = "";
+  graphicsModes.forEach((mode) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = `choice ${mode.id === state.graphicsMode ? "active" : ""}`;
+    btn.innerHTML = `<strong>${mode.label}</strong><small>${mode.note}</small>`;
+    btn.addEventListener("click", () => {
+      state.graphicsMode = mode.id;
+      localStorage.setItem("carfukGraphicsMode", state.graphicsMode);
+      applyGraphicsSettings();
+      setupMenu();
+      resize();
+    });
+    graphicsChoices.appendChild(btn);
+  });
+
+  if (showFpsToggle && !showFpsToggle.dataset.ready) {
+    showFpsToggle.addEventListener("change", () => {
+      state.showFps = showFpsToggle.checked;
+      localStorage.setItem("carfukShowFps", state.showFps ? "1" : "0");
+      updateSystemStatus();
+    });
+    showFpsToggle.dataset.ready = "1";
+  }
+  if (showFpsToggle) showFpsToggle.checked = state.showFps;
+
+  if (reducedEffectsToggle && !reducedEffectsToggle.dataset.ready) {
+    reducedEffectsToggle.addEventListener("change", () => {
+      state.reducedEffects = reducedEffectsToggle.checked;
+      localStorage.setItem("carfukReducedEffects", state.reducedEffects ? "1" : "0");
+      applyGraphicsSettings();
+      updateSystemStatus();
+    });
+    reducedEffectsToggle.dataset.ready = "1";
+  }
+  if (reducedEffectsToggle) reducedEffectsToggle.checked = state.reducedEffects;
+}
+
+function applyGraphicsSettings() {
+  document.body.dataset.graphicsMode = state.graphicsMode;
+  document.body.classList.toggle("reduced-effects", state.reducedEffects);
+  if (state.reducedEffects) state.disableDetailedCarSprites = true;
 }
 
 function activatePlusMode() {
@@ -10251,7 +10319,10 @@ function loop(now) {
 function resize() {
   view.w = window.innerWidth;
   view.h = window.innerHeight;
-  view.dpr = clamp(window.devicePixelRatio || 1, 1, view.w > 1400 ? 1.08 : 1.18);
+  const graphicsMode = currentGraphicsMode();
+  const autoLimit = view.w > 1400 ? 1.08 : 1.18;
+  const dprLimit = graphicsMode.dpr || autoLimit;
+  view.dpr = clamp(window.devicePixelRatio || 1, 0.85, dprLimit);
   canvas.style.width = `${view.w}px`;
   canvas.style.height = `${view.h}px`;
   canvas.width = Math.floor(view.w * view.dpr);
@@ -10333,21 +10404,81 @@ function bindControls() {
 }
 
 function bindGarageSidebar() {
-  document.querySelectorAll(".garage-sidebar a[href^='#']").forEach((link) => {
+  document.querySelectorAll(".garage-sidebar [data-menu-sector], .garage-sidebar a[href^='#']").forEach((link) => {
     link.addEventListener("click", (event) => {
-      const id = link.getAttribute("href").slice(1);
-      if (!id || id === "menu") return;
-      const target = document.getElementById(id);
-      if (!target) return;
       event.preventDefault();
-      const group = target.closest(".setup-group");
-      const compactPanel = target.closest(".compact-inner");
-      if (group) group.open = true;
-      if (compactPanel) compactPanel.open = true;
-      revealMenuSector(target);
-      if (typeof target.focus === "function") target.focus({ preventScroll: true });
+      const sector = link.dataset.menuSector || link.getAttribute("href")?.replace("#", "");
+      openMenuSector(sector, link);
     });
   });
+}
+
+function menuSectorTarget(sector) {
+  const selectors = {
+    identity: "#pilotName",
+    controls: "#controlChoices",
+    graphics: "#graphicsPanel",
+    sound: "#musicChoices",
+    players: "#playerChoices",
+    online: "#onlineCreateBtn",
+  };
+  return document.querySelector(selectors[sector] || `#${sector}`);
+}
+
+function setGarageSidebarActive(activeSector) {
+  document.querySelectorAll(".garage-sidebar [data-menu-sector]").forEach((item) => {
+    item.classList.toggle("active", item.dataset.menuSector === activeSector);
+  });
+}
+
+function resetMenuSectors() {
+  document.querySelectorAll("#menu .setup-group").forEach((group) => {
+    group.open = group.classList.contains("identity-group") || group.classList.contains("vehicle-group") || group.classList.contains("race-group");
+  });
+  document.querySelectorAll("#menu .compact-inner").forEach((panel) => {
+    panel.open = false;
+  });
+  setGarageSidebarActive("");
+  const scroller = document.querySelector("#menu .compact-setup");
+  scroller?.scrollTo?.({ top: 0, behavior: "smooth" });
+  startBtn?.focus?.({ preventScroll: true });
+}
+
+function openMenuSector(sector, source = null) {
+  document.querySelectorAll("#menu .setup-group").forEach((item) => {
+    delete item.dataset.focus;
+  });
+
+  if (sector === "exit") {
+    state.keys.clear();
+    if (state.running) shutdownGameSession({ showMenu: true });
+    resetChampionship();
+    resetMenuSectors();
+    showMessage("Tela inicial limpa. Escolha o carro e aperte Jogar.", 1.5);
+    return;
+  }
+
+  const target = menuSectorTarget(sector);
+  if (!target) return;
+  const group = target.closest(".setup-group");
+  const compactPanel = target.closest(".compact-inner");
+  if (group) group.open = true;
+  if (group && sector) group.dataset.focus = sector;
+  if (sector === "sound" && compactPanel) compactPanel.open = true;
+  if (isMobileMenuLayout() && group) {
+    document.querySelectorAll("#menu .setup-group").forEach((other) => {
+      if (other !== group) other.open = false;
+    });
+    group.open = true;
+  }
+  setGarageSidebarActive(sector);
+  revealMenuSector(target);
+
+  const focusTarget = target.matches?.("input, select, button, textarea") ? target : target.querySelector?.("input, select, button");
+  requestAnimationFrame(() => {
+    if (typeof focusTarget?.focus === "function") focusTarget.focus({ preventScroll: true });
+  });
+  if (source) source.blur?.();
 }
 
 function revealMenuSector(target) {
@@ -10355,8 +10486,17 @@ function revealMenuSector(target) {
   const scroller = document.querySelector("#menu .compact-setup");
   if (!group || !scroller) return;
   requestAnimationFrame(() => {
-    const top = Math.max(0, group.offsetTop - scroller.offsetTop - 8);
-    scroller.scrollTo({ top, behavior: "smooth" });
+    const targetRectOuter = target.getBoundingClientRect();
+    const scrollerRect = scroller.getBoundingClientRect();
+    const top = Math.max(0, scroller.scrollTop + targetRectOuter.top - scrollerRect.top - 8);
+    scroller.scrollTo({ top, behavior: "auto" });
+    const innerScroller = target.closest?.(".group-content");
+    if (innerScroller && target !== group) {
+      const targetRect = target.getBoundingClientRect();
+      const innerRect = innerScroller.getBoundingClientRect();
+      const innerTop = Math.max(0, innerScroller.scrollTop + targetRect.top - innerRect.top - 8);
+      innerScroller.scrollTo?.({ top: innerTop, behavior: "auto" });
+    }
   });
 }
 
@@ -10439,6 +10579,7 @@ document.addEventListener("visibilitychange", () => {
 });
 
 loadControlBindings();
+applyGraphicsSettings();
 setupMenu();
 bindControls();
 bindGarageSidebar();
@@ -10479,9 +10620,3 @@ if (bootParams.get("auto") === "1") {
   pilotName.value = "Preview";
   setTimeout(startRace, 120);
 }
-
-
-
-
-
-

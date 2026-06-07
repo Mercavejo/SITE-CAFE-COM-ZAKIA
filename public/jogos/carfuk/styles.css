@@ -2513,11 +2513,20 @@ select,
   padding: 26px 24px;
 }
 
-#menu .garage-sidebar strong {
+#menu .garage-sidebar strong,
+#menu .garage-sidebar-title {
   max-width: 160px;
   margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   font-size: clamp(25px, 2.1vw, 34px);
   line-height: 0.98;
+  color: #fffdf3;
+  font-weight: 1000;
+  text-align: left;
+  text-shadow: 0 0 18px rgba(255, 236, 168, 0.4);
+  cursor: pointer;
 }
 
 #menu .garage-sidebar nav {
@@ -2525,7 +2534,8 @@ select,
   gap: 9px;
 }
 
-#menu .garage-sidebar a {
+#menu .garage-sidebar a,
+#menu .garage-sidebar-foot {
   padding: 0;
   border: 0;
   background: transparent;
@@ -2533,12 +2543,27 @@ select,
   line-height: 1.05;
   text-align: left;
   box-shadow: none;
+  cursor: pointer;
 }
 
-#menu .garage-sidebar span {
+#menu .garage-sidebar a.active,
+#menu .garage-sidebar a:hover,
+#menu .garage-sidebar-title.active,
+#menu .garage-sidebar-title:hover,
+#menu .garage-sidebar-foot.active,
+#menu .garage-sidebar-foot:hover {
+  color: #fff0b4;
+  text-shadow: 0 0 16px rgba(255,236,168,0.5);
+}
+
+#menu .garage-sidebar span,
+#menu .garage-sidebar-foot {
   margin-top: auto;
   padding-top: 16px;
   font-size: 18px;
+  color: #fffdf3;
+  font-weight: 900;
+  border-top: 1px solid rgba(255, 236, 168, 0.18);
 }
 
 #menu .compact-setup {
@@ -2547,6 +2572,7 @@ select,
   grid-template-areas:
     "identity vehicle race"
     "controls vehicle race"
+    "online online online"
     "start start start";
   gap: 12px;
   padding: 16px;
@@ -2574,6 +2600,12 @@ select,
 
 #menu .controls-group {
   grid-area: controls;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+#menu .online-group {
+  grid-area: online;
   grid-column: auto;
   grid-row: auto;
 }
@@ -2617,6 +2649,16 @@ select,
 #menu .setup-group .panel h2 {
   margin-bottom: 8px;
   font-size: 13px;
+}
+
+#menu .controls-group[data-focus="graphics"] .graphics-panel {
+  order: -3;
+  border-color: rgba(255, 236, 168, 0.5);
+  box-shadow: 0 0 0 1px rgba(255, 236, 168, 0.16), 0 0 22px rgba(255, 236, 168, 0.12);
+}
+
+#menu .controls-group[data-focus="controls"] .control-grid {
+  order: -2;
 }
 
 #menu .garage-console input:not([type]),
@@ -2712,6 +2754,7 @@ select,
 #menu .players,
 #menu .levels,
 #menu .cameras,
+#menu .graphics-grid,
 #menu .control-grid,
 #menu .system-status {
   display: grid;
@@ -2731,7 +2774,8 @@ select,
 #menu .race-modes .choice,
 #menu .players .choice,
 #menu .levels .choice,
-#menu .cameras .choice {
+#menu .cameras .choice,
+#menu .graphics-grid .choice {
   min-height: 40px;
   padding: 8px 10px;
   border-radius: 10px;
@@ -2741,7 +2785,8 @@ select,
 #menu .race-modes .choice strong,
 #menu .players .choice strong,
 #menu .levels .choice strong,
-#menu .cameras .choice strong {
+#menu .cameras .choice strong,
+#menu .graphics-grid .choice strong {
   font-size: 13px;
   line-height: 1.08;
 }
@@ -2749,7 +2794,8 @@ select,
 #menu .race-modes .choice small,
 #menu .players .choice small,
 #menu .levels .choice small,
-#menu .cameras .choice small {
+#menu .cameras .choice small,
+#menu .graphics-grid .choice small {
   font-size: 9px;
   line-height: 1.2;
 }
@@ -2777,6 +2823,7 @@ select,
       "identity vehicle"
       "race vehicle"
       "controls controls"
+      "online online"
       "start start";
   }
 }
@@ -2809,7 +2856,8 @@ select,
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  #menu .garage-sidebar a {
+  #menu .garage-sidebar a,
+  #menu .garage-sidebar-foot {
     padding: 8px;
     border: 1px solid rgba(255, 236, 168, 0.15);
     border-radius: 9px;
@@ -2824,6 +2872,7 @@ select,
       "vehicle"
       "race"
       "controls"
+      "online"
       "start";
   }
 

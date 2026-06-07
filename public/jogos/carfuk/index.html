@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DZ RANCING</title>
-    <link rel="stylesheet" href="styles.css?v=20260604-menu-fit" />
+    <link rel="stylesheet" href="styles.css?v=20260607-sidebar-sectors" />
     <link rel="stylesheet" href="online.css?v=20260607-engine-silence" />
   </head>
   <body>
@@ -30,15 +30,16 @@
 
         <div class="garage-console">
           <aside class="garage-sidebar" aria-label="Navegacao da garagem">
-            <strong>Nome do piloto</strong>
+            <button class="garage-sidebar-title" type="button" data-menu-sector="identity">Nome do piloto</button>
             <nav>
-              <a href="#pilotName">Configuracoes</a>
-              <a href="#controlChoices">Controles</a>
-              <a href="#levelChoices">Graficos</a>
-              <a href="#musicChoices">Som</a>
-              <a href="#menu">Sair</a>
+              <a href="#pilotName" data-menu-sector="identity">Configuracoes</a>
+              <a href="#controlChoices" data-menu-sector="controls">Controles</a>
+              <a href="#graphicsPanel" data-menu-sector="graphics">Graficos</a>
+              <a href="#musicChoices" data-menu-sector="sound">Som</a>
+              <a href="#onlineCreateBtn" data-menu-sector="online">Online</a>
+              <a href="#menu" data-menu-sector="exit">Sair</a>
             </nav>
-            <span>Jogadores locais</span>
+            <button class="garage-sidebar-foot" type="button" data-menu-sector="players">Jogadores locais</button>
           </aside>
 
           <div class="setup compact-setup">
@@ -122,6 +123,19 @@
             <h2>Configurar controles</h2>
             <div id="controlChoices" class="control-grid"></div>
             <p class="hint">Clique em um comando e aperte a nova tecla. Use Esc para cancelar.</p>
+          </div>
+
+          <div id="graphicsPanel" class="panel advanced graphics-panel">
+            <h2>Graficos</h2>
+            <div id="graphicsChoices" class="graphics-grid"></div>
+            <label class="music-toggle graphics-toggle">
+              <input id="showFpsToggle" type="checkbox" />
+              <span>Mostrar FPS no status</span>
+            </label>
+            <label class="music-toggle graphics-toggle">
+              <input id="reducedEffectsToggle" type="checkbox" />
+              <span>Modo leve para telas fracas</span>
+            </label>
           </div>
 
           <div class="panel system-panel">
@@ -225,6 +239,6 @@
       </section>
     </main>
 
-    <script src="game.js?v=20260607-engine-silence"></script>
+    <script src="game.js?v=20260607-sidebar-sectors"></script>
   </body>
 </html>
