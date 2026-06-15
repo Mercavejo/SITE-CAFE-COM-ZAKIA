@@ -4880,6 +4880,149 @@ function drawTracksideProps() {
       else drawMiniCone(p.x, p.y, p.angle);
     }
   }
+  drawTrackCrowd();
+}
+
+function crowdFlagPalette() {
+  const vehicles = currentVehicles().length ? currentVehicles() : cars;
+  const colors = vehicles.map((car) => ({
+    main: car.color || "#26d8ff",
+    stripe: car.stripe || car.neon || "#fff0b4",
+    dark: car.dark || "#111923",
+  }));
+  return colors.length ? colors : [
+    { main: "#f23f35", stripe: "#ffffff", dark: "#661612" },
+    { main: "#ffd84e", stripe: "#171923", dark: "#766115" },
+    { main: "#26d8ff", stripe: "#fff0b4", dark: "#073746" },
+    { main: "#f13bff", stripe: "#fff0b4", dark: "#681470" },
+  ];
+}
+
+function drawTrackCrowd() {
+  const track = state.track;
+  if (!track) return;
+  const theme = track.level.theme;
+  const road = track.level.road;
+  const palette = crowdFlagPalette();
+  const baseStep = track.level.cleanScenery ? 520 : ["racetrack", "fantasy", "kartarena", "amc"].includes(theme) ? 350 : 430;
+  const step = state.reducedEffects ? baseStep * 1.7 : baseStep;
+  const start = 115;
+  const amplitude = 1 + Math.sin(state.time * 2.1) * 0.08;
+  let index = 0;
+
+  ctx.save();
+  for (let d = start; d < track.length; d += step) {
+    for (const side of [-1, 1]) {
+      if (state.reducedEffects && ((index + (side > 0 ? 1 : 0)) % 2)) continue;
+      const color = palette[(index + (side > 0 ? 2 : 0)) % palette.length];
+      const dzFlag = (index + (side > 0 ? 3 : 0)) % 7 === 0;
+      const lane = side * (road / 2 + 86 + ((index % 3) * 22));
+      const p = pointAt(track, d + (side > 0 ? 42 : 0), lane);
+      const count = dzFlag ? 4 : 3 + (index % 2);
+      drawSpectatorGroup(p.x, p.y, p.angle, side, count, color, dzFlag, index, amplitude);
+    }
+    index += 1;
+  }
+  ctx.restore();
+}
+
+function drawSpectatorGroup(x, y, angle, side, count, color, dzFlag, seed, amplitude) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  const spacing = 18;
+  const baseY = side * 4;
+  for (let i = 0; i < count; i++) {
+    const offsetX = (i - (count - 1) / 2) * spacing;
+    const bounce = Math.sin(state.time * (3.2 + i * 0.15) + seed + i) * 1.6 * amplitude;
+    const fanColor = i % 2 ? color.dark : color.main;
+    drawTinyFan(offsetX, baseY + bounce, side, fanColor, color.stripe);
+  }
+  const flagX = (count * spacing) / 2 + 8;
+  const wave = Math.sin(state.time * 5.2 + seed * 0.77) * 0.22;
+  drawCrowdFlag(flagX, baseY - side * 10, side, color, dzFlag, wave);
+  ctx.restore();
+}
+
+function drawTinyFan(x, y, side, shirt, accent) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.fillStyle = "rgba(0,0,0,0.22)";
+  ctx.beginPath();
+  ctx.ellipse(0, side * 10, 7, 4, 0, 0, TAU);
+  ctx.fill();
+
+  ctx.strokeStyle = "rgba(10,12,18,0.8)";
+  ctx.lineWidth = 2.2;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(-5, side * 2);
+  ctx.lineTo(-10, -side * 4);
+  ctx.moveTo(5, side * 2);
+  ctx.lineTo(10, -side * 5);
+  ctx.stroke();
+
+  ctx.fillStyle = shirt;
+  ctx.beginPath();
+  ctx.ellipse(0, side * 3, 7, 9, 0, 0, TAU);
+  ctx.fill();
+  ctx.fillStyle = accent;
+  ctx.fillRect(-5, side > 0 ? -1 : 1, 10, 3 * side);
+
+  ctx.fillStyle = "#f3c49d";
+  ctx.beginPath();
+  ctx.arc(0, -side * 8, 5, 0, TAU);
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawCrowdFlag(x, y, side, color, dzFlag, wave) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.strokeStyle = "#202734";
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(0, side * 18);
+  ctx.lineTo(0, -side * 26);
+  ctx.stroke();
+
+  ctx.translate(0, -side * 26);
+  ctx.scale(1, side);
+  const w = dzFlag ? 58 : 44;
+  const h = dzFlag ? 24 : 20;
+  ctx.fillStyle = dzFlag ? "#111923" : color.main;
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.quadraticCurveTo(w * 0.34, -6 + wave * 8, w * 0.68, -1);
+  ctx.quadraticCurveTo(w * 0.88, 4 + wave * 7, w, 0);
+  ctx.lineTo(w, h);
+  ctx.quadraticCurveTo(w * 0.68, h - 5 - wave * 6, w * 0.34, h - 1);
+  ctx.quadraticCurveTo(w * 0.14, h + 3 - wave * 4, 0, h);
+  ctx.closePath();
+  ctx.fill();
+  ctx.strokeStyle = "rgba(255,255,255,0.24)";
+  ctx.lineWidth = 1.4;
+  ctx.stroke();
+
+  if (dzFlag) {
+    ctx.fillStyle = "#fff0b4";
+    ctx.font = "900 8px Arial, sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("DZ", w * 0.24, h * 0.5);
+    ctx.fillStyle = "#8cf8ff";
+    ctx.font = "800 6px Arial, sans-serif";
+    ctx.fillText("RACING", w * 0.66, h * 0.54);
+  } else {
+    ctx.fillStyle = color.stripe || "#fff";
+    ctx.fillRect(6, h * 0.38, w - 12, 4);
+    ctx.fillStyle = "rgba(255,255,255,0.55)";
+    ctx.beginPath();
+    ctx.arc(w - 10, h * 0.5, 4, 0, TAU);
+    ctx.fill();
+  }
+  ctx.restore();
 }
 
 function drawTireStack(x, y, s = 1) {
