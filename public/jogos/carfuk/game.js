@@ -4916,14 +4916,38 @@ function drawTrackCrowd() {
       if (state.reducedEffects && ((index + (side > 0 ? 1 : 0)) % 2)) continue;
       const color = palette[(index + (side > 0 ? 2 : 0)) % palette.length];
       const dzFlag = (index + (side > 0 ? 3 : 0)) % 7 === 0;
-      const lane = side * (road / 2 + 86 + ((index % 3) * 22));
-      const p = pointAt(track, d + (side > 0 ? 42 : 0), lane);
+      const p = crowdPointOutsideTrack(track, d + (side > 0 ? 42 : 0), side, index);
+      if (!p) continue;
       const count = dzFlag ? 4 : 3 + (index % 2);
       drawSpectatorGroup(p.x, p.y, p.angle, side, count, color, dzFlag, index, amplitude);
     }
     index += 1;
   }
   ctx.restore();
+}
+
+function crowdPointOutsideTrack(track, progress, side, seed) {
+  const road = track.level.road;
+  const offsets = [190, 260, 340, 430, 540];
+  for (const offset of offsets) {
+    const lane = side * (road / 2 + offset + ((seed % 3) * 18));
+    const p = pointAt(track, progress, lane);
+    if (isCrowdPointClear(track, p.x, p.y)) return p;
+  }
+  return null;
+}
+
+function isCrowdPointClear(track, x, y) {
+  const margin = Math.max(118, track.level.road * 0.62);
+  if (x < 38 || y < 38 || x > WORLD.w - 38 || y > WORLD.h - 38) return false;
+  const nearest = project(track, x, y);
+  if (nearest.distance < track.level.road / 2 + margin) return false;
+  const shortcut = projectShortcutRoads(track.level, x, y);
+  if (shortcut) {
+    const shortcutWidth = track.level.shortcutRoadWidth || track.level.road * 0.78;
+    if (shortcut.distance < shortcutWidth / 2 + margin) return false;
+  }
+  return true;
 }
 
 function drawSpectatorGroup(x, y, angle, side, count, color, dzFlag, seed, amplitude) {
@@ -4934,19 +4958,21 @@ function drawSpectatorGroup(x, y, angle, side, count, color, dzFlag, seed, ampli
   const baseY = side * 4;
   for (let i = 0; i < count; i++) {
     const offsetX = (i - (count - 1) / 2) * spacing;
-    const bounce = Math.sin(state.time * (3.2 + i * 0.15) + seed + i) * 1.6 * amplitude;
+    const cheer = Math.sin(state.time * (6.4 + i * 0.34) + seed + i);
+    const bounce = cheer * 3.2 * amplitude;
     const fanColor = i % 2 ? color.dark : color.main;
-    drawTinyFan(offsetX, baseY + bounce, side, fanColor, color.stripe);
+    drawTinyFan(offsetX, baseY + bounce, side, fanColor, color.stripe, cheer, seed + i);
   }
   const flagX = (count * spacing) / 2 + 8;
-  const wave = Math.sin(state.time * 5.2 + seed * 0.77) * 0.22;
+  const wave = Math.sin(state.time * 8.4 + seed * 0.77) * 0.46;
   drawCrowdFlag(flagX, baseY - side * 10, side, color, dzFlag, wave);
   ctx.restore();
 }
 
-function drawTinyFan(x, y, side, shirt, accent) {
+function drawTinyFan(x, y, side, shirt, accent, cheer = 0, seed = 0) {
   ctx.save();
   ctx.translate(x, y);
+  ctx.rotate(Math.sin(state.time * 5.6 + seed) * 0.08);
   ctx.fillStyle = "rgba(0,0,0,0.22)";
   ctx.beginPath();
   ctx.ellipse(0, side * 10, 7, 4, 0, 0, TAU);
@@ -4955,11 +4981,12 @@ function drawTinyFan(x, y, side, shirt, accent) {
   ctx.strokeStyle = "rgba(10,12,18,0.8)";
   ctx.lineWidth = 2.2;
   ctx.lineCap = "round";
+  const armLift = 3 + Math.abs(cheer) * 8;
   ctx.beginPath();
   ctx.moveTo(-5, side * 2);
-  ctx.lineTo(-10, -side * 4);
+  ctx.lineTo(-10, -side * armLift);
   ctx.moveTo(5, side * 2);
-  ctx.lineTo(10, -side * 5);
+  ctx.lineTo(10, -side * (armLift + 1.5));
   ctx.stroke();
 
   ctx.fillStyle = shirt;
@@ -4979,6 +5006,7 @@ function drawTinyFan(x, y, side, shirt, accent) {
 function drawCrowdFlag(x, y, side, color, dzFlag, wave) {
   ctx.save();
   ctx.translate(x, y);
+  ctx.rotate(wave * 0.16);
   ctx.strokeStyle = "#202734";
   ctx.lineWidth = 3;
   ctx.lineCap = "round";
@@ -4994,11 +5022,11 @@ function drawCrowdFlag(x, y, side, color, dzFlag, wave) {
   ctx.fillStyle = dzFlag ? "#111923" : color.main;
   ctx.beginPath();
   ctx.moveTo(0, 0);
-  ctx.quadraticCurveTo(w * 0.34, -6 + wave * 8, w * 0.68, -1);
-  ctx.quadraticCurveTo(w * 0.88, 4 + wave * 7, w, 0);
-  ctx.lineTo(w, h);
-  ctx.quadraticCurveTo(w * 0.68, h - 5 - wave * 6, w * 0.34, h - 1);
-  ctx.quadraticCurveTo(w * 0.14, h + 3 - wave * 4, 0, h);
+  ctx.bezierCurveTo(w * 0.22, -8 + wave * 13, w * 0.48, 7 - wave * 10, w * 0.72, -2 + wave * 8);
+  ctx.quadraticCurveTo(w * 0.9, -5 + wave * 12, w, 0);
+  ctx.lineTo(w, h + wave * 3);
+  ctx.quadraticCurveTo(w * 0.78, h - 8 - wave * 10, w * 0.5, h - 1 + wave * 7);
+  ctx.quadraticCurveTo(w * 0.2, h + 7 - wave * 8, 0, h);
   ctx.closePath();
   ctx.fill();
   ctx.strokeStyle = "rgba(255,255,255,0.24)";
