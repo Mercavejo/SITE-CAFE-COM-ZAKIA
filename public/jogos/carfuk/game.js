@@ -191,10 +191,14 @@ function isKartLevel(level) {
   return level?.difficulty === "kart" || level?.theme === "kartarena" || /\bKart\b/.test(level?.name || "");
 }
 
+function isSportLevel(level) {
+  return !isPlusLevel(level) && !isKartLevel(level);
+}
+
 function levelMatchesCategory(level, categoryId = state.vehicleCategory) {
   if (categoryId === "plus") return isPlusLevel(level);
-  if (categoryId === "kart") return isKartLevel(level);
-  return !isPlusLevel(level) && !isKartLevel(level);
+  if (categoryId === "kart") return isSportLevel(level);
+  return isSportLevel(level);
 }
 
 function levelIndexesForCategory(categoryId = state.vehicleCategory) {
