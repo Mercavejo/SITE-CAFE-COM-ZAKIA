@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
-  const hasAccess = request.cookies.get("carfuk_access")?.value === "5832";
+  const hasAccess =
+    request.cookies.get("jogos_access")?.value === "5832" ||
+    request.cookies.get("carfuk_access")?.value === "5832";
   if (hasAccess) return NextResponse.next();
 
   const url = request.nextUrl.clone();
@@ -11,5 +13,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/jogos/carfuk/:path*"],
+  matcher: ["/jogos/carfuk/:path*", "/jogos/sorteio/:path*"],
 };

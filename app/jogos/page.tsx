@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { JogosGate } from "./jogos-gate";
 
 const whatsappUrl =
@@ -7,7 +8,7 @@ const whatsappUrl =
 export const metadata: Metadata = {
   title: "Jogos | Café com Zákia",
   description:
-    "Área de jogos do Café com Zákia com acesso protegido ao CARFUK: DZ Racing.",
+    "Área de jogos e ferramentas do Café com Zákia com acesso protegido ao CARFUK: DZ Racing e ao Sorteio de Perguntas.",
   alternates: {
     canonical: "https://www.cafecomzakia.com.br/jogos",
   },
@@ -21,16 +22,16 @@ export default function JogosPage() {
   return (
     <main className="games-page">
       <header className="topbar">
-        <a className="brand" href="/" aria-label="Café com Zákia">
+        <Link className="brand" href="/" aria-label="Café com Zákia">
           <img src="/assets/logo-white.png" alt="Café com Zákia" />
-        </a>
+        </Link>
         <nav aria-label="Navegação principal">
-          <a href="/#autoridade">Autoridade</a>
-          <a href="/#programa">Programa</a>
-          <a href="/pacote">Pacote</a>
-          <a href="/spotify">Spotify</a>
-          <a href="/jogos">Jogos</a>
-          <a href="/#participar">Participar</a>
+          <Link href="/#autoridade">Autoridade</Link>
+          <Link href="/#programa">Programa</Link>
+          <Link href="/pacote">Pacote</Link>
+          <Link href="/spotify">Spotify</Link>
+          <Link href="/jogos">Jogos</Link>
+          <Link href="/#participar">Participar</Link>
         </nav>
         <a className="nav-cta" href={whatsappUrl} target="_blank" rel="noopener">
           Quero participar
