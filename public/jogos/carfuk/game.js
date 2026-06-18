@@ -1421,6 +1421,7 @@ const state = {
   ended: false,
   raceResultsOpen: false,
   finishWatchAnnounced: false,
+  lastFinishFlagAt: -999,
   time: 0,
   last: 0,
   renderScale: 1,
@@ -3474,6 +3475,7 @@ function startRace(options = {}) {
   state.fpsTimer = 0;
   state.raceResultsOpen = false;
   state.finishWatchAnnounced = false;
+  state.lastFinishFlagAt = -999;
   hideRaceResults();
   recenterCamera(true);
   state.running = true;
@@ -3844,6 +3846,7 @@ function finishRace(racer) {
   const humanLabel = racer.player ? racer.controls.label : "Rival";
   const racerLabel = racer.player ? `${humanLabel} ${racer.name}`.trim() : racer.name;
   const keepWatching = !allFinished && state.racers.some((entry) => !entry.finished);
+  state.lastFinishFlagAt = state.time;
 
   if (racer.player) {
     showMessage(
@@ -4913,6 +4916,7 @@ function drawTracksideProps() {
     }
   }
   drawTrackCrowd();
+  drawFinishMarshal();
 }
 
 function crowdFlagPalette() {
@@ -4960,18 +4964,26 @@ function drawTrackCrowd() {
 
 function crowdPointOutsideTrack(track, progress, side, seed) {
   const road = track.level.road;
-  const offsets = [190, 260, 340, 430, 540];
+  const offsets = [72, 96, 124, 158, 198, 246, 310];
+  return findSafeTracksidePoint(track, progress, side, offsets, seed, Math.max(54, road * 0.28));
+}
+
+function findSafeTracksidePoint(track, progress, side, offsets, seed = 0, margin = 58) {
+  const road = track.level.road;
   for (const offset of offsets) {
-    const lane = side * (road / 2 + offset + ((seed % 3) * 18));
+    const lane = side * (road / 2 + offset + ((seed % 3) * 10));
     const p = pointAt(track, progress, lane);
-    if (isCrowdPointClear(track, p.x, p.y)) return p;
+    if (isTracksidePointClear(track, p.x, p.y, margin)) return p;
   }
   return null;
 }
 
 function isCrowdPointClear(track, x, y) {
-  const margin = Math.max(118, track.level.road * 0.62);
-  if (x < 38 || y < 38 || x > WORLD.w - 38 || y > WORLD.h - 38) return false;
+  return isTracksidePointClear(track, x, y, Math.max(54, track.level.road * 0.28));
+}
+
+function isTracksidePointClear(track, x, y, margin = 58) {
+  if (x < 44 || y < 44 || x > WORLD.w - 44 || y > WORLD.h - 44) return false;
   const nearest = project(track, x, y);
   if (nearest.distance < track.level.road / 2 + margin) return false;
   const shortcut = projectShortcutRoads(track.level, x, y);
@@ -4979,7 +4991,204 @@ function isCrowdPointClear(track, x, y) {
     const shortcutWidth = track.level.shortcutRoadWidth || track.level.road * 0.78;
     if (shortcut.distance < shortcutWidth / 2 + margin) return false;
   }
+  if (isUnsafeTracksideTerrain(track.level, x, y, margin)) return false;
   return true;
+}
+
+function isUnsafeTracksideTerrain(level, x, y, margin = 58) {
+  const theme = level.theme;
+  if (["island", "bridge", "rock", "ruins", "ancient", "morro", "canyon"].includes(theme)) {
+    if (!insideRect(x, y, 115 + margin * 0.18, 105 + margin * 0.18, WORLD.w - 230 - margin * 0.36, WORLD.h - 210 - margin * 0.36)) return true;
+  }
+  if (theme === "bridge" && pointNearBridgeWaterChannel(x, y, margin)) return true;
+  if (theme === "waters" && pointNearWatersChannel(x, y, margin)) return true;
+  if (theme === "jungle" && pointNearJungleWater(x, y, margin)) return true;
+  if (theme === "racetrack" && !level.plusArenaBase && !level.plusCircuitBase && !level.plusFigureEightBase && !level.plusGardenCircuitBase && !level.plusVillageCircuitBase && !level.plusAerialMazeBase && pointNearRacewayPool(x, y, margin)) return true;
+  if (theme === "death" && !insideRect(x, y, 115, 105, WORLD.w - 230, WORLD.h - 210)) return true;
+  return false;
+}
+
+function insideRect(x, y, rx, ry, rw, rh) {
+  return x >= rx && y >= ry && x <= rx + rw && y <= ry + rh;
+}
+
+function pointInPolygon(x, y, points, margin = 0) {
+  let inside = false;
+  for (let i = 0, j = points.length - 1; i < points.length; j = i++) {
+    const xi = points[i][0], yi = points[i][1];
+    const xj = points[j][0], yj = points[j][1];
+    const intersect = ((yi > y) !== (yj > y)) && x < ((xj - xi) * (y - yi)) / ((yj - yi) || 1e-6) + xi;
+    if (intersect) inside = !inside;
+  }
+  if (inside) return true;
+  if (margin <= 0) return false;
+  for (let i = 0; i < points.length; i++) {
+    const a = points[i];
+    const b = points[(i + 1) % points.length];
+    if (distanceToSegment(x, y, a[0], a[1], b[0], b[1]) < margin) return true;
+  }
+  return false;
+}
+
+function distanceToSegment(px, py, ax, ay, bx, by) {
+  const dx = bx - ax;
+  const dy = by - ay;
+  const len2 = dx * dx + dy * dy || 1;
+  const t = clamp(((px - ax) * dx + (py - ay) * dy) / len2, 0, 1);
+  const x = ax + dx * t;
+  const y = ay + dy * t;
+  return Math.hypot(px - x, py - y);
+}
+
+function pointInRotatedEllipse(px, py, cx, cy, rx, ry, rot = 0, margin = 0) {
+  const cos = Math.cos(-rot);
+  const sin = Math.sin(-rot);
+  const dx = px - cx;
+  const dy = py - cy;
+  const x = dx * cos - dy * sin;
+  const y = dx * sin + dy * cos;
+  const safeRx = Math.max(1, rx + margin);
+  const safeRy = Math.max(1, ry + margin);
+  return (x * x) / (safeRx * safeRx) + (y * y) / (safeRy * safeRy) <= 1;
+}
+
+function pointNearRacewayPool(x, y, margin = 58) {
+  const pools = [
+    [780, 455, 210, 120, -0.18],
+    [840, 860, 230, 145, 0.2],
+    [1440, 470, 250, 130, 0.08],
+    [1660, 900, 275, 150, -0.18],
+    [2120, 650, 150, 310, 0.08],
+  ];
+  return pools.some(([cx, cy, rx, ry, rot]) => pointInRotatedEllipse(x, y, cx, cy, rx, ry, rot, margin));
+}
+
+function pointNearWatersChannel(x, y, margin = 58) {
+  const channels = [
+    [[80, 390], [560, 250], [960, 590], [1450, 420], [2320, 500], [2360, 750], [1650, 720], [1080, 880], [540, 650], [80, 720]],
+    [[140, 1000], [650, 850], [940, 1120], [1370, 960], [1770, 1090], [2260, 930], [2360, 1190], [1720, 1320], [1180, 1230], [650, 1390], [120, 1280]],
+    [[960, 120], [1260, 210], [1510, 160], [1840, 230], [2130, 160], [2290, 330], [1780, 410], [1280, 360], [940, 300]],
+  ];
+  return channels.some((poly) => pointInPolygon(x, y, poly, margin));
+}
+
+function pointNearBridgeWaterChannel(x, y, margin = 58) {
+  const channel = [[95, 560], [480, 470], [740, 660], [1040, 560], [1350, 450], [1680, 420], [2380, 530], [2380, 730], [1760, 650], [1300, 670], [1040, 780], [680, 930], [410, 730], [95, 820]];
+  return pointInPolygon(x, y, channel, margin);
+}
+
+function pointNearJungleWater(x, y, margin = 58) {
+  const river = [[0, 460], [360, 430], [690, 620], [1020, 540], [1380, 470], [1780, 560], [2180, 440], [2500, 470], [2500, 700], [2120, 660], [1750, 760], [1370, 650], [1040, 720], [680, 820], [330, 610], [0, 700]];
+  if (pointInPolygon(x, y, river, margin)) return true;
+  return pointInRotatedEllipse(x, y, 1740, 300, 170, 220, 0.05, margin);
+}
+
+function drawFinishMarshal() {
+  const track = state.track;
+  if (!track) return;
+  const activeWave = clamp(1 - (state.time - state.lastFinishFlagAt) / 4.8, 0, 1);
+  const p = finishMarshalPoint(track);
+  if (!p) return;
+  drawFinishFlagMan(p.x, p.y, p.angle, p.side, activeWave);
+}
+
+function finishMarshalSide(track) {
+  return finishMarshalPoint(track)?.side || -1;
+}
+
+function finishMarshalPoint(track) {
+  const margin = Math.max(72, track.level.road * 0.36);
+  const offsets = [72, 92, 122, 158, 204, 260, 330];
+  const progressCandidates = [28, 0, 60, track.length - 40, track.length - 90, 110];
+  for (const progress of progressCandidates) {
+    for (const side of [-1, 1]) {
+      const p = findSafeTracksidePoint(track, progress, side, offsets, 1, margin);
+      if (p) return { ...p, side };
+    }
+  }
+  return null;
+}
+
+function drawFinishFlagMan(x, y, angle, side, activeWave = 0) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(angle);
+  ctx.fillStyle = "rgba(0,0,0,0.26)";
+  ctx.beginPath();
+  ctx.ellipse(0, side * 18, 18, 7, 0, 0, TAU);
+  ctx.fill();
+
+  const cheer = Math.sin(state.time * (activeWave > 0 ? 12 : 3.5)) * (0.18 + activeWave * 0.9);
+  ctx.strokeStyle = "#141923";
+  ctx.lineWidth = 4;
+  ctx.lineCap = "round";
+  ctx.beginPath();
+  ctx.moveTo(-8, side * 6);
+  ctx.lineTo(-13, side * 28);
+  ctx.moveTo(8, side * 6);
+  ctx.lineTo(13, side * 28);
+  ctx.moveTo(-9, -side * 8);
+  ctx.lineTo(-20, -side * (22 + activeWave * 8));
+  ctx.moveTo(8, -side * 8);
+  ctx.lineTo(26, -side * (26 + activeWave * 18));
+  ctx.stroke();
+
+  ctx.fillStyle = "#ffffff";
+  roundRect(ctx, -11, -side * 8 - 12, 22, 27, 6);
+  ctx.fill();
+  ctx.fillStyle = "#111923";
+  ctx.fillRect(-9, -side * 6 - 9, 18, 7);
+  ctx.fillStyle = "#ffd2a7";
+  ctx.beginPath();
+  ctx.arc(0, -side * 25, 7, 0, TAU);
+  ctx.fill();
+  ctx.fillStyle = "#171923";
+  ctx.fillRect(-8, -side * 34, 16, 6);
+
+  ctx.save();
+  ctx.translate(26, -side * (28 + activeWave * 18));
+  ctx.rotate(-side * (0.7 + cheer * 0.45));
+  drawCheckeredFlagShape(side, activeWave);
+  ctx.restore();
+  ctx.restore();
+}
+
+function drawCheckeredFlagShape(side, activeWave = 0) {
+  ctx.strokeStyle = "#111923";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(0, side * 18);
+  ctx.lineTo(0, -side * 34);
+  ctx.stroke();
+  ctx.translate(0, -side * 34);
+  ctx.scale(1, side);
+  const w = 58;
+  const h = 34;
+  const wave = Math.sin(state.time * (8 + activeWave * 7)) * (3 + activeWave * 8);
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.bezierCurveTo(w * 0.32, -7 + wave, w * 0.66, 8 - wave, w, 0);
+  ctx.lineTo(w, h);
+  ctx.bezierCurveTo(w * 0.66, h + 7 - wave, w * 0.32, h - 8 + wave, 0, h);
+  ctx.closePath();
+  ctx.fillStyle = "#f8fbff";
+  ctx.fill();
+  const cols = 4;
+  const rows = 3;
+  ctx.save();
+  ctx.clip();
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if ((r + c) % 2 === 0) {
+        ctx.fillStyle = "#070707";
+        ctx.fillRect((w / cols) * c, (h / rows) * r, w / cols + 1, h / rows + 1);
+      }
+    }
+  }
+  ctx.restore();
+  ctx.strokeStyle = "rgba(255,255,255,0.45)";
+  ctx.lineWidth = 1.3;
+  ctx.stroke();
 }
 
 function drawSpectatorGroup(x, y, angle, side, count, color, dzFlag, seed, amplitude) {
