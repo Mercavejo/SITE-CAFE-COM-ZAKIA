@@ -12,6 +12,8 @@ type Interview = {
   resumo: string;
   objetivo: string;
   temas: string;
+  temasProibidos: string;
+  observacoes: string;
   criadoEm: string;
 };
 
@@ -95,6 +97,37 @@ function fileToDataUrl(file: File) {
   });
 }
 
+function buildGrokPrompt(interview: Interview) {
+  return `Você é um produtor de entrevistas virais para o podcast Café com Zákia.
+
+Monte perguntas com alto potencial de cortes curtos, reels e debates fortes.
+
+ENTREVISTADO
+Nome: ${interview.nome}
+Links, redes e entrevistas anteriores: ${interview.links || "não informado"}
+
+BASE DA ENTREVISTA
+Estilo desejado: ${interview.estilo || "viral equilibrada"}
+Resumo da pessoa: ${interview.resumo || "não informado"}
+Objetivo da conversa: ${interview.objetivo || "gerar uma entrevista relevante e compartilhável"}
+Temas principais: ${interview.temas || "carreira, opinião, bastidores e momentos de decisão"}
+Temas proibidos ou delicados: ${interview.temasProibidos || "nenhum informado"}
+Observações do apresentador: ${interview.observacoes || "não informado"}
+
+TAREFA
+1. Pesquise e considere o contexto público disponível sobre essa pessoa, os links acima e entrevistas anteriores.
+2. Não invente fatos, cargos, polêmicas, crimes, frases ou acusações. Se algo não estiver confirmado, transforme em pergunta neutra.
+3. Crie 40 perguntas virais, diretas e fortes, separadas por tema.
+4. Cada pergunta deve caber em um card de TV 16:9, com texto curto e impacto imediato.
+5. Misture perguntas de confronto, emoção, bastidores, carreira, opinião e frases que possam viralizar.
+6. Evite acusações sem base, ataque pessoal gratuito e assuntos listados como proibidos.
+7. Antes da lista, avise rapidamente quais informações públicas parecem mais relevantes para guiar a entrevista.
+8. Entregue as perguntas em lista simples, uma pergunta por linha, sem explicação longa.
+
+Formato de saída:
+[Tema] Pergunta?`;
+}
+
 export function SorteioApp() {
   const [step, setStep] = useState<Step>("entrevista");
   const [interview, setInterview] = useState<Interview | null>(null);
@@ -106,6 +139,7 @@ export function SorteioApp() {
   const [current, setCurrent] = useState<QuestionCard | null>(null);
   const [tvOpen, setTvOpen] = useState(false);
   const [status, setStatus] = useState("Pronto");
+  const [copied, setCopied] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const themes = useMemo(() => {
@@ -120,6 +154,8 @@ export function SorteioApp() {
     () => questions.filter((question) => question.tema === tema),
     [questions, tema],
   );
+
+  const grokPrompt = useMemo(() => (interview ? buildGrokPrompt(interview) : ""), [interview]);
 
   useEffect(() => {
     try {
@@ -154,6 +190,8 @@ export function SorteioApp() {
       resumo: String(form.get("resumo") || "").trim(),
       objetivo: String(form.get("objetivo") || "").trim(),
       temas: String(form.get("temas") || "").trim(),
+      temasProibidos: String(form.get("temasProibidos") || "").trim(),
+      observacoes: String(form.get("observacoes") || "").trim(),
       criadoEm: new Date().toISOString(),
     };
 
@@ -163,8 +201,20 @@ export function SorteioApp() {
     }
 
     setInterview(data);
-    setStatus(`Entrevista preparada: ${data.nome}`);
-    setStep("perguntas");
+    setCopied(false);
+    setStatus(`Base salva e prompt gerado para ${data.nome}.`);
+    setStep("entrevista");
+  }
+
+  async function copyGrokPrompt() {
+    if (!grokPrompt) {
+      setStatus("Salve a base da entrevista primeiro.");
+      return;
+    }
+
+    await navigator.clipboard.writeText(grokPrompt);
+    setCopied(true);
+    setStatus("Prompt copiado para o Grok.");
   }
 
   async function generateImage(text: string, index: number) {
@@ -334,6 +384,7 @@ export function SorteioApp() {
     setDrawnIds([]);
     setCurrent(null);
     setQuestionText("");
+    setCopied(false);
     setStep("entrevista");
     setStatus("Nova entrevista iniciada.");
   }
@@ -404,23 +455,59 @@ export function SorteioApp() {
 
         <section className="sorteio-content">
           {step === "entrevista" ? (
-            <form className="sorteio-card sorteio-form" onSubmit={saveInterview}>
+            <form
+              className="sorteio-card sorteio-form"
+              key={interview?.criadoEm || "nova-entrevista"}
+              onSubmit={saveInterview}
+            >
               <h2>Preparar entrevista</h2>
-              <input name="nome" placeholder="Nome do entrevistado" required />
-              <select name="estilo" defaultValue="Polêmica viral">
+              <input defaultValue={interview?.nome || ""} name="nome" placeholder="Nome do entrevistado" required />
+              <select name="estilo" defaultValue={interview?.estilo || "Polêmica viral"}>
                 <option>Polêmica viral</option>
                 <option>Confronto direto</option>
                 <option>Emocional e humana</option>
                 <option>Carreira e bastidores</option>
                 <option>Leve com cortes virais</option>
               </select>
-              <textarea name="links" placeholder="Links das redes, site e entrevistas anteriores" />
-              <textarea name="resumo" placeholder="Resumo sobre a pessoa" />
-              <textarea name="objetivo" placeholder="Objetivo da conversa" />
-              <input name="temas" placeholder="Temas principais separados por vírgula" />
+              <textarea
+                defaultValue={interview?.links || ""}
+                name="links"
+                placeholder="Links das redes, site e entrevistas anteriores"
+              />
+              <textarea defaultValue={interview?.resumo || ""} name="resumo" placeholder="Resumo sobre a pessoa" />
+              <textarea defaultValue={interview?.objetivo || ""} name="objetivo" placeholder="Objetivo da conversa" />
+              <input
+                defaultValue={interview?.temas || ""}
+                name="temas"
+                placeholder="Temas principais: segurança, corrupção, carreira..."
+              />
+              <input
+                defaultValue={interview?.temasProibidos || ""}
+                name="temasProibidos"
+                placeholder="Temas proibidos/delicados, se tiver"
+              />
+              <textarea
+                defaultValue={interview?.observacoes || ""}
+                name="observacoes"
+                placeholder="Observações livres para orientar a entrevista"
+              />
               <button className="sorteio-primary" type="submit">
-                Salvar base e avançar
+                Salvar base e gerar prompt do Grok
               </button>
+              {grokPrompt ? (
+                <div className="sorteio-prompt-box">
+                  <div>
+                    <h3>Prompt pronto para o Grok</h3>
+                    <button className="sorteio-secondary" onClick={copyGrokPrompt} type="button">
+                      {copied ? "Prompt copiado" : "Copiar prompt"}
+                    </button>
+                  </div>
+                  <textarea readOnly value={grokPrompt} />
+                  <button className="sorteio-primary" onClick={() => setStep("perguntas")} type="button">
+                    Ir para criar perguntas
+                  </button>
+                </div>
+              ) : null}
             </form>
           ) : null}
 

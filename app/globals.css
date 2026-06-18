@@ -461,8 +461,43 @@ nav a:hover,
 .sorteio-form h2,
 .sorteio-form textarea,
 .sorteio-form input[name="temas"],
+.sorteio-form input[name="temasProibidos"],
 .sorteio-form button {
   grid-column: 1 / -1;
+}
+
+.sorteio-prompt-box {
+  grid-column: 1 / -1;
+  display: grid;
+  gap: 14px;
+  margin-top: 14px;
+  padding-top: 22px;
+  border-top: 1px solid rgba(255, 226, 138, 0.18);
+}
+
+.sorteio-prompt-box > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sorteio-prompt-box h3 {
+  margin: 0;
+  color: var(--white);
+  font-size: 1.25rem;
+}
+
+.sorteio-prompt-box textarea {
+  min-height: 330px;
+  font-family: Consolas, "Courier New", monospace;
+  line-height: 1.55;
+}
+
+.sorteio-prompt-box .sorteio-secondary {
+  width: auto;
+  min-width: 150px;
 }
 
 .sorteio-primary,
