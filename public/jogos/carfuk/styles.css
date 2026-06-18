@@ -2729,25 +2729,31 @@ select,
 }
 
 #menu .race-group[open] {
-  max-height: 492px;
-  overflow: hidden;
+  max-height: min(78dvh, 720px);
+  overflow: visible;
 }
 
 #menu .race-group[open] > .group-content {
-  max-height: 438px;
+  max-height: min(70dvh, 650px);
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding-right: 8px;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
 }
 
 #menu .controls-group[open] {
-  max-height: 360px;
-  overflow: hidden;
+  max-height: min(78dvh, 720px);
+  overflow: visible;
 }
 
 #menu .controls-group[open] > .group-content {
-  max-height: 306px;
+  max-height: min(70dvh, 650px);
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding-right: 8px;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
 }
 
 #menu .race-modes,
@@ -2766,9 +2772,55 @@ select,
 }
 
 #menu .levels {
-  max-height: 185px;
+  max-height: clamp(250px, 42dvh, 440px);
   overflow-y: auto;
-  padding-right: 3px;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
+}
+
+#menu .race-modes,
+#menu .players,
+#menu .cameras {
+  max-height: clamp(170px, 31dvh, 330px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 6px;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
+}
+
+#menu .control-grid,
+#menu .graphics-grid {
+  max-height: min(52dvh, 520px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
+}
+
+#menu .online-actions,
+#menu .online-players {
+  max-height: min(42dvh, 390px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 8px;
+  scrollbar-gutter: stable;
+  touch-action: pan-y;
+}
+
+#menu .levels:focus,
+#menu .race-modes:focus,
+#menu .players:focus,
+#menu .cameras:focus,
+#menu .control-grid:focus,
+#menu .graphics-grid:focus,
+#menu .online-actions:focus,
+#menu .online-players:focus {
+  outline: 2px solid rgba(122, 255, 240, 0.82);
+  outline-offset: 3px;
 }
 
 #menu .race-modes .choice,
@@ -5145,4 +5197,63 @@ select,
   #menu .garage-console .vehicle-group .choices {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
+/* Ultimate menu picker scroll fix 2026-06-18: must be the last menu rule. */
+#menu .race-group[open],
+#menu .controls-group[open],
+#menu .online-group[open] {
+  max-height: min(78dvh, 720px) !important;
+  overflow: visible !important;
+}
+
+#menu .race-group[open] > .group-content,
+#menu .controls-group[open] > .group-content,
+#menu .online-group[open] > .group-content {
+  max-height: min(70dvh, 650px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+  touch-action: pan-y !important;
+}
+
+#menu .levels {
+  max-height: clamp(250px, 42dvh, 440px) !important;
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  padding-right: 8px !important;
+  scrollbar-gutter: stable !important;
+  touch-action: pan-y !important;
+}
+
+#menu .race-modes,
+#menu .players,
+#menu .cameras,
+#menu .control-grid,
+#menu .graphics-grid,
+#menu .online-actions,
+#menu .online-players {
+  overflow-y: auto !important;
+  overscroll-behavior: contain !important;
+  scrollbar-gutter: stable !important;
+  touch-action: pan-y !important;
+}
+
+#menu .levels:focus,
+#menu .race-modes:focus,
+#menu .players:focus,
+#menu .cameras:focus,
+#menu .control-grid:focus,
+#menu .graphics-grid:focus,
+#menu .online-actions:focus,
+#menu .online-players:focus {
+  outline: 2px solid rgba(122, 255, 240, 0.82);
+  outline-offset: 3px;
+}
+/* Absolute last guard: track picker must accept mouse, wheel and touch scrolling. */
+#menu #levelChoices.levels {
+  overflow: auto !important;
+  overflow-y: auto !important;
+  max-height: clamp(250px, 42dvh, 440px) !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
 }

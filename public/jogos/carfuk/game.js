@@ -3133,6 +3133,7 @@ function setupMenu() {
     });
     levelChoices.appendChild(btn);
   });
+  prepareScrollableMenuList(levelChoices, "Escolher pista do jogo");
 
   cameraChoices.innerHTML = "";
   cameraModes.forEach((mode, i) => {
@@ -3147,11 +3148,38 @@ function setupMenu() {
     });
     cameraChoices.appendChild(btn);
   });
+  [
+    [carChoices, "Escolher veiculo"],
+    [raceModeChoices, "Modo de corrida"],
+    [playerChoices, "Jogadores locais"],
+    [cameraChoices, "Camera do jogo"],
+    [controlChoices, "Configurar controles"],
+    [graphicsChoices, "Graficos"],
+    [onlinePlayers, "Jogadores online"],
+  ].forEach(([element, label]) => prepareScrollableMenuList(element, label));
   updateCameraButton();
   updateMusicButton();
   probeMusicAssets();
   updateSystemStatus();
   renderOnlinePlayers();
+}
+
+function prepareScrollableMenuList(element, label) {
+  if (!element) return;
+  element.tabIndex = 0;
+  element.setAttribute("aria-label", label);
+  if (element.dataset.scrollReady === "1") return;
+  element.addEventListener("wheel", (event) => {
+    if (element.scrollHeight <= element.clientHeight + 1) return;
+    const atTop = element.scrollTop <= 0;
+    const atBottom = element.scrollTop + element.clientHeight >= element.scrollHeight - 1;
+    const wantsUp = event.deltaY < 0;
+    const wantsDown = event.deltaY > 0;
+    if ((wantsUp && !atTop) || (wantsDown && !atBottom)) {
+      event.stopPropagation();
+    }
+  }, { passive: true });
+  element.dataset.scrollReady = "1";
 }
 
 function currentGraphicsMode() {
