@@ -128,6 +128,28 @@ Formato de saída:
 [Tema] Pergunta?`;
 }
 
+function buildStarterQuestions(interview: Interview) {
+  const themes = interview.temas
+    .split(/[,;\n]+/)
+    .map((item) => item.trim())
+    .filter(Boolean);
+  const mainTheme = themes[0] || "Carreira";
+  const name = interview.nome;
+
+  return [
+    `[${mainTheme}] ${name}, qual foi o momento em que você quase desistiu e ninguém percebeu?`,
+    `[${mainTheme}] Qual decisão da sua carreira você tomaria de novo, mesmo sabendo o preço que pagou?`,
+    `[${mainTheme}] O que as pessoas elogiam em você, mas não sabem o quanto custou nos bastidores?`,
+    `[${mainTheme}] Qual pergunta você acha que todo mundo tem vontade de te fazer, mas evita?`,
+    "[Bastidores] Qual bastidor da sua trajetória daria um corte forte para as redes sociais?",
+    "[Bastidores] Qual foi o maior erro que virou aprendizado real?",
+    "[Opinião] Que assunto todo mundo comenta, mas pouca gente tem coragem de falar com sinceridade?",
+    "[Confronto] O que você responderia para quem duvida do seu trabalho?",
+    "[Emocional] Qual memória ainda te emociona quando você fala sobre sua caminhada?",
+    "[Viral] Se esse corte viralizar amanhã, qual frase você quer que fique marcada?",
+  ];
+}
+
 export function SorteioApp() {
   const [step, setStep] = useState<Step>("entrevista");
   const [interview, setInterview] = useState<Interview | null>(null);
@@ -177,7 +199,13 @@ export function SorteioApp() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify({ interview, questions, tema }));
+    try {
+      localStorage.setItem(storageKey, JSON.stringify({ interview, questions, tema }));
+    } catch {
+      window.requestAnimationFrame(() =>
+        setStatus("Perguntas criadas para esta sessão. O navegador não conseguiu salvar tudo porque as imagens ficaram pesadas."),
+      );
+    }
   }, [interview, questions, tema]);
 
   function saveInterview(event: FormEvent<HTMLFormElement>) {
@@ -287,20 +315,15 @@ export function SorteioApp() {
     ctx.fillStyle = "#fff6d4";
     ctx.fillText("cafecomzakia.com.br", width - 150, 940);
 
-    return canvas.toDataURL("image/png");
+    return canvas.toDataURL("image/jpeg", 0.82);
   }
 
-  async function createCards() {
+  async function createCardsFromLines(lines: string[], sourceTema = tema) {
     if (!interview) {
       setStatus("Prepare a entrevista antes de criar perguntas.");
       setStep("entrevista");
       return;
     }
-
-    const lines = questionText
-      .split(/\n+/)
-      .map((line) => line.trim())
-      .filter(Boolean);
 
     if (!lines.length) {
       setStatus("Cole pelo menos uma pergunta.");
@@ -313,7 +336,7 @@ export function SorteioApp() {
       const title = lines[index];
       created.push({
         id: createId(),
-        tema,
+        tema: sourceTema,
         titulo: title,
         image: await generateImage(title, questions.length + index + 1),
         origem: "texto",
@@ -325,6 +348,28 @@ export function SorteioApp() {
     setQuestionText("");
     setStatus(`${created.length} pergunta(s) criada(s).`);
     setStep("banco");
+  }
+
+  async function createCards() {
+    const lines = questionText
+      .split(/\n+/)
+      .map((line) => line.trim())
+      .filter(Boolean);
+
+    await createCardsFromLines(lines);
+  }
+
+  async function createAutomaticQuestions() {
+    if (!interview) {
+      setStatus("Salve a base da entrevista primeiro.");
+      return;
+    }
+
+    const automaticQuestions = buildStarterQuestions(interview);
+    const firstTheme = automaticQuestions[0]?.match(/^\[([^\]]+)\]/)?.[1] || tema;
+    setTema(firstTheme);
+    await createCardsFromLines(automaticQuestions, firstTheme);
+    setStatus(`${automaticQuestions.length} perguntas automáticas criadas no site.`);
   }
 
   async function importImages(event: ChangeEvent<HTMLInputElement>) {
@@ -498,14 +543,19 @@ export function SorteioApp() {
                 <div className="sorteio-prompt-box">
                   <div>
                     <h3>Prompt pronto para o Grok</h3>
-                    <button className="sorteio-secondary" onClick={copyGrokPrompt} type="button">
+                  <button className="sorteio-secondary" onClick={copyGrokPrompt} type="button">
                       {copied ? "Prompt copiado" : "Copiar prompt"}
                     </button>
                   </div>
                   <textarea readOnly value={grokPrompt} />
-                  <button className="sorteio-primary" onClick={() => setStep("perguntas")} type="button">
-                    Ir para criar perguntas
-                  </button>
+                  <div className="sorteio-prompt-actions">
+                    <button className="sorteio-primary" onClick={createAutomaticQuestions} type="button">
+                      Criar perguntas automáticas no site
+                    </button>
+                    <button className="sorteio-secondary" onClick={() => setStep("perguntas")} type="button">
+                      Colar resposta do Grok manualmente
+                    </button>
+                  </div>
                 </div>
               ) : null}
             </form>

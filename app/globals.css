@@ -500,6 +500,12 @@ nav a:hover,
   min-width: 150px;
 }
 
+.sorteio-prompt-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .sorteio-primary,
 .sorteio-secondary,
 .sorteio-upload {
