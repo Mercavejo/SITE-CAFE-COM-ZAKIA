@@ -121,8 +121,16 @@ TAREFA
 4. Cada pergunta deve caber em um card de TV 16:9, com texto curto e impacto imediato.
 5. Misture perguntas de confronto, emoção, bastidores, carreira, opinião e frases que possam viralizar.
 6. Evite acusações sem base, ataque pessoal gratuito e assuntos listados como proibidos.
-7. Antes da lista, avise rapidamente quais informações públicas parecem mais relevantes para guiar a entrevista.
-8. Entregue as perguntas em lista simples, uma pergunta por linha, sem explicação longa.
+7. Use no máximo 140 caracteres por pergunta.
+
+REGRAS DE RESPOSTA OBRIGATÓRIAS
+- Responda SOMENTE com as perguntas.
+- Não escreva introdução, análise, explicação, saudação, resumo, fontes, títulos extras, markdown, numeração ou bullets.
+- Não coloque texto antes nem depois da lista.
+- Não use aspas nas perguntas.
+- A resposta precisa estar pronta para copiar e colar diretamente no sistema.
+- Escreva uma pergunta por linha.
+- Cada linha deve seguir exatamente este formato: [Tema] Pergunta?
 
 Formato de saída:
 [Tema] Pergunta?`;
@@ -148,6 +156,26 @@ function buildStarterQuestions(interview: Interview) {
     "[Emocional] Qual memória ainda te emociona quando você fala sobre sua caminhada?",
     "[Viral] Se esse corte viralizar amanhã, qual frase você quer que fique marcada?",
   ];
+}
+
+function parseQuestionLine(line: string, fallbackTema: string) {
+  const cleaned = line
+    .trim()
+    .replace(/^(?:[-*•]\s*|\d+[.)]\s*)/, "")
+    .replace(/^["'“”]+|["'“”]+$/g, "")
+    .trim();
+
+  if (!cleaned) return null;
+  if (/^(claro|segue|aqui est[aã]o|perfeito|lista de perguntas|perguntas prontas)\b/i.test(cleaned)) {
+    return null;
+  }
+
+  const match = cleaned.match(/^\[([^\]]{2,50})\]\s*(.+)$/);
+  const temaLine = match?.[1]?.trim() || fallbackTema;
+  const titulo = (match?.[2] || cleaned).trim();
+
+  if (!titulo) return null;
+  return { tema: temaLine, titulo };
 }
 
 export function SorteioApp() {
@@ -325,26 +353,31 @@ export function SorteioApp() {
       return;
     }
 
-    if (!lines.length) {
+    const parsedLines = lines
+      .map((line) => parseQuestionLine(line, sourceTema))
+      .filter((line): line is { tema: string; titulo: string } => Boolean(line));
+
+    if (!parsedLines.length) {
       setStatus("Cole pelo menos uma pergunta.");
       return;
     }
 
     setStatus("Criando imagens...");
     const created: QuestionCard[] = [];
-    for (let index = 0; index < lines.length; index += 1) {
-      const title = lines[index];
+    for (let index = 0; index < parsedLines.length; index += 1) {
+      const item = parsedLines[index];
       created.push({
         id: createId(),
-        tema: sourceTema,
-        titulo: title,
-        image: await generateImage(title, questions.length + index + 1),
+        tema: item.tema,
+        titulo: item.titulo,
+        image: await generateImage(item.titulo, questions.length + index + 1),
         origem: "texto",
         criadoEm: new Date().toISOString(),
       });
     }
 
     setQuestions((items) => [...created, ...items]);
+    if (created[0]) setTema(created[0].tema);
     setQuestionText("");
     setStatus(`${created.length} pergunta(s) criada(s).`);
     setStep("banco");
@@ -566,7 +599,7 @@ export function SorteioApp() {
               <h2>Criar ou importar perguntas</h2>
               <textarea
                 className="sorteio-question-input"
-                placeholder="Cole perguntas do Grok, uma por linha."
+                placeholder="Cole aqui a resposta do Grok. Use uma por linha: [Tema] Pergunta?"
                 value={questionText}
                 onChange={(event) => setQuestionText(event.target.value)}
               />
