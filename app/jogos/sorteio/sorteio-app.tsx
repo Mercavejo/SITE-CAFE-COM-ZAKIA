@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { Mic, Square } from "lucide-react";
 
 type Step = "entrevista" | "perguntas" | "banco" | "sorteio";
 
@@ -25,6 +26,48 @@ type QuestionCard = {
   origem: "texto" | "imagem";
   criadoEm: string;
 };
+
+type VoiceFieldProps = {
+  as?: "input" | "textarea";
+  className?: string;
+  defaultValue?: string;
+  listeningField: string | null;
+  name: string;
+  placeholder: string;
+  required?: boolean;
+  startVoice: (fieldName: string, currentValue: string, setValue: (value: string) => void) => void;
+  stopVoice: () => void;
+};
+
+type SpeechRecognitionConstructor = new () => {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onend: (() => void) | null;
+  onerror: (() => void) | null;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  start: () => void;
+  stop: () => void;
+};
+
+type SpeechRecognitionEvent = {
+  results: {
+    length: number;
+    [index: number]: {
+      [index: number]: {
+        transcript: string;
+      };
+      isFinal: boolean;
+    };
+  };
+};
+
+declare global {
+  interface Window {
+    SpeechRecognition?: SpeechRecognitionConstructor;
+    webkitSpeechRecognition?: SpeechRecognitionConstructor;
+  }
+}
 
 const storageKey = "cafe-zakia-sorteio-online";
 const defaultThemes = ["Carreira", "Política", "Segurança", "Corrupção", "Perguntas Virais"];
@@ -178,6 +221,52 @@ function parseQuestionLine(line: string, fallbackTema: string) {
   return { tema: temaLine, titulo };
 }
 
+function appendVoiceText(currentValue: string, transcript: string) {
+  const cleanTranscript = transcript.trim();
+  if (!cleanTranscript) return currentValue;
+  if (!currentValue.trim()) return cleanTranscript;
+
+  const separator = currentValue.includes("\n") || currentValue.length > 90 ? "\n" : " ";
+  return `${currentValue.trimEnd()}${separator}${cleanTranscript}`;
+}
+
+function VoiceField({
+  as = "input",
+  className,
+  defaultValue = "",
+  listeningField,
+  name,
+  placeholder,
+  required,
+  startVoice,
+  stopVoice,
+}: VoiceFieldProps) {
+  const [value, setValue] = useState(defaultValue);
+  const isListening = listeningField === name;
+  const Element = as;
+
+  return (
+    <label className={`sorteio-voice-field ${className || ""}`}>
+      <Element
+        name={name}
+        placeholder={placeholder}
+        required={required}
+        value={value}
+        onChange={(event) => setValue(event.target.value)}
+      />
+      <button
+        aria-label={isListening ? `Parar áudio em ${placeholder}` : `Falar em ${placeholder}`}
+        className={isListening ? "is-listening" : ""}
+        onClick={() => (isListening ? stopVoice() : startVoice(name, value, setValue))}
+        title={isListening ? "Parar áudio" : "Falar neste campo"}
+        type="button"
+      >
+        {isListening ? <Square size={18} /> : <Mic size={18} />}
+      </button>
+    </label>
+  );
+}
+
 export function SorteioApp() {
   const [step, setStep] = useState<Step>("entrevista");
   const [interview, setInterview] = useState<Interview | null>(null);
@@ -190,7 +279,9 @@ export function SorteioApp() {
   const [tvOpen, setTvOpen] = useState(false);
   const [status, setStatus] = useState("Pronto");
   const [copied, setCopied] = useState(false);
+  const [listeningField, setListeningField] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const recognitionRef = useRef<InstanceType<SpeechRecognitionConstructor> | null>(null);
 
   const themes = useMemo(() => {
     const all = [...defaultThemes, ...questions.map((question) => question.tema)];
@@ -271,6 +362,56 @@ export function SorteioApp() {
     await navigator.clipboard.writeText(grokPrompt);
     setCopied(true);
     setStatus("Prompt copiado para o Grok.");
+  }
+
+  function stopVoice() {
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    setListeningField(null);
+  }
+
+  function startVoice(fieldName: string, currentValue: string, setValue: (value: string) => void) {
+    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!Recognition) {
+      setStatus("Este navegador não liberou ditado por voz. Use Chrome ou Edge atualizado.");
+      return;
+    }
+
+    stopVoice();
+    const recognition = new Recognition();
+    recognition.lang = "pt-BR";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+    recognitionRef.current = recognition;
+    setListeningField(fieldName);
+    setStatus("Ouvindo... fale agora.");
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+      for (let index = 0; index < event.results.length; index += 1) {
+        transcript += event.results[index][0]?.transcript || "";
+      }
+      setValue(appendVoiceText(currentValue, transcript));
+      setStatus("Texto inserido por áudio.");
+    };
+
+    recognition.onerror = () => {
+      setStatus("Não consegui captar o áudio. Verifique a permissão do microfone.");
+      setListeningField(null);
+    };
+
+    recognition.onend = () => {
+      setListeningField(null);
+      recognitionRef.current = null;
+    };
+
+    try {
+      recognition.start();
+    } catch {
+      setStatus("Não foi possível iniciar o microfone agora.");
+      setListeningField(null);
+      recognitionRef.current = null;
+    }
   }
 
   async function generateImage(text: string, index: number) {
@@ -539,7 +680,15 @@ export function SorteioApp() {
               onSubmit={saveInterview}
             >
               <h2>Preparar entrevista</h2>
-              <input defaultValue={interview?.nome || ""} name="nome" placeholder="Nome do entrevistado" required />
+              <VoiceField
+                defaultValue={interview?.nome || ""}
+                listeningField={listeningField}
+                name="nome"
+                placeholder="Nome do entrevistado"
+                required
+                startVoice={startVoice}
+                stopVoice={stopVoice}
+              />
               <select name="estilo" defaultValue={interview?.estilo || "Polêmica viral"}>
                 <option>Polêmica viral</option>
                 <option>Confronto direto</option>
@@ -547,27 +696,61 @@ export function SorteioApp() {
                 <option>Carreira e bastidores</option>
                 <option>Leve com cortes virais</option>
               </select>
-              <textarea
+              <VoiceField
+                as="textarea"
+                className="span-all"
                 defaultValue={interview?.links || ""}
+                listeningField={listeningField}
                 name="links"
                 placeholder="Links das redes, site e entrevistas anteriores"
+                startVoice={startVoice}
+                stopVoice={stopVoice}
               />
-              <textarea defaultValue={interview?.resumo || ""} name="resumo" placeholder="Resumo sobre a pessoa" />
-              <textarea defaultValue={interview?.objetivo || ""} name="objetivo" placeholder="Objetivo da conversa" />
-              <input
+              <VoiceField
+                as="textarea"
+                defaultValue={interview?.resumo || ""}
+                listeningField={listeningField}
+                name="resumo"
+                placeholder="Resumo sobre a pessoa"
+                startVoice={startVoice}
+                stopVoice={stopVoice}
+              />
+              <VoiceField
+                as="textarea"
+                defaultValue={interview?.objetivo || ""}
+                listeningField={listeningField}
+                name="objetivo"
+                placeholder="Objetivo da conversa"
+                startVoice={startVoice}
+                stopVoice={stopVoice}
+              />
+              <VoiceField
+                className="span-all"
                 defaultValue={interview?.temas || ""}
+                listeningField={listeningField}
                 name="temas"
                 placeholder="Temas principais: segurança, corrupção, carreira..."
+                startVoice={startVoice}
+                stopVoice={stopVoice}
               />
-              <input
+              <VoiceField
+                className="span-all"
                 defaultValue={interview?.temasProibidos || ""}
+                listeningField={listeningField}
                 name="temasProibidos"
                 placeholder="Temas proibidos/delicados, se tiver"
+                startVoice={startVoice}
+                stopVoice={stopVoice}
               />
-              <textarea
+              <VoiceField
+                as="textarea"
+                className="span-all"
                 defaultValue={interview?.observacoes || ""}
+                listeningField={listeningField}
                 name="observacoes"
                 placeholder="Observações livres para orientar a entrevista"
+                startVoice={startVoice}
+                stopVoice={stopVoice}
               />
               <button className="sorteio-primary" type="submit">
                 Salvar base e gerar prompt do Grok
@@ -597,12 +780,27 @@ export function SorteioApp() {
           {step === "perguntas" ? (
             <div className="sorteio-card">
               <h2>Criar ou importar perguntas</h2>
-              <textarea
-                className="sorteio-question-input"
-                placeholder="Cole aqui a resposta do Grok. Use uma por linha: [Tema] Pergunta?"
-                value={questionText}
-                onChange={(event) => setQuestionText(event.target.value)}
-              />
+              <label className="sorteio-voice-field sorteio-question-voice">
+                <textarea
+                  className="sorteio-question-input"
+                  placeholder="Cole aqui a resposta do Grok. Use uma por linha: [Tema] Pergunta?"
+                  value={questionText}
+                  onChange={(event) => setQuestionText(event.target.value)}
+                />
+                <button
+                  aria-label={listeningField === "questionText" ? "Parar áudio nas perguntas" : "Falar perguntas"}
+                  className={listeningField === "questionText" ? "is-listening" : ""}
+                  onClick={() =>
+                    listeningField === "questionText"
+                      ? stopVoice()
+                      : startVoice("questionText", questionText, setQuestionText)
+                  }
+                  title={listeningField === "questionText" ? "Parar áudio" : "Falar perguntas"}
+                  type="button"
+                >
+                  {listeningField === "questionText" ? <Square size={18} /> : <Mic size={18} />}
+                </button>
+              </label>
               <div className="sorteio-actions-row">
                 <button className="sorteio-primary" onClick={createCards} type="button">
                   Criar imagens

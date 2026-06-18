@@ -432,6 +432,52 @@ nav a:hover,
   resize: vertical;
 }
 
+.sorteio-voice-field {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.sorteio-form .sorteio-voice-field.span-all,
+.sorteio-question-voice {
+  grid-column: 1 / -1;
+}
+
+.sorteio-voice-field input,
+.sorteio-voice-field textarea {
+  padding-right: 58px;
+}
+
+.sorteio-voice-field button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255, 226, 138, 0.38);
+  border-radius: 6px;
+  background: rgba(255, 226, 138, 0.12);
+  color: var(--gold-light);
+  cursor: pointer;
+}
+
+.sorteio-voice-field button.is-listening {
+  background: linear-gradient(135deg, #cf2f32, #ff6868);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 0 4px rgba(255, 104, 104, 0.18);
+}
+
+.sorteio-voice-field button:hover,
+.sorteio-voice-field button:focus-visible {
+  border-color: var(--gold-light);
+  outline: none;
+}
+
 .sorteio-theme-row {
   display: grid;
   grid-template-columns: 1fr 48px;
@@ -459,10 +505,7 @@ nav a:hover,
 }
 
 .sorteio-form h2,
-.sorteio-form textarea,
-.sorteio-form input[name="temas"],
-.sorteio-form input[name="temasProibidos"],
-.sorteio-form button {
+.sorteio-form > button {
   grid-column: 1 / -1;
 }
 
@@ -2449,7 +2492,8 @@ h3 {
   .games-tool-grid,
   .sorteio-shell,
   .sorteio-form,
-  .sorteio-actions-row {
+  .sorteio-actions-row,
+  .sorteio-prompt-actions {
     grid-template-columns: 1fr;
   }
 
@@ -2461,6 +2505,18 @@ h3 {
 @media (max-width: 620px) {
   .sorteio-header {
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .sorteio-header a,
+  .sorteio-header button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .sorteio-header p {
+    letter-spacing: 0;
   }
 
   .sorteio-card-title {
@@ -2468,7 +2524,58 @@ h3 {
   }
 
   .sorteio-shell {
+    gap: 14px;
+    padding: 14px;
+  }
+
+  .sorteio-sidebar,
+  .sorteio-card {
     padding: 16px;
+  }
+
+  .sorteio-sidebar nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .sorteio-sidebar nav button {
+    min-height: 48px;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .sorteio-sidebar select,
+  .sorteio-sidebar input,
+  .sorteio-form input,
+  .sorteio-form select,
+  .sorteio-form textarea,
+  .sorteio-question-input {
+    min-height: 54px;
+    font-size: 1rem;
+  }
+
+  .sorteio-voice-field button {
+    width: 42px;
+    height: 42px;
+    top: 6px;
+    right: 6px;
+  }
+
+  .sorteio-voice-field input,
+  .sorteio-voice-field textarea {
+    padding-right: 58px;
+  }
+
+  .sorteio-prompt-box > div {
+    display: grid;
+    align-items: stretch;
+  }
+
+  .sorteio-prompt-box .sorteio-secondary {
+    width: 100%;
+  }
+
+  .sorteio-grid {
+    grid-template-columns: 1fr;
   }
 }
 
