@@ -35,7 +35,7 @@ type VoiceFieldProps = {
   name: string;
   placeholder: string;
   required?: boolean;
-  startVoice: (fieldName: string, currentValue: string, setValue: (value: string) => void) => void;
+  startVoice: (fieldName: string, currentValue: string, setValue: (value: string) => void) => void | Promise<void>;
   stopVoice: () => void;
 };
 
@@ -43,14 +43,16 @@ type SpeechRecognitionConstructor = new () => {
   continuous: boolean;
   interimResults: boolean;
   lang: string;
+  maxAlternatives: number;
   onend: (() => void) | null;
-  onerror: (() => void) | null;
+  onerror: ((event: SpeechRecognitionErrorEvent) => void) | null;
   onresult: ((event: SpeechRecognitionEvent) => void) | null;
   start: () => void;
   stop: () => void;
 };
 
 type SpeechRecognitionEvent = {
+  resultIndex: number;
   results: {
     length: number;
     [index: number]: {
@@ -60,6 +62,11 @@ type SpeechRecognitionEvent = {
       isFinal: boolean;
     };
   };
+};
+
+type SpeechRecognitionErrorEvent = {
+  error: string;
+  message?: string;
 };
 
 declare global {
@@ -230,6 +237,19 @@ function appendVoiceText(currentValue: string, transcript: string) {
   return `${currentValue.trimEnd()}${separator}${cleanTranscript}`;
 }
 
+function getVoiceErrorMessage(error: string) {
+  const messages: Record<string, string> = {
+    "not-allowed": "Microfone bloqueado. Clique no cadeado do navegador e permita o microfone para este site.",
+    "service-not-allowed": "O navegador bloqueou o serviço de voz. Use Chrome ou Edge atualizado e permita o microfone.",
+    "no-speech": "Não ouvi nenhuma fala. Aperte o microfone de novo e fale mais perto do aparelho.",
+    "audio-capture": "Não encontrei microfone ativo. Verifique se o microfone do notebook/celular está ligado.",
+    network: "A transcrição de voz precisa de conexão ativa no navegador. Verifique a internet e tente novamente.",
+    aborted: "Áudio interrompido.",
+  };
+
+  return messages[error] || "Não consegui captar o áudio. Verifique a permissão do microfone.";
+}
+
 function VoiceField({
   as = "input",
   className,
@@ -370,7 +390,29 @@ export function SorteioApp() {
     setListeningField(null);
   }
 
-  function startVoice(fieldName: string, currentValue: string, setValue: (value: string) => void) {
+  async function requestMicrophoneAccess() {
+    if (!navigator.mediaDevices?.getUserMedia) return true;
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach((track) => track.stop());
+      return true;
+    } catch (error) {
+      const name = error instanceof DOMException ? error.name : "";
+      if (name === "NotAllowedError" || name === "PermissionDeniedError") {
+        setStatus("Microfone bloqueado. Clique no cadeado do navegador e permita o microfone para este site.");
+      } else if (name === "NotFoundError" || name === "DevicesNotFoundError") {
+        setStatus("Não encontrei microfone ativo neste aparelho.");
+      } else if (name === "NotReadableError" || name === "TrackStartError") {
+        setStatus("O microfone está em uso por outro aplicativo. Feche o outro app e tente novamente.");
+      } else {
+        setStatus("Não consegui abrir o microfone. Verifique a permissão do navegador.");
+      }
+      return false;
+    }
+  }
+
+  async function startVoice(fieldName: string, currentValue: string, setValue: (value: string) => void) {
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
       setStatus("Este navegador não liberou ditado por voz. Use Chrome ou Edge atualizado.");
@@ -378,26 +420,39 @@ export function SorteioApp() {
     }
 
     stopVoice();
+    setStatus("Pedindo permissão do microfone...");
+    const hasMicrophone = await requestMicrophoneAccess();
+    if (!hasMicrophone) return;
+
     const recognition = new Recognition();
     recognition.lang = "pt-BR";
-    recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.maxAlternatives = 1;
     recognitionRef.current = recognition;
     setListeningField(fieldName);
     setStatus("Ouvindo... fale agora.");
 
+    let finalTranscript = "";
     recognition.onresult = (event) => {
-      let transcript = "";
-      for (let index = 0; index < event.results.length; index += 1) {
-        transcript += event.results[index][0]?.transcript || "";
+      let interimTranscript = "";
+      for (let index = event.resultIndex; index < event.results.length; index += 1) {
+        const transcript = event.results[index][0]?.transcript || "";
+        if (event.results[index].isFinal) {
+          finalTranscript = `${finalTranscript} ${transcript}`.trim();
+        } else {
+          interimTranscript = `${interimTranscript} ${transcript}`.trim();
+        }
       }
-      setValue(appendVoiceText(currentValue, transcript));
-      setStatus("Texto inserido por áudio.");
+
+      setValue(appendVoiceText(currentValue, `${finalTranscript} ${interimTranscript}`));
+      setStatus(interimTranscript ? "Ouvindo e escrevendo..." : "Texto inserido por áudio.");
     };
 
-    recognition.onerror = () => {
-      setStatus("Não consegui captar o áudio. Verifique a permissão do microfone.");
+    recognition.onerror = (event) => {
+      setStatus(getVoiceErrorMessage(event.error));
       setListeningField(null);
+      recognitionRef.current = null;
     };
 
     recognition.onend = () => {
