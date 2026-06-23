@@ -27,6 +27,14 @@ type QuestionCard = {
   criadoEm: string;
 };
 
+type SavedInterview = {
+  id: string;
+  interview: Interview;
+  questions: QuestionCard[];
+  tema: string;
+  savedAt: string;
+};
+
 type VoiceFieldProps = {
   as?: "input" | "textarea";
   className?: string;
@@ -77,7 +85,27 @@ declare global {
 }
 
 const storageKey = "cafe-zakia-sorteio-online";
+const savedInterviewsKey = "cafe-zakia-sorteio-entrevistas-salvas";
+const maxSavedInterviews = 20;
 const defaultThemes = ["Carreira", "Política", "Segurança", "Corrupção", "Perguntas Virais"];
+const allThemes = "Todos os temas";
+
+function makeQuestionsLightweight(questions: QuestionCard[]) {
+  return questions.map((question) =>
+    question.origem === "texto" ? { ...question, image: "" } : question,
+  );
+}
+
+function formatSavedDate(value: string) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date(value));
+}
+
+function yieldToBrowser() {
+  return new Promise<void>((resolve) => window.setTimeout(resolve, 0));
+}
 
 function createId() {
   if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
@@ -199,11 +227,41 @@ function buildStarterQuestions(interview: Interview) {
     `[${mainTheme}] Qual decisão da sua carreira você tomaria de novo, mesmo sabendo o preço que pagou?`,
     `[${mainTheme}] O que as pessoas elogiam em você, mas não sabem o quanto custou nos bastidores?`,
     `[${mainTheme}] Qual pergunta você acha que todo mundo tem vontade de te fazer, mas evita?`,
+    `[${mainTheme}] Qual foi a escolha mais impopular que ajudou você a chegar até aqui?`,
+    `[${mainTheme}] Em qual momento você percebeu que precisava mudar sua forma de pensar?`,
+    `[${mainTheme}] Qual resultado seu parece simples por fora, mas exigiu muito por dentro?`,
+    `[${mainTheme}] O que você ainda quer provar para si mesmo?`,
     "[Bastidores] Qual bastidor da sua trajetória daria um corte forte para as redes sociais?",
     "[Bastidores] Qual foi o maior erro que virou aprendizado real?",
+    "[Bastidores] Quem esteve ao seu lado quando o resultado ainda não existia?",
+    "[Bastidores] Qual foi o preço pessoal mais alto que você pagou por uma decisão profissional?",
+    "[Bastidores] Que conselho você ignorou e depois descobriu que estava certo?",
+    "[Bastidores] Qual situação mudou completamente a maneira como você trabalha?",
+    "[Bastidores] O que ninguém vê na rotina necessária para manter seus resultados?",
+    "[Bastidores] Qual conversa difícil foi decisiva para a sua trajetória?",
     "[Opinião] Que assunto todo mundo comenta, mas pouca gente tem coragem de falar com sinceridade?",
+    "[Opinião] Qual comportamento do seu mercado mais incomoda você atualmente?",
+    "[Opinião] O que as pessoas romantizam, mas na prática funciona de outra forma?",
+    "[Opinião] Qual verdade profissional pode ser desconfortável, mas precisa ser dita?",
+    "[Opinião] Em que ponto você discorda da maioria das pessoas da sua área?",
+    "[Opinião] O que precisa mudar urgentemente no seu setor?",
+    "[Opinião] Qual tendência está recebendo atenção demais e entregando resultado de menos?",
+    "[Opinião] O que diferencia autoridade verdadeira de apenas exposição nas redes?",
     "[Confronto] O que você responderia para quem duvida do seu trabalho?",
+    "[Confronto] Qual crítica sobre você foi injusta e qual tinha alguma verdade?",
+    "[Confronto] Você já precisou escolher entre agradar as pessoas e defender aquilo em que acredita?",
+    "[Confronto] Qual decisão sua gerou resistência, mas depois mostrou resultado?",
+    "[Confronto] Em qual situação você percebeu que estava errado e precisou voltar atrás?",
+    "[Confronto] O que você não aceita negociar, mesmo que isso custe uma oportunidade?",
+    "[Confronto] Qual pergunta difícil você gostaria de responder sem cortes?",
+    "[Confronto] O sucesso muda as pessoas ou apenas revela quem elas sempre foram?",
     "[Emocional] Qual memória ainda te emociona quando você fala sobre sua caminhada?",
+    "[Emocional] Quem você gostaria que estivesse aqui para ver o que você construiu?",
+    "[Emocional] Qual foi o momento de maior medo da sua trajetória?",
+    "[Emocional] O que você aprendeu sobre perdas que nenhum livro conseguiria ensinar?",
+    "[Emocional] Qual conquista teve um significado muito maior do que o valor financeiro?",
+    "[Emocional] Que mensagem você daria para a sua versão do início da carreira?",
+    "[Emocional] Qual pessoa mudou sua vida sem talvez saber disso?",
     "[Viral] Se esse corte viralizar amanhã, qual frase você quer que fique marcada?",
   ];
 }
@@ -291,7 +349,7 @@ export function SorteioApp() {
   const [step, setStep] = useState<Step>("entrevista");
   const [interview, setInterview] = useState<Interview | null>(null);
   const [questions, setQuestions] = useState<QuestionCard[]>([]);
-  const [tema, setTema] = useState(defaultThemes[0]);
+  const [tema, setTema] = useState(allThemes);
   const [customTema, setCustomTema] = useState("");
   const [questionText, setQuestionText] = useState("");
   const [drawnIds, setDrawnIds] = useState<string[]>([]);
@@ -300,19 +358,22 @@ export function SorteioApp() {
   const [status, setStatus] = useState("Pronto");
   const [copied, setCopied] = useState(false);
   const [listeningField, setListeningField] = useState<string | null>(null);
+  const [savedInterviews, setSavedInterviews] = useState<SavedInterview[]>([]);
+  const [showSavedInterviews, setShowSavedInterviews] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const recognitionRef = useRef<InstanceType<SpeechRecognitionConstructor> | null>(null);
+  const storageLoadedRef = useRef(false);
 
   const themes = useMemo(() => {
     const all = [...defaultThemes, ...questions.map((question) => question.tema)];
     if (interview?.temas) {
       all.push(...interview.temas.split(/[,;\n]+/).map((item) => item.trim()).filter(Boolean));
     }
-    return [...new Set(all)];
+    return [allThemes, ...new Set(all.filter((item) => item !== allThemes))];
   }, [interview, questions]);
 
   const filtered = useMemo(
-    () => questions.filter((question) => question.tema === tema),
+    () => (tema === allThemes ? questions : questions.filter((question) => question.tema === tema)),
     [questions, tema],
   );
 
@@ -321,7 +382,10 @@ export function SorteioApp() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(storageKey);
-      if (!raw) return;
+      if (!raw) {
+        storageLoadedRef.current = true;
+        return;
+      }
       const data = JSON.parse(raw) as {
         interview?: Interview;
         questions?: QuestionCard[];
@@ -329,23 +393,176 @@ export function SorteioApp() {
       };
       window.requestAnimationFrame(() => {
         setInterview(data.interview || null);
-        setQuestions(data.questions || []);
-        setTema(data.tema || defaultThemes[0]);
+        const storedQuestions = data.questions || [];
+        setQuestions(storedQuestions);
+        setTema(data.tema || allThemes);
+        storageLoadedRef.current = true;
+
+        if (storedQuestions.some((question) => question.origem === "texto" && !question.image)) {
+          window.setTimeout(async () => {
+            const restored: QuestionCard[] = [];
+            for (let index = 0; index < storedQuestions.length; index += 1) {
+              const question = storedQuestions[index];
+              restored.push(
+                question.origem === "texto" && !question.image
+                  ? {
+                      ...question,
+                      image: await generateImage(question.titulo, index + 1),
+                    }
+                  : question,
+              );
+            }
+            setQuestions(restored);
+            setStatus(`${restored.length} pergunta(s) carregada(s).`);
+          }, 0);
+        }
       });
     } catch {
-      window.requestAnimationFrame(() => setStatus("Não foi possível carregar dados salvos."));
+      window.requestAnimationFrame(() => {
+        storageLoadedRef.current = true;
+        setStatus("Não foi possível carregar dados salvos.");
+      });
     }
   }, []);
 
   useEffect(() => {
     try {
-      localStorage.setItem(storageKey, JSON.stringify({ interview, questions, tema }));
+      const raw = localStorage.getItem(savedInterviewsKey);
+      if (!raw) return;
+      const stored = JSON.parse(raw) as SavedInterview[];
+      window.requestAnimationFrame(() =>
+        setSavedInterviews(
+          stored
+            .filter((item) => item?.interview?.nome && Array.isArray(item.questions))
+            .slice(0, maxSavedInterviews),
+        ),
+      );
     } catch {
       window.requestAnimationFrame(() =>
-        setStatus("Perguntas criadas para esta sessão. O navegador não conseguiu salvar tudo porque as imagens ficaram pesadas."),
+        setStatus("A entrevista atual foi carregada, mas o histórico antigo não pôde ser aberto."),
+      );
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!storageLoadedRef.current) return;
+
+    try {
+      localStorage.setItem(
+        storageKey,
+        JSON.stringify({ interview, questions: makeQuestionsLightweight(questions), tema }),
+      );
+    } catch {
+      window.requestAnimationFrame(() =>
+        setStatus(
+          "Perguntas criadas nesta sessão. Algumas imagens importadas ficaram grandes demais para o armazenamento do navegador.",
+        ),
       );
     }
   }, [interview, questions, tema]);
+
+  async function restoreQuestionImages(storedQuestions: QuestionCard[]) {
+    const restored: QuestionCard[] = [];
+    for (let index = 0; index < storedQuestions.length; index += 1) {
+      const question = storedQuestions[index];
+      restored.push(
+        question.origem === "texto" && !question.image
+          ? {
+              ...question,
+              image: await generateImage(question.titulo, index + 1),
+            }
+          : question,
+      );
+
+      if ((index + 1) % 5 === 0 && index + 1 < storedQuestions.length) {
+        setStatus(`Carregando ${index + 1} de ${storedQuestions.length} perguntas...`);
+        await yieldToBrowser();
+      }
+    }
+    return restored;
+  }
+
+  function persistCurrentInterview(showConfirmation = true) {
+    if (!interview) {
+      if (showConfirmation) {
+        setStatus("Prepare uma entrevista antes de salvar.");
+        setStep("entrevista");
+      }
+      return false;
+    }
+
+    const savedAt = new Date().toISOString();
+    const saved: SavedInterview = {
+      id: interview.criadoEm,
+      interview,
+      questions: makeQuestionsLightweight(questions),
+      tema: allThemes,
+      savedAt,
+    };
+    const next = [
+      saved,
+      ...savedInterviews.filter((item) => item.id !== saved.id),
+    ].slice(0, maxSavedInterviews);
+
+    try {
+      localStorage.setItem(savedInterviewsKey, JSON.stringify(next));
+      setSavedInterviews(next);
+      if (showConfirmation) {
+        setStatus(
+          `${interview.nome} foi salvo com ${questions.length} pergunta(s). Você pode abrir em Últimas entrevistas.`,
+        );
+      }
+      return true;
+    } catch {
+      setStatus(
+        "Não foi possível salvar no histórico. Remova imagens importadas muito pesadas e tente novamente.",
+      );
+      return false;
+    }
+  }
+
+  function saveCurrentInterview() {
+    persistCurrentInterview(true);
+  }
+
+  async function openSavedInterview(saved: SavedInterview) {
+    setStatus(`Abrindo ${saved.interview.nome}...`);
+    setInterview(saved.interview);
+    setQuestions([]);
+    setTema(allThemes);
+    setDrawnIds([]);
+    setCurrent(null);
+    setQuestionText("");
+    setCopied(false);
+
+    const restored = await restoreQuestionImages(saved.questions);
+    setQuestions(restored);
+    setStep(restored.length ? "banco" : "entrevista");
+    setShowSavedInterviews(false);
+    setStatus(
+      `${saved.interview.nome} aberta com ${restored.length} pergunta(s) salva(s).`,
+    );
+  }
+
+  function removeSavedInterview(id: string) {
+    const next = savedInterviews.filter((item) => item.id !== id);
+    localStorage.setItem(savedInterviewsKey, JSON.stringify(next));
+    setSavedInterviews(next);
+    setStatus("Entrevista removida do histórico.");
+  }
+
+  function toggleSavedInterviews() {
+    const nextValue = !showSavedInterviews;
+    setShowSavedInterviews(nextValue);
+    if (nextValue) {
+      window.requestAnimationFrame(() => {
+        document.getElementById("ultimas-entrevistas")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      });
+    }
+  }
 
   function saveInterview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -549,8 +766,9 @@ export function SorteioApp() {
       return;
     }
 
+    const fallbackTema = sourceTema === allThemes ? defaultThemes[0] : sourceTema;
     const parsedLines = lines
-      .map((line) => parseQuestionLine(line, sourceTema))
+      .map((line) => parseQuestionLine(line, fallbackTema))
       .filter((line): line is { tema: string; titulo: string } => Boolean(line));
 
     if (!parsedLines.length) {
@@ -558,7 +776,7 @@ export function SorteioApp() {
       return;
     }
 
-    setStatus("Criando imagens...");
+    setStatus(`Criando 1 de ${parsedLines.length} imagens...`);
     const created: QuestionCard[] = [];
     for (let index = 0; index < parsedLines.length; index += 1) {
       const item = parsedLines[index];
@@ -570,10 +788,14 @@ export function SorteioApp() {
         origem: "texto",
         criadoEm: new Date().toISOString(),
       });
+      if ((index + 1) % 5 === 0 && index + 1 < parsedLines.length) {
+        setStatus(`Criando ${index + 2} de ${parsedLines.length} imagens...`);
+        await yieldToBrowser();
+      }
     }
 
     setQuestions((items) => [...created, ...items]);
-    if (created[0]) setTema(created[0].tema);
+    setTema(allThemes);
     setQuestionText("");
     setStatus(`${created.length} pergunta(s) criada(s).`);
     setStep("banco");
@@ -595,8 +817,7 @@ export function SorteioApp() {
     }
 
     const automaticQuestions = buildStarterQuestions(interview);
-    const firstTheme = automaticQuestions[0]?.match(/^\[([^\]]+)\]/)?.[1] || tema;
-    setTema(firstTheme);
+    const firstTheme = automaticQuestions[0]?.match(/^\[([^\]]+)\]/)?.[1] || defaultThemes[0];
     await createCardsFromLines(automaticQuestions, firstTheme);
     setStatus(`${automaticQuestions.length} perguntas automáticas criadas no site.`);
   }
@@ -611,10 +832,11 @@ export function SorteioApp() {
     }
 
     const imported: QuestionCard[] = [];
+    const importTheme = tema === allThemes ? defaultThemes[0] : tema;
     for (const file of files) {
       imported.push({
         id: createId(),
-        tema,
+        tema: importTheme,
         titulo: file.name.replace(/\.[^.]+$/, ""),
         image: await fileToDataUrl(file),
         origem: "imagem",
@@ -623,6 +845,7 @@ export function SorteioApp() {
     }
 
     setQuestions((items) => [...imported, ...items]);
+    setTema(allThemes);
     setStatus(`${imported.length} imagem(ns) importada(s).`);
     setStep("banco");
     event.target.value = "";
@@ -653,14 +876,21 @@ export function SorteioApp() {
   }
 
   function newInterview() {
+    const previousInterviewName = interview?.nome;
+    const previousWasSaved = persistCurrentInterview(false);
     setInterview(null);
     setQuestions([]);
     setDrawnIds([]);
     setCurrent(null);
     setQuestionText("");
     setCopied(false);
+    setTema(allThemes);
     setStep("entrevista");
-    setStatus("Nova entrevista iniciada.");
+    setStatus(
+      previousWasSaved && previousInterviewName
+        ? `${previousInterviewName} foi salva em Últimas entrevistas. Nova entrevista iniciada.`
+        : "Nova entrevista iniciada.",
+    );
   }
 
   function removeQuestion(id: string) {
@@ -676,15 +906,68 @@ export function SorteioApp() {
           <p>Sorteio de Perguntas</p>
           <h1>Café com Zákia</h1>
         </div>
-        <button onClick={newInterview} type="button">
-          Nova entrevista
-        </button>
+        <div className="sorteio-header-actions">
+          <button
+            className="sorteio-history-button"
+            onClick={toggleSavedInterviews}
+            type="button"
+          >
+            Últimas entrevistas
+          </button>
+          <button onClick={newInterview} type="button">
+            Nova entrevista
+          </button>
+        </div>
       </header>
 
       <div className="sorteio-shell">
         <aside className="sorteio-sidebar">
           <strong>{interview ? interview.nome : "Nenhuma entrevista ativa"}</strong>
           <span>{status}</span>
+
+          <button
+            className="sorteio-save-interview"
+            disabled={!interview}
+            onClick={saveCurrentInterview}
+            type="button"
+          >
+            Salvar entrevista e perguntas
+          </button>
+
+          <div
+            className={`sorteio-recent ${showSavedInterviews ? "is-open" : ""}`}
+            id="ultimas-entrevistas"
+          >
+            <div>
+              <strong>Últimas entrevistas</strong>
+              <span>{savedInterviews.length}/{maxSavedInterviews}</span>
+            </div>
+            {savedInterviews.length ? (
+              <div className="sorteio-recent-list">
+                {savedInterviews.slice(0, 6).map((saved) => (
+                  <article key={saved.id}>
+                    <button onClick={() => openSavedInterview(saved)} type="button">
+                      <strong>{saved.interview.nome}</strong>
+                      <span>
+                        {saved.questions.length} perguntas • {formatSavedDate(saved.savedAt)}
+                      </span>
+                    </button>
+                    <button
+                      aria-label={`Remover ${saved.interview.nome} do histórico`}
+                      className="sorteio-remove-saved"
+                      onClick={() => removeSavedInterview(saved.id)}
+                      title="Remover do histórico"
+                      type="button"
+                    >
+                      ×
+                    </button>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p>As entrevistas salvas aparecerão aqui.</p>
+            )}
+          </div>
 
           <nav>
             {[
@@ -821,7 +1104,7 @@ export function SorteioApp() {
                   <textarea readOnly value={grokPrompt} />
                   <div className="sorteio-prompt-actions">
                     <button className="sorteio-primary" onClick={createAutomaticQuestions} type="button">
-                      Criar perguntas automáticas no site
+                      Criar 40 perguntas automáticas no site
                     </button>
                     <button className="sorteio-secondary" onClick={() => setStep("perguntas")} type="button">
                       Colar resposta do Grok manualmente
@@ -834,7 +1117,10 @@ export function SorteioApp() {
 
           {step === "perguntas" ? (
             <div className="sorteio-card">
-              <h2>Criar ou importar perguntas</h2>
+              <div className="sorteio-card-title">
+                <h2>Criar ou importar perguntas</h2>
+                <span>{questions.length} pergunta(s) no total</span>
+              </div>
               <label className="sorteio-voice-field sorteio-question-voice">
                 <textarea
                   className="sorteio-question-input"
@@ -872,7 +1158,11 @@ export function SorteioApp() {
             <div className="sorteio-card">
               <div className="sorteio-card-title">
                 <h2>Banco de perguntas</h2>
-                <span>{filtered.length} no tema atual</span>
+                <span>
+                  {tema === allThemes
+                    ? `${filtered.length} pergunta(s) no total`
+                    : `${filtered.length} no tema ${tema}`}
+                </span>
               </div>
               <div className="sorteio-grid">
                 {filtered.map((question) => (

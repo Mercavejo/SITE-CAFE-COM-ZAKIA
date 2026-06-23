@@ -341,6 +341,18 @@ nav a:hover,
   font-size: clamp(1.5rem, 4vw, 2.35rem);
 }
 
+.sorteio-header-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.sorteio-header .sorteio-history-button {
+  border-color: rgba(255, 226, 138, 0.56);
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  color: #0a0803;
+}
+
 .sorteio-shell {
   display: grid;
   grid-template-columns: 310px minmax(0, 1fr);
@@ -376,6 +388,105 @@ nav a:hover,
 .sorteio-sidebar > span {
   color: rgba(255, 255, 255, 0.66);
   font-size: 0.92rem;
+}
+
+.sorteio-save-interview {
+  min-height: 48px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 12px;
+  background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+  color: #0a0803;
+  font-weight: 950;
+  cursor: pointer;
+}
+
+.sorteio-save-interview:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.sorteio-recent {
+  display: none;
+  scroll-margin-top: 18px;
+  padding: 14px;
+  border: 1px solid rgba(255, 226, 138, 0.24);
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.34);
+}
+
+.sorteio-recent.is-open {
+  display: grid;
+  gap: 10px;
+}
+
+.sorteio-recent > div:first-child {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.sorteio-recent > div:first-child > strong {
+  color: var(--gold-light);
+  font-size: 0.92rem;
+  text-transform: uppercase;
+}
+
+.sorteio-recent > div:first-child > span,
+.sorteio-recent > p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.78rem;
+}
+
+.sorteio-recent-list {
+  display: grid;
+  gap: 7px;
+}
+
+.sorteio-recent-list article {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 34px;
+  gap: 6px;
+}
+
+.sorteio-recent-list article > button:first-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid rgba(255, 226, 138, 0.16);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--white);
+  text-align: left;
+  cursor: pointer;
+}
+
+.sorteio-recent-list article > button:first-child:hover {
+  border-color: rgba(255, 226, 138, 0.52);
+  background: rgba(255, 226, 138, 0.1);
+}
+
+.sorteio-recent-list article strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sorteio-recent-list article span {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.72rem;
+}
+
+.sorteio-remove-saved {
+  border: 1px solid rgba(255, 132, 132, 0.28);
+  border-radius: 6px;
+  background: rgba(160, 24, 28, 0.18);
+  color: #ffb4b4;
+  font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .sorteio-sidebar nav {
@@ -2513,6 +2624,12 @@ h3 {
   .sorteio-header button {
     width: 100%;
     justify-content: center;
+  }
+
+  .sorteio-header-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
   }
 
   .sorteio-header p {
