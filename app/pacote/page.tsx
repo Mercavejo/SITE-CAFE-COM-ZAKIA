@@ -18,7 +18,9 @@ const packageItems = [
   "1 edição completa do programa",
   "1 link para você baixar e ter sua entrevista completa",
   "Sua entrevista em nossa plataforma YouTube e Spotify",
-  "+ de 20 cortes esparramados em todas as nossas redes sociais",
+  "De 30 a 50 cortes virais organizados para distribuição digital",
+  "Publicação diária por 60 dias ou mais nas plataformas do Café com Zákia",
+  "Distribuição em Facebook, Instagram, TikTok, YouTube, YouTube Shorts e grupos de WhatsApp",
 ];
 
 const packageValueItems = [
@@ -35,10 +37,19 @@ const packageValueItems = [
     value: "R$ 800,00",
   },
   {
-    item: "20 cortes extras para redes sociais",
-    value: "R$ 1.000,00",
-    note: "Referência de R$ 50,00 por corte, com mínimo de 10 cortes. Neste pacote, serão criados 20 cortes escolhidos pela nossa equipe para compartilhar em nossas plataformas.",
+    item: "30 a 50 cortes virais para distribuição digital",
+    value: "R$ 1.000,00+",
+    note: "Referência mínima de R$ 50,00 por corte. Neste pacote, a equipe cria de 30 a 50 cortes escolhidos estrategicamente para publicação diária por 60 dias ou mais.",
   },
+];
+
+const distributionChannels = [
+  "Facebook",
+  "Instagram",
+  "TikTok",
+  "YouTube",
+  "YouTube Shorts",
+  "Grupos de WhatsApp",
 ];
 
 const searchIntentBlocks = [
@@ -82,7 +93,7 @@ const packageFaqs = [
   {
     question: "A entrevista ajuda a ganhar autoridade?",
     answer:
-      "Sim. Uma entrevista bem conduzida pode fortalecer reputação, gerar conteúdo para redes sociais, posicionar sua história e aumentar sua presença como referência em negócios, marketing, liderança ou área de atuação.",
+      "Sim. Uma entrevista bem conduzida pode fortalecer reputação, gerar de 30 a 50 cortes para redes sociais, posicionar sua história e aumentar sua presença como referência em negócios, marketing, liderança ou área de atuação.",
   },
   {
     question: "O pacote garante aprovação da entrevista?",
@@ -99,7 +110,7 @@ const packageFaqs = [
 export const metadata: Metadata = {
   title: "Participar de Podcast e Ganhar Autoridade | Pacote Café com Zákia",
   description:
-    "Pacote especial de R$ 2.300,00 por R$ 799,90 para participar de podcast, ser entrevistado, ganhar autoridade e divulgar sua história no Café com Zákia.",
+    "Pacote especial de R$ 2.300,00 por R$ 799,90 para participar de podcast, ser entrevistado, ganhar autoridade e ter de 30 a 50 cortes distribuídos por 60 dias ou mais.",
   keywords: [
     "participar de podcast",
     "como participar de podcast",
@@ -127,7 +138,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Participar de Podcast e Ganhar Autoridade | Café com Zákia",
     description:
-      "Seja entrevistado no Café com Zákia: pacote especial de R$ 2.300,00 por R$ 799,90 com estúdio, edição, entrevista e 20 cortes para redes sociais.",
+      "Seja entrevistado no Café com Zákia: pacote especial de R$ 2.300,00 por R$ 799,90 com estúdio, edição, entrevista e de 30 a 50 cortes para redes sociais.",
     url: `${siteUrl}/pacote`,
     type: "website",
     siteName: "Café com Zákia",
@@ -158,7 +169,7 @@ export default function PackagePage() {
           "@type": "Service",
           name: "Participação no Podcast Café com Zákia",
           serviceType:
-            "Entrevista em podcast de negócios, autoridade, mídia, marketing e posicionamento",
+            "Entrevista em podcast de negócios, autoridade, mídia, marketing, posicionamento e distribuição de cortes em redes sociais",
           areaServed: {
             "@type": "Country",
             name: "Brasil",
@@ -267,8 +278,9 @@ export default function PackagePage() {
             <h2>Uma estrutura de R$ 2.300,00 liberada por R$ 799,90.</h2>
             <p>
               A promoção reúne estúdio, gravação, edição, entrevista com Daniel Zákia e distribuição
-              de cortes nas plataformas do Café com Zákia. É uma oportunidade para transformar sua
-              história em conteúdo de autoridade com uma condição especial até julho de 2026.
+              diária de 30 a 50 cortes nas plataformas do Café com Zákia. É uma oportunidade para
+              transformar sua história em conteúdo de autoridade com uma condição especial até julho
+              de 2026.
             </p>
           </div>
 
@@ -291,9 +303,55 @@ export default function PackagePage() {
             <div className="package-value-offer">
               <span>Pacote especial</span>
               <strong>R$ 799,90</strong>
-              <p>ou 2x de R$ 450,00, sujeito à curadoria e aprovação da equipe.</p>
+              <p>
+                ou 2x de R$ 450,00, com entrevista, edição, cortes e distribuição. Sujeito à
+                curadoria e aprovação da equipe.
+              </p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="package-distribution">
+        <div className="package-shell package-distribution-grid">
+          <div className="package-distribution-copy">
+            <p className="eyebrow">Distribuição e publicidade</p>
+            <h2>Sua entrevista preparada para circular todos os dias.</h2>
+            <p>
+              Com esse valor, o Café com Zákia não entrega apenas uma gravação. A equipe transforma a
+              entrevista em uma campanha de presença digital, com de 30 a 50 cortes virais
+              organizados para publicação diária durante 60 dias ou mais.
+            </p>
+            <p>
+              O objetivo é colocar sua história em movimento: aparecer mais vezes, em mais formatos,
+              em mais plataformas, com conteúdo feito para gerar atenção, autoridade e desejo de
+              conhecer quem você é.
+            </p>
+          </div>
+
+          <div className="package-distribution-card">
+            <span className="panel-label">Plano de exposição</span>
+            <strong>30 a 50 cortes</strong>
+            <p>Conteúdos curtos criados para redes sociais, autoridade e descoberta.</p>
+            <div className="panel-line" />
+            <strong>60 dias ou mais</strong>
+            <p>Publicação diária organizada para manter sua entrevista aparecendo por mais tempo.</p>
+          </div>
+        </div>
+
+        <div className="package-shell">
+          <div className="package-channel-grid" aria-label="Plataformas de distribuição">
+            {distributionChannels.map((channel) => (
+              <article key={channel}>
+                <span>{channel}</span>
+              </article>
+            ))}
+          </div>
+          <p className="package-distribution-note">
+            Sua entrevista passa a ter conteúdo para YouTube, YouTube Shorts, Instagram, Facebook,
+            TikTok e grupos de WhatsApp. É uma vitrine criada para disputar atenção, ampliar
+            reconhecimento e levar sua mensagem para uma audiência muito maior.
+          </p>
         </div>
       </section>
 
@@ -303,8 +361,8 @@ export default function PackagePage() {
             <p className="eyebrow">O que está incluso</p>
             <h2>Um pacote completo para gravar, editar, publicar e distribuir sua entrevista.</h2>
             <p>
-              A estrutura foi pensada para entregar presença profissional e conteúdo real para quem
-              tem uma história capaz de somar com a vida de outras pessoas.
+              A estrutura foi pensada para entregar presença profissional, cortes recorrentes e
+              conteúdo real para quem tem uma história capaz de somar com a vida de outras pessoas.
             </p>
           </div>
           <div className="package-items-grid">
@@ -392,7 +450,9 @@ export default function PackagePage() {
           <h2>Fale conosco agora e aproveite a promoção.</h2>
           <p>
             Envie sua mensagem pelo WhatsApp. A equipe da Mercavejo Consultoria vai orientar os
-            próximos passos e iniciar a análise da sua história para o Café com Zákia.
+            próximos passos e iniciar a análise da sua história para o Café com Zákia. Quanto antes
+            a entrevista for aprovada, antes começamos a transformar sua mensagem em episódio,
+            cortes e distribuição diária.
           </p>
           <a className="button primary" href={packageWhatsAppUrl} target="_blank" rel="noopener">
             Quero participar do Podcast Café com Zákia
