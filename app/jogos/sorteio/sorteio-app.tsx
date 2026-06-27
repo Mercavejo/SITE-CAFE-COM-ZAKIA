@@ -86,6 +86,8 @@ declare global {
 
 const storageKey = "cafe-zakia-sorteio-online";
 const savedInterviewsKey = "cafe-zakia-sorteio-entrevistas-salvas";
+const indexedDbName = "cafe-zakia-sorteio-db";
+const indexedDbStore = "interviews";
 const maxSavedInterviews = 20;
 const defaultThemes = ["Carreira", "Política", "Segurança", "Corrupção", "Perguntas Virais"];
 const allThemes = "Todos os temas";
@@ -102,6 +104,91 @@ function formatSavedDate(value: string) {
     timeStyle: "short",
   }).format(new Date(value));
 }
+
+function openSorteioDb() {
+  return new Promise<IDBDatabase>((resolve, reject) => {
+    if (!window.indexedDB) {
+      reject(new Error("IndexedDB indisponivel neste navegador."));
+      return;
+    }
+
+    const request = window.indexedDB.open(indexedDbName, 1);
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains(indexedDbStore)) {
+        db.createObjectStore(indexedDbStore, { keyPath: "id" });
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error("Nao foi possivel abrir o banco."));
+  });
+}
+
+function sortSavedInterviews(items: SavedInterview[]) {
+  return items
+    .filter((item) => item?.interview?.nome && Array.isArray(item.questions))
+    .sort((a, b) => new Date(b.savedAt).getTime() - new Date(a.savedAt).getTime())
+    .slice(0, maxSavedInterviews);
+}
+
+async function readSavedInterviewsFromDb() {
+  const db = await openSorteioDb();
+  try {
+    return await new Promise<SavedInterview[]>((resolve, reject) => {
+      const transaction = db.transaction(indexedDbStore, "readonly");
+      const request = transaction.objectStore(indexedDbStore).getAll();
+      request.onsuccess = () => resolve(sortSavedInterviews(request.result as SavedInterview[]));
+      request.onerror = () => reject(request.error || new Error("Nao foi possivel ler entrevistas."));
+    });
+  } finally {
+    db.close();
+  }
+}
+
+async function removeSavedInterviewFromDb(id: string) {
+  const db = await openSorteioDb();
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction(indexedDbStore, "readwrite");
+      transaction.objectStore(indexedDbStore).delete(id);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error("Nao foi possivel remover."));
+    });
+  } finally {
+    db.close();
+  }
+}
+
+async function saveInterviewToDb(saved: SavedInterview) {
+  const db = await openSorteioDb();
+  try {
+    await new Promise<void>((resolve, reject) => {
+      const transaction = db.transaction(indexedDbStore, "readwrite");
+      transaction.objectStore(indexedDbStore).put(saved);
+      transaction.oncomplete = () => resolve();
+      transaction.onerror = () => reject(transaction.error || new Error("Nao foi possivel salvar."));
+    });
+  } finally {
+    db.close();
+  }
+
+  const next = await readSavedInterviewsFromDb();
+  await Promise.all(next.slice(maxSavedInterviews).map((item) => removeSavedInterviewFromDb(item.id)));
+  return next.slice(0, maxSavedInterviews);
+}
+
+async function migrateLegacySavedInterviews() {
+  const raw = localStorage.getItem(savedInterviewsKey);
+  if (!raw) return readSavedInterviewsFromDb();
+
+  const stored = JSON.parse(raw) as SavedInterview[];
+  for (const item of sortSavedInterviews(stored)) {
+    await saveInterviewToDb(item);
+  }
+  localStorage.removeItem(savedInterviewsKey);
+  return readSavedInterviewsFromDb();
+}
+
 
 function yieldToBrowser() {
   return new Promise<void>((resolve) => window.setTimeout(resolve, 0));
@@ -355,7 +442,7 @@ export function SorteioApp() {
   const [drawnIds, setDrawnIds] = useState<string[]>([]);
   const [current, setCurrent] = useState<QuestionCard | null>(null);
   const [tvOpen, setTvOpen] = useState(false);
-  const [status, setStatus] = useState("Pronto");
+  const [status, setStatus] = useState("Preencha a etapa 1 e clique em Salvar base para guardar a entrevista.");
   const [copied, setCopied] = useState(false);
   const [listeningField, setListeningField] = useState<string | null>(null);
   const [savedInterviews, setSavedInterviews] = useState<SavedInterview[]>([]);
@@ -426,22 +513,13 @@ export function SorteioApp() {
   }, []);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(savedInterviewsKey);
-      if (!raw) return;
-      const stored = JSON.parse(raw) as SavedInterview[];
-      window.requestAnimationFrame(() =>
-        setSavedInterviews(
-          stored
-            .filter((item) => item?.interview?.nome && Array.isArray(item.questions))
-            .slice(0, maxSavedInterviews),
+    migrateLegacySavedInterviews()
+      .then((items) => window.requestAnimationFrame(() => setSavedInterviews(items)))
+      .catch(() =>
+        window.requestAnimationFrame(() =>
+          setStatus("A entrevista atual foi carregada, mas o banco de Ultimas entrevistas nao pode ser aberto."),
         ),
       );
-    } catch {
-      window.requestAnimationFrame(() =>
-        setStatus("A entrevista atual foi carregada, mas o histórico antigo não pôde ser aberto."),
-      );
-    }
   }, []);
 
   useEffect(() => {
@@ -482,8 +560,12 @@ export function SorteioApp() {
     return restored;
   }
 
-  function persistCurrentInterview(showConfirmation = true) {
-    if (!interview) {
+  async function persistInterviewSnapshot(
+    targetInterview: Interview | null,
+    targetQuestions: QuestionCard[],
+    showConfirmation = true,
+  ) {
+    if (!targetInterview) {
       if (showConfirmation) {
         setStatus("Prepare uma entrevista antes de salvar.");
         setStep("entrevista");
@@ -493,36 +575,36 @@ export function SorteioApp() {
 
     const savedAt = new Date().toISOString();
     const saved: SavedInterview = {
-      id: interview.criadoEm,
-      interview,
-      questions: makeQuestionsLightweight(questions),
+      id: targetInterview.criadoEm,
+      interview: targetInterview,
+      questions: makeQuestionsLightweight(targetQuestions),
       tema: allThemes,
       savedAt,
     };
-    const next = [
-      saved,
-      ...savedInterviews.filter((item) => item.id !== saved.id),
-    ].slice(0, maxSavedInterviews);
 
     try {
-      localStorage.setItem(savedInterviewsKey, JSON.stringify(next));
+      const next = await saveInterviewToDb(saved);
       setSavedInterviews(next);
       if (showConfirmation) {
         setStatus(
-          `${interview.nome} foi salvo com ${questions.length} pergunta(s). Você pode abrir em Últimas entrevistas.`,
+          `${targetInterview.nome} foi salvo com ${targetQuestions.length} pergunta(s). Abra em Ultimas entrevistas.`,
         );
       }
       return true;
     } catch {
       setStatus(
-        "Não foi possível salvar no histórico. Remova imagens importadas muito pesadas e tente novamente.",
+        "Nao foi possivel salvar no banco do navegador. Verifique se o navegador permite armazenamento para este site.",
       );
       return false;
     }
   }
 
-  function saveCurrentInterview() {
-    persistCurrentInterview(true);
+  function persistCurrentInterview(showConfirmation = true) {
+    return persistInterviewSnapshot(interview, questions, showConfirmation);
+  }
+
+  async function saveCurrentInterview() {
+    await persistCurrentInterview(true);
   }
 
   async function openSavedInterview(saved: SavedInterview) {
@@ -544,11 +626,11 @@ export function SorteioApp() {
     );
   }
 
-  function removeSavedInterview(id: string) {
-    const next = savedInterviews.filter((item) => item.id !== id);
-    localStorage.setItem(savedInterviewsKey, JSON.stringify(next));
+  async function removeSavedInterview(id: string) {
+    await removeSavedInterviewFromDb(id);
+    const next = await readSavedInterviewsFromDb();
     setSavedInterviews(next);
-    setStatus("Entrevista removida do histórico.");
+    setStatus("Entrevista removida do historico.");
   }
 
   function toggleSavedInterviews() {
@@ -564,7 +646,7 @@ export function SorteioApp() {
     }
   }
 
-  function saveInterview(event: FormEvent<HTMLFormElement>) {
+  async function saveInterview(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const data: Interview = {
@@ -586,7 +668,9 @@ export function SorteioApp() {
 
     setInterview(data);
     setCopied(false);
-    setStatus(`Base salva e prompt gerado para ${data.nome}.`);
+    await persistInterviewSnapshot(data, questions, false);
+    setShowSavedInterviews(true);
+    setStatus(`Base salva para ${data.nome}. Entrevista guardada em Ultimas entrevistas.`);
     setStep("entrevista");
   }
 
@@ -794,7 +878,9 @@ export function SorteioApp() {
       }
     }
 
-    setQuestions((items) => [...created, ...items]);
+    const nextQuestions = [...created, ...questions];
+    setQuestions(nextQuestions);
+    await persistInterviewSnapshot(interview, nextQuestions, false);
     setTema(allThemes);
     setQuestionText("");
     setStatus(`${created.length} pergunta(s) criada(s).`);
@@ -844,7 +930,9 @@ export function SorteioApp() {
       });
     }
 
-    setQuestions((items) => [...imported, ...items]);
+    const nextQuestions = [...imported, ...questions];
+    setQuestions(nextQuestions);
+    await persistInterviewSnapshot(interview, nextQuestions, false);
     setTema(allThemes);
     setStatus(`${imported.length} imagem(ns) importada(s).`);
     setStep("banco");
@@ -875,9 +963,9 @@ export function SorteioApp() {
     if (openTv) setTvOpen(true);
   }
 
-  function newInterview() {
+  async function newInterview() {
     const previousInterviewName = interview?.nome;
-    const previousWasSaved = persistCurrentInterview(false);
+    const previousWasSaved = await persistCurrentInterview(false);
     setInterview(null);
     setQuestions([]);
     setDrawnIds([]);
@@ -888,7 +976,7 @@ export function SorteioApp() {
     setStep("entrevista");
     setStatus(
       previousWasSaved && previousInterviewName
-        ? `${previousInterviewName} foi salva em Últimas entrevistas. Nova entrevista iniciada.`
+        ? `${previousInterviewName} foi salva em Ultimas entrevistas. Nova entrevista iniciada.`
         : "Nova entrevista iniciada.",
     );
   }
@@ -927,7 +1015,6 @@ export function SorteioApp() {
 
           <button
             className="sorteio-save-interview"
-            disabled={!interview}
             onClick={saveCurrentInterview}
             type="button"
           >
