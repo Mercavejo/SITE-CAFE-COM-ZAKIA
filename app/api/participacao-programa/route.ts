@@ -238,6 +238,17 @@ async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayl
 
 export async function POST(request: NextRequest) {
   try {
+    const hasAccess =
+      request.cookies.get("jogos_access")?.value === "5832" ||
+      request.cookies.get("carfuk_access")?.value === "5832";
+
+    if (!hasAccess) {
+      return NextResponse.json(
+        { message: "Acesso protegido. Entre pela area de jogos antes de enviar o documento." },
+        { status: 403, headers: { "Cache-Control": "no-store" } },
+      );
+    }
+
     const payload = (await request.json()) as ParticipationPayload;
     const data = validatePayload(payload);
     const pdfBase64 = await createParticipationPdf(data);
