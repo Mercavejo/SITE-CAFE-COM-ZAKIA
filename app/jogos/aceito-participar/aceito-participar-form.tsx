@@ -7,6 +7,12 @@ type FormStatus = {
   message: string;
 };
 
+type SubmitResponse = {
+  message?: string;
+  pdfBase64?: string;
+  filename?: string;
+};
+
 function onlyDigits(value: string) {
   return value.replace(/\D/g, "");
 }
@@ -30,6 +36,15 @@ function formatCpf(value: string) {
 
 function formatWhatsapp(value: string) {
   return onlyDigits(value).slice(0, 13);
+}
+
+function downloadPdfFromBase64(pdfBase64: string, filename: string) {
+  const link = document.createElement("a");
+  link.href = `data:application/pdf;base64,${pdfBase64}`;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 }
 
 export function AceitoParticiparForm() {
@@ -86,10 +101,14 @@ export function AceitoParticiparForm() {
           empresa,
         }),
       });
-      const result = (await response.json()) as { message?: string };
+      const result = (await response.json()) as SubmitResponse;
 
       if (!response.ok) {
         throw new Error(result.message || "Nao foi possivel enviar o documento agora.");
+      }
+
+      if (result.pdfBase64) {
+        downloadPdfFromBase64(result.pdfBase64, result.filename || "aceito-participar-cafe-com-zakia.pdf");
       }
 
       setStatus({

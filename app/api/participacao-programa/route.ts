@@ -198,9 +198,7 @@ async function createParticipationPdf(data: ReturnType<typeof validatePayload>) 
 async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayload>) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
-    throw new Error(
-      "Documento gerado, mas o envio automático ainda precisa da variável RESEND_API_KEY configurada na Vercel.",
-    );
+    return false;
   }
 
   const response = await fetch("https://api.resend.com/emails", {
@@ -234,6 +232,8 @@ async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayl
     const errorText = await response.text();
     throw new Error(`Falha no envio de e-mail: ${errorText.slice(0, 240)}`);
   }
+
+  return true;
 }
 
 export async function POST(request: NextRequest) {
@@ -252,7 +252,19 @@ export async function POST(request: NextRequest) {
     const payload = (await request.json()) as ParticipationPayload;
     const data = validatePayload(payload);
     const pdfBase64 = await createParticipationPdf(data);
-    await sendEmail(pdfBase64, data);
+    const sentByEmail = await sendEmail(pdfBase64, data);
+
+    if (!sentByEmail) {
+      return NextResponse.json(
+        {
+          message:
+            "Documento gerado com sucesso. O PDF foi baixado neste aparelho. O envio automático por e-mail será ativado quando a chave de e-mail estiver configurada.",
+          pdfBase64,
+          filename: `aceite-cafe-com-zakia-${onlyDigits(data.cpf)}.pdf`,
+        },
+        { headers: { "Cache-Control": "no-store" } },
+      );
+    }
 
     return NextResponse.json(
       { message: "Documento assinado e enviado com sucesso para cafecomzakia@gmail.com." },
@@ -262,7 +274,7 @@ export async function POST(request: NextRequest) {
     const message = error instanceof Error ? error.message : "Nao foi possivel processar o aceite.";
     return NextResponse.json(
       { message },
-      { status: message.includes("RESEND_API_KEY") ? 503 : 400, headers: { "Cache-Control": "no-store" } },
+      { status: 400, headers: { "Cache-Control": "no-store" } },
     );
   }
 }
