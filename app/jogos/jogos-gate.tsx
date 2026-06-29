@@ -22,6 +22,14 @@ const tools = [
     cta: "Entrar no Sorteio",
     tag: "Entrevistas",
   },
+  {
+    title: "ACEITO PARTICIPAR DO PROGRAMA !",
+    description:
+      "Documento seguro para o convidado selecionado confirmar dados, assinar o nome completo e autorizar sua participação no Café com Zákia.",
+    href: "/jogos/aceito-participar",
+    cta: "Abrir documento",
+    tag: "Autorizacao",
+  },
 ];
 
 export function JogosGate() {

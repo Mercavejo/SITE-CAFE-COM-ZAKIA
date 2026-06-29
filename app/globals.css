@@ -288,6 +288,204 @@ nav a:hover,
   margin: 0;
 }
 
+.accept-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 10%, rgba(255, 231, 154, 0.16), transparent 28%),
+    radial-gradient(circle at 80% 18%, rgba(90, 72, 34, 0.2), transparent 32%),
+    linear-gradient(145deg, #030303 0%, #11100c 52%, #050505 100%);
+  color: var(--white);
+}
+
+.accept-hero {
+  min-height: calc(100vh - 92px);
+  padding: clamp(26px, 5vw, 70px) clamp(16px, 5vw, 70px) 70px;
+}
+
+.accept-shell {
+  width: min(1220px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 0.82fr) minmax(360px, 0.92fr);
+  gap: clamp(24px, 5vw, 70px);
+  align-items: start;
+}
+
+.accept-copy,
+.accept-form {
+  border: 1px solid rgba(255, 226, 138, 0.24);
+  border-radius: 8px;
+  background:
+    linear-gradient(145deg, rgba(255, 231, 154, 0.085), rgba(255, 255, 255, 0.026)),
+    rgba(5, 5, 5, 0.78);
+  box-shadow: 0 28px 88px rgba(0, 0, 0, 0.42), 0 0 60px rgba(212, 175, 55, 0.06);
+  backdrop-filter: blur(10px);
+}
+
+.accept-copy {
+  position: sticky;
+  top: 24px;
+  padding: clamp(26px, 4vw, 52px);
+}
+
+.accept-copy h2 {
+  margin-bottom: 18px;
+  color: var(--white);
+  font-size: clamp(2.3rem, 5vw, 4.7rem);
+  line-height: 0.94;
+}
+
+.accept-copy p,
+.accept-note span,
+.accept-legal p,
+.accept-form-heading p {
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.72;
+}
+
+.accept-note {
+  display: grid;
+  gap: 8px;
+  margin-top: 28px;
+  padding: 18px;
+  border-left: 3px solid var(--gold);
+  background: rgba(255, 231, 154, 0.08);
+}
+
+.accept-note strong,
+.accept-form-heading span {
+  color: var(--gold-light);
+  font-weight: 950;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.accept-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: clamp(22px, 3vw, 38px);
+}
+
+.accept-form-heading,
+.accept-wide,
+.accept-submit,
+.accept-status {
+  grid-column: 1 / -1;
+}
+
+.accept-form-heading h3 {
+  margin: 8px 0 10px;
+  color: var(--white);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(1.7rem, 3vw, 2.65rem);
+  line-height: 1;
+}
+
+.accept-form label {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+  color: var(--gold-light);
+  font-weight: 900;
+}
+
+.accept-form input {
+  width: 100%;
+  min-height: 52px;
+  border: 1px solid rgba(255, 226, 138, 0.28);
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.48);
+  color: var(--white);
+  padding: 0 14px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.accept-form input:focus {
+  border-color: var(--gold-light);
+  box-shadow: 0 0 0 3px rgba(215, 173, 63, 0.18);
+}
+
+.accept-form small {
+  color: rgba(255, 255, 255, 0.58);
+  line-height: 1.45;
+}
+
+.accept-form small.accept-ok {
+  color: var(--gold-light);
+}
+
+.accept-terms {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid rgba(255, 226, 138, 0.18);
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.28);
+}
+
+.accept-terms label {
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 800;
+  line-height: 1.55;
+}
+
+.accept-terms input {
+  width: 20px;
+  min-height: 20px;
+  height: 20px;
+  margin-top: 2px;
+  accent-color: var(--gold);
+}
+
+.accept-legal {
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.accept-legal strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--white);
+}
+
+.accept-legal p {
+  margin-bottom: 0;
+  font-size: 0.92rem;
+}
+
+.accept-status {
+  padding: 14px;
+  border-radius: 6px;
+  line-height: 1.5;
+}
+
+.accept-status.success {
+  border: 1px solid rgba(128, 255, 173, 0.32);
+  background: rgba(30, 130, 66, 0.18);
+  color: #b7ffcd;
+}
+
+.accept-status.error {
+  border: 1px solid rgba(255, 132, 132, 0.34);
+  background: rgba(160, 24, 28, 0.18);
+  color: #ffb4b4;
+}
+
+.accept-hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
 .button:disabled {
   cursor: not-allowed;
   opacity: 0.55;
@@ -2687,11 +2885,17 @@ h3 {
 
 @media (max-width: 980px) {
   .games-tool-grid,
+  .accept-shell,
+  .accept-form,
   .sorteio-shell,
   .sorteio-form,
   .sorteio-actions-row,
   .sorteio-prompt-actions {
     grid-template-columns: 1fr;
+  }
+
+  .accept-copy {
+    position: static;
   }
 
   .sorteio-sidebar {
