@@ -7,6 +7,15 @@ const accessCode = "5832";
 
 const tools = [
   {
+    title: "Preenchimento do participante",
+    description:
+      "Link público para o convidado preencher dados, links, temas e assuntos antes da entrevista, sem acesso às ferramentas administrativas.",
+    href: "/jogos/sorteio/preencher",
+    cta: "Abrir formulário público",
+    tag: "Público",
+    public: true,
+  },
+  {
     title: "CARFUK: DZ Racing",
     description:
       "Jogo oficial de corrida arcade do Café com Zákia, com até 4 jogadores no mesmo dispositivo e entrada online rápida.",
@@ -94,7 +103,7 @@ export function JogosGate() {
               <span>{tool.tag}</span>
               <h2>{tool.title}</h2>
               <p>{tool.description}</p>
-              {unlocked ? (
+              {unlocked || tool.public ? (
                 <Link className="button primary full" href={tool.href}>
                   {tool.cta}
                 </Link>

@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export function proxy(request: NextRequest) {
+  if (request.nextUrl.pathname === "/jogos/sorteio/preencher") {
+    return NextResponse.next();
+  }
+
   const hasAccess =
     request.cookies.get("jogos_access")?.value === "5832" ||
     request.cookies.get("carfuk_access")?.value === "5832";

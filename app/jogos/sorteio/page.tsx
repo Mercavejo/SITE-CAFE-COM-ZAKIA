@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { SorteioApp } from "./sorteio-app";
 
 export const metadata: Metadata = {
@@ -15,5 +16,9 @@ export const metadata: Metadata = {
 };
 
 export default function SorteioPage() {
-  return <SorteioApp />;
+  return (
+    <Suspense fallback={null}>
+      <SorteioApp />
+    </Suspense>
+  );
 }

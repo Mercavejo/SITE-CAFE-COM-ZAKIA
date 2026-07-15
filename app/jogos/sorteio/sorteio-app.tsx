@@ -2,6 +2,7 @@
 
 import { ChangeEvent, FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Mic, Square } from "lucide-react";
 
 type Step = "entrevista" | "perguntas" | "banco" | "sorteio";
@@ -16,6 +17,23 @@ type Interview = {
   temasProibidos: string;
   observacoes: string;
   criadoEm: string;
+  origem?: "admin" | "pessoa";
+  origemLabel?: string;
+};
+
+type PublicInterviewSubmission = {
+  nome?: string;
+  email?: string;
+  whatsapp?: string;
+  redeSocial?: string;
+  links?: string;
+  resumo?: string;
+  objetivo?: string;
+  temas?: string;
+  temasProibidos?: string;
+  perguntasDesejadas?: string;
+  observacoes?: string;
+  enviadoEm?: string;
 };
 
 type QuestionCard = {
@@ -96,6 +114,48 @@ function makeQuestionsLightweight(questions: QuestionCard[]) {
   return questions.map((question) =>
     question.origem === "texto" ? { ...question, image: "" } : question,
   );
+}
+
+function decodePublicSubmission(value: string) {
+  try {
+    const binary = atob(value);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    const text = new TextDecoder().decode(bytes);
+    return JSON.parse(text) as PublicInterviewSubmission;
+  } catch {
+    return null;
+  }
+}
+
+function formatParticipantNotes(submission: PublicInterviewSubmission) {
+  return [
+    "Preenchimento pela pessoa.",
+    submission.email ? `E-mail: ${submission.email}` : "",
+    submission.whatsapp ? `WhatsApp: ${submission.whatsapp}` : "",
+    submission.redeSocial ? `Rede social mais usada: ${submission.redeSocial}` : "",
+    submission.perguntasDesejadas ? `Perguntas/assuntos que a pessoa deseja abordar: ${submission.perguntasDesejadas}` : "",
+    submission.observacoes ? `Observacoes da pessoa: ${submission.observacoes}` : "",
+    submission.enviadoEm ? `Enviado em: ${formatSavedDate(submission.enviadoEm)}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
+function createInterviewFromPublicSubmission(submission: PublicInterviewSubmission) {
+  const createdAt = submission.enviadoEm || new Date().toISOString();
+  return {
+    nome: String(submission.nome || "").trim(),
+    estilo: "Polêmica viral",
+    links: String(submission.links || "").trim(),
+    resumo: String(submission.resumo || "").trim(),
+    objetivo: String(submission.objetivo || "").trim(),
+    temas: String(submission.temas || "").trim(),
+    temasProibidos: String(submission.temasProibidos || "").trim(),
+    observacoes: formatParticipantNotes(submission),
+    criadoEm: createdAt,
+    origem: "pessoa" as const,
+    origemLabel: "Preenchimento pela pessoa",
+  };
 }
 
 function formatSavedDate(value: string) {
@@ -433,6 +493,7 @@ function VoiceField({
 }
 
 export function SorteioApp() {
+  const searchParams = useSearchParams();
   const [step, setStep] = useState<Step>("entrevista");
   const [interview, setInterview] = useState<Interview | null>(null);
   const [questions, setQuestions] = useState<QuestionCard[]>([]);
@@ -450,6 +511,7 @@ export function SorteioApp() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const recognitionRef = useRef<InstanceType<SpeechRecognitionConstructor> | null>(null);
   const storageLoadedRef = useRef(false);
+  const importedPublicSubmissionRef = useRef<string | null>(null);
 
   const themes = useMemo(() => {
     const all = [...defaultThemes, ...questions.map((question) => question.tema)];
@@ -521,6 +583,35 @@ export function SorteioApp() {
         ),
       );
   }, []);
+
+  useEffect(() => {
+    const encoded = searchParams.get("preenchimento");
+    if (!encoded || importedPublicSubmissionRef.current === encoded) return;
+
+    importedPublicSubmissionRef.current = encoded;
+    const submission = decodePublicSubmission(encoded);
+    if (!submission?.nome) {
+      setStatus("Nao foi possivel importar o preenchimento da pessoa. Peca para ela enviar o link novamente.");
+      return;
+    }
+
+    const importedInterview = createInterviewFromPublicSubmission(submission);
+    setInterview(importedInterview);
+    setQuestions([]);
+    setTema(allThemes);
+    setDrawnIds([]);
+    setCurrent(null);
+    setQuestionText("");
+    setCopied(false);
+    setStep("entrevista");
+    setShowSavedInterviews(true);
+
+    persistInterviewSnapshot(importedInterview, [], false).then(() => {
+      setStatus(
+        `${importedInterview.nome} importado como Preenchimento pela pessoa. Agora voce pode gerar o prompt e seguir com as perguntas.`,
+      );
+    });
+  }, [searchParams]);
 
   useEffect(() => {
     if (!storageLoadedRef.current) return;
@@ -995,6 +1086,9 @@ export function SorteioApp() {
           <h1>Café com Zákia</h1>
         </div>
         <div className="sorteio-header-actions">
+          <Link href="/jogos/sorteio/preencher">
+            Link do convidado
+          </Link>
           <button
             className="sorteio-history-button"
             onClick={toggleSavedInterviews}
@@ -1036,6 +1130,7 @@ export function SorteioApp() {
                     <button onClick={() => openSavedInterview(saved)} type="button">
                       <strong>{saved.interview.nome}</strong>
                       <span>
+                        {saved.interview.origem === "pessoa" ? "Preenchimento pela pessoa • " : ""}
                         {saved.questions.length} perguntas • {formatSavedDate(saved.savedAt)}
                       </span>
                     </button>
