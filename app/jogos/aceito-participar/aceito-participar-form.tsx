@@ -1,6 +1,7 @@
 "use client";
 
-import { FormEvent, useMemo, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 type FormStatus = {
   type: "idle" | "success" | "error";
@@ -11,6 +12,13 @@ type SubmitResponse = {
   message?: string;
   pdfBase64?: string;
   filename?: string;
+};
+
+type ParticipantPrefill = {
+  nome?: string;
+  email?: string;
+  whatsapp?: string;
+  redeSocial?: string;
 };
 
 function onlyDigits(value: string) {
@@ -47,7 +55,21 @@ function downloadPdfFromBase64(pdfBase64: string, filename: string) {
   link.remove();
 }
 
+function decodeParticipantPrefill(value: string | null) {
+  if (!value) return null;
+
+  try {
+    const binary = atob(value);
+    const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
+    const text = new TextDecoder().decode(bytes);
+    return JSON.parse(text) as ParticipantPrefill;
+  } catch {
+    return null;
+  }
+}
+
 export function AceitoParticiparForm() {
+  const searchParams = useSearchParams();
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
@@ -63,6 +85,16 @@ export function AceitoParticiparForm() {
   const signatureMatches = useMemo(() => {
     return normalizeName(nomeCompleto) !== "" && normalizeName(nomeCompleto) === normalizeName(assinatura);
   }, [assinatura, nomeCompleto]);
+
+  useEffect(() => {
+    const prefill = decodeParticipantPrefill(searchParams.get("participante"));
+    if (!prefill) return;
+
+    setNomeCompleto(String(prefill.nome || ""));
+    setEmail(String(prefill.email || ""));
+    setWhatsapp(formatWhatsapp(String(prefill.whatsapp || "")));
+    setRedeSocial(String(prefill.redeSocial || ""));
+  }, [searchParams]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

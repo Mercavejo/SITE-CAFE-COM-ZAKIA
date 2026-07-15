@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import Link from "next/link";
 import { AceitoParticiparForm } from "./aceito-participar-form";
 
@@ -48,7 +49,9 @@ export default function AceitoParticiparPage() {
             </div>
           </div>
 
-          <AceitoParticiparForm />
+          <Suspense fallback={null}>
+            <AceitoParticiparForm />
+          </Suspense>
         </div>
       </section>
     </main>

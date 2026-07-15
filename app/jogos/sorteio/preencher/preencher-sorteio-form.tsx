@@ -36,8 +36,9 @@ export function PreencherSorteioForm() {
   const [status, setStatus] = useState("");
   const [generatedLink, setGeneratedLink] = useState("");
   const [whatsappLink, setWhatsappLink] = useState("");
+  const [isSending, setIsSending] = useState(false);
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     const data: PublicSubmission = {
@@ -61,10 +62,9 @@ export function PreencherSorteioForm() {
     }
 
     const encoded = encodeSubmission(data);
-    const origin = window.location.origin;
-    const importLink = `${origin}/jogos/sorteio?preenchimento=${encodeURIComponent(encoded)}`;
+    const importLink = `https://www.cafecomzakia.com.br/jogos/sorteio?preenchimento=${encodeURIComponent(encoded)}`;
     const message = [
-      "Olá, preenchi meus dados para participar do Café com Zákia.",
+      "Ola, preenchi meus dados para participar do Cafe com Zakia.",
       "",
       "Link do meu preenchimento:",
       importLink,
@@ -73,21 +73,44 @@ export function PreencherSorteioForm() {
 
     setGeneratedLink(importLink);
     setWhatsappLink(nextWhatsappLink);
-    setStatus("Preenchimento pronto. Clique no botão para enviar pelo WhatsApp.");
-    window.open(nextWhatsappLink, "_blank", "noopener,noreferrer");
+    setIsSending(true);
+
+    try {
+      const response = await fetch("/api/preenchimento-participante", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, importLink, empresa: "" }),
+      });
+      const result = (await response.json()) as { message?: string };
+      if (!response.ok) {
+        throw new Error(result.message || "Nao foi possivel enviar para a equipe.");
+      }
+      setStatus(
+        `${result.message || "Preenchimento enviado."} A equipe analisara e, se aprovado, liberara a etapa ACEITO PARTICIPAR DO PROGRAMA.`,
+      );
+      window.open(nextWhatsappLink, "_blank", "noopener,noreferrer");
+    } catch (error) {
+      setStatus(
+        error instanceof Error
+          ? error.message
+          : "Nao foi possivel enviar para a equipe. Copie o link e envie pelo WhatsApp.",
+      );
+    } finally {
+      setIsSending(false);
+    }
   }
 
   async function copyLink() {
     if (!generatedLink) return;
     await navigator.clipboard.writeText(generatedLink);
-    setStatus("Link copiado. Envie para a equipe do Café com Zákia.");
+    setStatus("Link copiado. Envie para a equipe do Cafe com Zakia.");
   }
 
   return (
     <form className="public-sorteio-form" onSubmit={handleSubmit}>
       <div className="public-sorteio-heading">
         <span>Preenchimento do participante</span>
-        <h2>Dados para preparação da entrevista</h2>
+        <h2>Dados para preparacao da entrevista</h2>
       </div>
 
       <label>
@@ -112,22 +135,22 @@ export function PreencherSorteioForm() {
 
       <label className="public-wide">
         Links das redes, site ou entrevistas anteriores
-        <textarea name="links" placeholder="Cole aqui links importantes sobre você." />
+        <textarea name="links" placeholder="Cole aqui links importantes sobre voce." />
       </label>
 
       <label className="public-wide">
-        Resumo sobre você
-        <textarea name="resumo" placeholder="Conte sua história, profissão, empresa, trajetória e pontos importantes." />
+        Resumo sobre voce
+        <textarea name="resumo" placeholder="Conte sua historia, profissao, empresa, trajetoria e pontos importantes." />
       </label>
 
       <label>
         Objetivo da conversa
-        <textarea name="objetivo" placeholder="O que você gostaria que essa entrevista mostrasse?" />
+        <textarea name="objetivo" placeholder="O que voce gostaria que essa entrevista mostrasse?" />
       </label>
 
       <label>
         Temas principais
-        <textarea name="temas" placeholder="Negócios, carreira, superação, política, saúde, bastidores..." />
+        <textarea name="temas" placeholder="Negocios, carreira, superacao, politica, saude, bastidores..." />
       </label>
 
       <label className="public-wide">
@@ -136,22 +159,22 @@ export function PreencherSorteioForm() {
       </label>
 
       <label className="public-wide">
-        Perguntas ou assuntos que você gostaria de responder
-        <textarea name="perguntasDesejadas" placeholder="Escreva perguntas, histórias ou assuntos que você acha importantes para o programa." />
+        Perguntas ou assuntos que voce gostaria de responder
+        <textarea name="perguntasDesejadas" placeholder="Escreva perguntas, historias ou assuntos que voce acha importantes para o programa." />
       </label>
 
       <label className="public-wide">
-        Observações finais
-        <textarea name="observacoes" placeholder="Qualquer informação extra para a equipe." />
+        Observacoes finais
+        <textarea name="observacoes" placeholder="Qualquer informacao extra para a equipe." />
       </label>
 
-      <button className="button primary full public-wide" type="submit">
-        Enviar preenchimento pelo WhatsApp
+      <button className="button primary full public-wide" disabled={isSending} type="submit">
+        {isSending ? "Enviando preenchimento..." : "Enviar preenchimento para analise"}
       </button>
 
       {generatedLink ? (
         <div className="public-generated public-wide">
-          <strong>Link gerado</strong>
+          <strong>Link gerado para a equipe</strong>
           <textarea readOnly value={generatedLink} />
           <div>
             <a className="button primary" href={whatsappLink} target="_blank" rel="noopener">

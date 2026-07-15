@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import { saveParticipantDocument } from "@/lib/participant-db";
 
 export const runtime = "nodejs";
 
@@ -195,7 +196,7 @@ async function createParticipationPdf(data: ReturnType<typeof validatePayload>) 
   return Buffer.from(bytes).toString("base64");
 }
 
-async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayload>) {
+async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayload>, filename: string) {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) {
     return false;
@@ -221,7 +222,7 @@ async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayl
       `,
       attachments: [
         {
-          filename: `aceite-cafe-com-zakia-${onlyDigits(data.cpf)}.pdf`,
+          filename,
           content: pdfBase64,
         },
       ],
@@ -238,21 +239,30 @@ async function sendEmail(pdfBase64: string, data: ReturnType<typeof validatePayl
 
 export async function POST(request: NextRequest) {
   try {
-    const hasAccess =
-      request.cookies.get("jogos_access")?.value === "5832" ||
-      request.cookies.get("carfuk_access")?.value === "5832";
-
-    if (!hasAccess) {
-      return NextResponse.json(
-        { message: "Acesso protegido. Entre pela area de jogos antes de enviar o documento." },
-        { status: 403, headers: { "Cache-Control": "no-store" } },
-      );
-    }
-
     const payload = (await request.json()) as ParticipationPayload;
     const data = validatePayload(payload);
     const pdfBase64 = await createParticipationPdf(data);
-    const sentByEmail = await sendEmail(pdfBase64, data);
+    const filename = `aceite-cafe-com-zakia-${onlyDigits(data.cpf)}.pdf`;
+    let savedDocument: Awaited<ReturnType<typeof saveParticipantDocument>> = null;
+    let databaseError = "";
+
+    try {
+      savedDocument = await saveParticipantDocument({
+        name: data.nomeCompleto,
+        email: data.email,
+        whatsapp: data.whatsapp,
+        social: data.redeSocial,
+        cpfLast4: onlyDigits(data.cpf).slice(-4),
+        payload: data,
+        pdfBase64,
+        pdfFilename: filename,
+      });
+    } catch (error) {
+      databaseError = error instanceof Error ? error.message : "Falha ao salvar documento no banco.";
+      console.error("participant document database error", error);
+    }
+
+    const sentByEmail = await sendEmail(pdfBase64, data, filename);
 
     if (!sentByEmail) {
       return NextResponse.json(
@@ -260,14 +270,26 @@ export async function POST(request: NextRequest) {
           message:
             "Documento gerado com sucesso. O PDF foi baixado neste aparelho. O envio automático por e-mail será ativado quando a chave de e-mail estiver configurada.",
           pdfBase64,
-          filename: `aceite-cafe-com-zakia-${onlyDigits(data.cpf)}.pdf`,
+          filename,
+          databaseSaved: Boolean(savedDocument),
+          documentId: savedDocument?.id || null,
+          databaseError: databaseError || null,
         },
         { headers: { "Cache-Control": "no-store" } },
       );
     }
 
     return NextResponse.json(
-      { message: "Documento assinado e enviado com sucesso para cafecomzakia@gmail.com." },
+      {
+        message: savedDocument
+          ? "Documento assinado, salvo no banco e enviado com sucesso para cafecomzakia@gmail.com."
+          : databaseError
+            ? `Documento enviado por e-mail, mas nao foi salvo no banco: ${databaseError}`
+            : "Documento assinado e enviado com sucesso para cafecomzakia@gmail.com. O banco sera ativado quando DATABASE_URL estiver configurado.",
+        databaseSaved: Boolean(savedDocument),
+        documentId: savedDocument?.id || null,
+        databaseError: databaseError || null,
+      },
       { headers: { "Cache-Control": "no-store" } },
     );
   } catch (error) {

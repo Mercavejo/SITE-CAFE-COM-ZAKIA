@@ -9,35 +9,43 @@ const tools = [
   {
     title: "Preenchimento do participante",
     description:
-      "Link público para o convidado preencher dados, links, temas e assuntos antes da entrevista, sem acesso às ferramentas administrativas.",
+      "Etapa 1: link publico para o convidado preencher dados, links, temas e assuntos. A equipe recebe por e-mail e decide se aprova a continuidade.",
     href: "/jogos/sorteio/preencher",
-    cta: "Abrir formulário público",
-    tag: "Público",
+    cta: "Abrir formulario publico",
+    tag: "Etapa 1",
     public: true,
   },
   {
-    title: "CARFUK: DZ Racing",
+    title: "Novos pedidos de participantes",
     description:
-      "Jogo oficial de corrida arcade do Café com Zákia, com até 4 jogadores no mesmo dispositivo e entrada online rápida.",
-    href: "/jogos/carfuk/index.html",
-    cta: "Entrar no CARFUK",
-    tag: "Jogo",
+      "Admin: veja quem preencheu, aprove ou reprove o pedido e envie o link do aceite digital para quem for selecionado.",
+    href: "/jogos/pedidos",
+    cta: "Analisar pedidos",
+    tag: "Admin",
   },
   {
     title: "Sorteio de Perguntas",
     description:
-      "Ferramenta para preparar entrevistas, criar perguntas, importar imagens e sortear cards em modo TV.",
+      "Etapa 2: a equipe abre o preenchimento aprovado, gera prompt, cria perguntas e organiza o sorteio da entrevista.",
     href: "/jogos/sorteio",
     cta: "Entrar no Sorteio",
-    tag: "Entrevistas",
+    tag: "Etapa 2",
   },
   {
     title: "ACEITO PARTICIPAR DO PROGRAMA !",
     description:
-      "Documento seguro para o convidado selecionado confirmar dados, assinar o nome completo e autorizar sua participação no Café com Zákia.",
+      "Etapa 3: contrato digital para quem foi aprovado pela equipe confirmar participacao voluntaria e assinar o aceite.",
     href: "/jogos/aceito-participar",
     cta: "Abrir documento",
-    tag: "Autorizacao",
+    tag: "Etapa 3",
+  },
+  {
+    title: "CARFUK: DZ Racing",
+    description:
+      "Jogo oficial de corrida arcade do Cafe com Zakia, com ate 4 jogadores no mesmo dispositivo e entrada online rapida.",
+    href: "/jogos/carfuk/index.html",
+    cta: "Entrar no CARFUK",
+    tag: "Jogo",
   },
 ];
 
@@ -56,7 +64,7 @@ export function JogosGate() {
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (password.trim() !== accessCode) {
-      setError("Senha incorreta. Confira o código e tente novamente.");
+      setError("Senha incorreta. Confira o codigo e tente novamente.");
       setUnlocked(false);
       return;
     }
@@ -68,13 +76,13 @@ export function JogosGate() {
   }
 
   return (
-    <section className="game-gate" aria-label="Área protegida de jogos e ferramentas">
+    <section className="game-gate" aria-label="Area protegida de jogos e ferramentas">
       <div className="game-gate-card games-hub-card">
-        <p className="eyebrow">Jogos Café com Zákia</p>
-        <h1>Área de Jogos</h1>
+        <p className="eyebrow">Jogos Cafe com Zakia</p>
+        <h1>Area de Jogos</h1>
         <p>
-          Escolha o que deseja abrir. O CARFUK e o Sorteio de Perguntas ficam separados,
-          cada um com seu próprio link dentro da área de jogos.
+          Fluxo de entrevistas: primeiro o participante preenche os dados, depois a equipe
+          analisa no Sorteio de Perguntas e, se aprovado, libera o aceite digital.
         </p>
 
         <form className="game-password-form" onSubmit={handleSubmit}>
@@ -91,7 +99,7 @@ export function JogosGate() {
               onChange={(event) => setPassword(event.target.value)}
             />
             <button className="button primary" type="submit">
-              Liberar área
+              Liberar area
             </button>
           </div>
           {error ? <strong className="game-password-error">{error}</strong> : null}
@@ -117,8 +125,8 @@ export function JogosGate() {
         </div>
 
         <div className="game-note">
-          <strong>Senha atual:</strong> acesso protegido para ferramentas internas do Café com
-          Zákia. Use a senha autorizada para abrir cada item.
+          <strong>Senha atual:</strong> acesso protegido para ferramentas internas do Cafe com
+          Zakia. Use a senha autorizada para abrir cada item.
         </div>
       </div>
     </section>
