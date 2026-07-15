@@ -283,9 +283,7 @@ export async function POST(request: NextRequest) {
       {
         message: savedDocument
           ? "Documento assinado, salvo no banco e enviado com sucesso para cafecomzakia@gmail.com."
-          : databaseError
-            ? `Documento enviado por e-mail, mas nao foi salvo no banco: ${databaseError}`
-            : "Documento assinado e enviado com sucesso para cafecomzakia@gmail.com. O banco sera ativado quando DATABASE_URL estiver configurado.",
+          : "Documento assinado e enviado com sucesso para cafecomzakia@gmail.com.",
         databaseSaved: Boolean(savedDocument),
         documentId: savedDocument?.id || null,
         databaseError: databaseError || null,

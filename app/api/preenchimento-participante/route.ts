@@ -162,9 +162,7 @@ export async function POST(request: NextRequest) {
         message: sentByEmail
           ? savedRequest
             ? "Preenchimento salvo no banco e enviado com sucesso para a equipe do Cafe com Zakia."
-            : databaseError
-              ? `Preenchimento enviado por e-mail, mas nao foi salvo no banco: ${databaseError}`
-              : "Preenchimento enviado com sucesso por e-mail. O banco sera ativado quando DATABASE_URL estiver configurado."
+            : "Preenchimento enviado com sucesso para a equipe do Cafe com Zakia."
           : "Preenchimento gerado. O envio por e-mail sera ativado quando a chave RESEND_API_KEY estiver configurada.",
         sentByEmail,
         databaseSaved: Boolean(savedRequest),
