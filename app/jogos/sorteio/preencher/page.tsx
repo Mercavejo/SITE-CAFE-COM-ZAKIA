@@ -27,8 +27,10 @@ export default function PreencherSorteioPage() {
           <div className="public-sorteio-note">
             <strong>Como funciona</strong>
             <span>
-              Ao enviar, será gerado um link seguro para WhatsApp. A equipe abre esse link e o
-              cadastro entra no sistema marcado como <b>Preenchimento pela pessoa</b>.
+              Ao enviar, a equipe recebe o preenchimento por e-mail, analisa o pedido e decide
+              se aprova a próxima etapa. Se for aprovado, você recebe no e-mail o link direto
+              para assinar o <b>ACEITO PARTICIPAR DO PROGRAMA</b>. O envio pelo WhatsApp também
+              fica disponível como reforço de contato.
             </span>
           </div>
           <Link className="button secondary" href="/">

@@ -1,4 +1,5 @@
 import { seoTopicList } from "./seo-data";
+import Link from "next/link";
 
 const whatsappUrl =
   "https://wa.me/5517996240418?text=Ol%C3%A1%2C%20vim%20atrav%C3%A9s%20do%20site%20%40cafecomzakia%2C%20gostaria%20de%20saber%20como%20participar%3F";
@@ -398,16 +399,27 @@ export default function Home() {
           <h2>Se a sua história merece palco, ela precisa ser apresentada com valor.</h2>
           <p>
             Fale com a equipe da Mercavejo Consultoria e entenda como levar sua marca,
-            sua trajetória ou sua empresa para o Café com Zákia.
+            sua trajetória ou sua empresa para o Café com Zákia. Você também pode iniciar
+            o processo preenchendo o cadastro de participante para análise da equipe.
           </p>
         </div>
         <div className="participate-card">
-          <h3>Solicite disponibilidade</h3>
-          <p>Atendimento direto pelo WhatsApp para agenda, formato e próximos passos.</p>
-          <a className="button primary full" href={whatsappUrl} target="_blank" rel="noopener">
-            Entrar pelo WhatsApp
-          </a>
-          <small>Mercavejo Consultoria • Gestão e produção</small>
+          <span className="panel-label">Primeiro passo</span>
+          <h3>Solicite disponibilidade e envie seu cadastro.</h3>
+          <p>
+            Preencha seus dados, links, temas e história. A equipe recebe por e-mail,
+            analisa o pedido e, se aprovado, envia o link direto para o documento
+            ACEITO PARTICIPAR DO PROGRAMA.
+          </p>
+          <div className="participate-actions">
+            <Link className="button primary full" href="/jogos/sorteio/preencher">
+              Preencher cadastro para participar
+            </Link>
+            <a className="button outline full" href={whatsappUrl} target="_blank" rel="noopener">
+              Entrar pelo WhatsApp
+            </a>
+          </div>
+          <small>Mercavejo Consultoria • Curadoria, gestão e produção</small>
         </div>
       </section>
 
