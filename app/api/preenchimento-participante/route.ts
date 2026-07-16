@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { saveParticipantRequest } from "@/lib/participant-db";
+import {
+  sendInternalPreenchimentoEmail,
+  sendParticipantReceivedEmail,
+} from "@/lib/participant-messaging";
 
 export const runtime = "nodejs";
 
@@ -20,10 +24,6 @@ type PublicSubmissionPayload = {
   empresa?: string;
 };
 
-const destinationEmail = process.env.PARTICIPACAO_EMAIL_TO || "cafecomzakia@gmail.com";
-const fromEmail =
-  process.env.PARTICIPACAO_EMAIL_FROM || "Cafe com Zakia <onboarding@resend.dev>";
-
 function cleanText(value: unknown, maxLength = 1200) {
   return String(value || "")
     .replace(/[\u0000-\u001f\u007f]/g, " ")
@@ -34,15 +34,6 @@ function cleanText(value: unknown, maxLength = 1200) {
 
 function onlyDigits(value: string) {
   return value.replace(/\D/g, "");
-}
-
-function escapeHtml(value: string) {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
 }
 
 function validatePayload(payload: PublicSubmissionPayload) {
@@ -89,51 +80,6 @@ function validatePayload(payload: PublicSubmissionPayload) {
   return data;
 }
 
-async function sendPreenchimentoEmail(data: ReturnType<typeof validatePayload>) {
-  const apiKey = process.env.RESEND_API_KEY;
-  if (!apiKey) return false;
-
-  const response = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from: fromEmail,
-      to: [destinationEmail],
-      subject: `PREENCHIMENTO DO PARTICIPANTE - ${data.nome}`,
-      html: `
-        <h2>Novo preenchimento do participante</h2>
-        <p><strong>Status:</strong> analisar se sera aprovado para a etapa ACEITO PARTICIPAR DO PROGRAMA.</p>
-        <p><strong>Nome:</strong> ${escapeHtml(data.nome)}</p>
-        <p><strong>E-mail:</strong> ${escapeHtml(data.email)}</p>
-        <p><strong>WhatsApp:</strong> ${escapeHtml(data.whatsapp)}</p>
-        <p><strong>Rede social:</strong> ${escapeHtml(data.redeSocial)}</p>
-        <p><strong>Enviado em:</strong> ${escapeHtml(data.enviadoEm)}</p>
-        <hr />
-        <p><strong>Link para importar no Sorteio de Perguntas:</strong></p>
-        <p><a href="${escapeHtml(data.importLink)}">${escapeHtml(data.importLink)}</a></p>
-        <hr />
-        <p><strong>Links informados:</strong><br />${escapeHtml(data.links || "Nao informado")}</p>
-        <p><strong>Resumo:</strong><br />${escapeHtml(data.resumo || "Nao informado")}</p>
-        <p><strong>Objetivo:</strong><br />${escapeHtml(data.objetivo || "Nao informado")}</p>
-        <p><strong>Temas principais:</strong><br />${escapeHtml(data.temas || "Nao informado")}</p>
-        <p><strong>Temas delicados/proibidos:</strong><br />${escapeHtml(data.temasProibidos || "Nao informado")}</p>
-        <p><strong>Perguntas ou assuntos desejados:</strong><br />${escapeHtml(data.perguntasDesejadas || "Nao informado")}</p>
-        <p><strong>Observacoes:</strong><br />${escapeHtml(data.observacoes || "Nao informado")}</p>
-      `,
-    }),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`Falha no envio de e-mail: ${errorText.slice(0, 240)}`);
-  }
-
-  return true;
-}
-
 export async function POST(request: NextRequest) {
   try {
     const payload = (await request.json()) as PublicSubmissionPayload;
@@ -155,7 +101,10 @@ export async function POST(request: NextRequest) {
       console.error("participant request database error", error);
     }
 
-    const sentByEmail = await sendPreenchimentoEmail(data);
+    const sentByEmail = await sendInternalPreenchimentoEmail({ ...data, request: savedRequest });
+    if (sentByEmail) {
+      await sendParticipantReceivedEmail({ nome: data.nome, email: data.email });
+    }
 
     return NextResponse.json(
       {

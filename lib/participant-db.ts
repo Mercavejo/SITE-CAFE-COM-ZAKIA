@@ -35,6 +35,7 @@ export type ParticipantRequestRecord = {
   payload: Record<string, unknown>;
   importLink: string;
   reviewNote: string | null;
+  decisionToken: string;
 };
 
 let pool: Pool | null = null;
@@ -87,11 +88,19 @@ async function ensureTables() {
       social TEXT NOT NULL,
       payload JSONB NOT NULL,
       import_link TEXT NOT NULL,
-      review_note TEXT
+      review_note TEXT,
+      decision_token TEXT NOT NULL DEFAULT ''
     );
+
+    ALTER TABLE participant_requests
+      ADD COLUMN IF NOT EXISTS decision_token TEXT NOT NULL DEFAULT '';
 
     CREATE INDEX IF NOT EXISTS participant_requests_created_idx
       ON participant_requests (created_at DESC);
+
+    CREATE UNIQUE INDEX IF NOT EXISTS participant_requests_decision_token_idx
+      ON participant_requests (decision_token)
+      WHERE decision_token <> '';
 
     CREATE TABLE IF NOT EXISTS participant_documents (
       id TEXT PRIMARY KEY,
@@ -126,6 +135,7 @@ function mapRequestRow(row: Record<string, unknown>): ParticipantRequestRecord {
     payload: row.payload as Record<string, unknown>,
     importLink: String(row.import_link),
     reviewNote: row.review_note ? String(row.review_note) : null,
+    decisionToken: String(row.decision_token),
   };
 }
 
@@ -134,12 +144,13 @@ export async function saveParticipantRequest(input: ParticipantRequestInput) {
 
   await ensureTables();
   const id = randomUUID();
+  const decisionToken = randomUUID();
   const result = await getPool().query(
     `
       INSERT INTO participant_requests
-        (id, name, email, whatsapp, social, payload, import_link)
+        (id, name, email, whatsapp, social, payload, import_link, decision_token)
       VALUES
-        ($1, $2, $3, $4, $5, $6::jsonb, $7)
+        ($1, $2, $3, $4, $5, $6::jsonb, $7, $8)
       RETURNING *
     `,
     [
@@ -150,10 +161,36 @@ export async function saveParticipantRequest(input: ParticipantRequestInput) {
       input.social,
       JSON.stringify(input.payload),
       input.importLink,
+      decisionToken,
     ],
   );
 
   return mapRequestRow(result.rows[0]);
+}
+
+export async function updateParticipantRequestStatusByToken(
+  id: string,
+  decisionToken: string,
+  status: ParticipantRequestStatus,
+  reviewNote = "",
+) {
+  if (!hasParticipantDatabase()) return null;
+
+  await ensureTables();
+  const result = await getPool().query(
+    `
+      UPDATE participant_requests
+      SET status = $3,
+          review_note = NULLIF($4, ''),
+          updated_at = NOW()
+      WHERE id = $1
+        AND decision_token = $2
+      RETURNING *
+    `,
+    [id, decisionToken, status, reviewNote],
+  );
+
+  return result.rowCount ? mapRequestRow(result.rows[0]) : null;
 }
 
 export async function listParticipantRequests() {
@@ -193,6 +230,21 @@ export async function updateParticipantRequestStatus(
   );
 
   return result.rowCount ? mapRequestRow(result.rows[0]) : null;
+}
+
+export async function deleteParticipantRequest(id: string) {
+  if (!hasParticipantDatabase()) return false;
+
+  await ensureTables();
+  const result = await getPool().query(
+    `
+      DELETE FROM participant_requests
+      WHERE id = $1
+    `,
+    [id],
+  );
+
+  return Boolean(result.rowCount);
 }
 
 export async function saveParticipantDocument(input: ParticipantDocumentInput) {

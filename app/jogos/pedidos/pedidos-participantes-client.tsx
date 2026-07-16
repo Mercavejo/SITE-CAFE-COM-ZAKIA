@@ -127,6 +127,33 @@ export function PedidosParticipantesClient() {
     }
   }
 
+  async function deleteRequest(item: ParticipantRequest) {
+    const confirmed = window.confirm(
+      `Excluir definitivamente o pedido de ${item.name}? Esta acao apaga os dados desse pedido do banco.`,
+    );
+    if (!confirmed) return;
+
+    setUpdatingId(item.id);
+    try {
+      const response = await fetch("/api/admin/pedidos", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: item.id }),
+      });
+      const result = (await response.json()) as { message?: string };
+      if (!response.ok) {
+        throw new Error(result.message || "Nao foi possivel excluir o pedido.");
+      }
+
+      setItems((current) => current.filter((currentItem) => currentItem.id !== item.id));
+      setStatus(result.message || "Pedido excluido.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Nao foi possivel excluir o pedido.");
+    } finally {
+      setUpdatingId("");
+    }
+  }
+
   useEffect(() => {
     void loadItems();
   }, []);
@@ -203,6 +230,14 @@ export function PedidosParticipantesClient() {
                   onClick={() => updateStatus(item, "reprovado")}
                 >
                   Reprovar
+                </button>
+                <button
+                  className="button danger"
+                  disabled={updatingId === item.id}
+                  type="button"
+                  onClick={() => deleteRequest(item)}
+                >
+                  Excluir
                 </button>
               </div>
 

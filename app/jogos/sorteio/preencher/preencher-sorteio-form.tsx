@@ -86,14 +86,13 @@ export function PreencherSorteioForm() {
         throw new Error(result.message || "Nao foi possivel enviar para a equipe.");
       }
       setStatus(
-        `${result.message || "Preenchimento enviado."} A equipe analisara e, se aprovado, liberara a etapa ACEITO PARTICIPAR DO PROGRAMA.`,
+        `${result.message || "Preenchimento enviado."} A equipe analisara e, se aprovado, voce recebera por e-mail a etapa ACEITO PARTICIPAR DO PROGRAMA. Se desejar, use tambem o botao do WhatsApp abaixo.`,
       );
-      window.open(nextWhatsappLink, "_blank", "noopener,noreferrer");
     } catch (error) {
       setStatus(
         error instanceof Error
           ? error.message
-          : "Nao foi possivel enviar para a equipe. Copie o link e envie pelo WhatsApp.",
+          : "Nao foi possivel enviar para a equipe. Confira os dados e tente novamente.",
       );
     } finally {
       setIsSending(false);
@@ -174,11 +173,11 @@ export function PreencherSorteioForm() {
 
       {generatedLink ? (
         <div className="public-generated public-wide">
-          <strong>Link gerado para a equipe</strong>
+          <strong>Envio opcional pelo WhatsApp</strong>
           <textarea readOnly value={generatedLink} />
           <div>
             <a className="button primary" href={whatsappLink} target="_blank" rel="noopener">
-              Abrir WhatsApp
+              Enviar para o WhatsApp agora
             </a>
             <button className="button secondary" onClick={copyLink} type="button">
               Copiar link
