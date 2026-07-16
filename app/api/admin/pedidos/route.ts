@@ -83,10 +83,18 @@ export async function PATCH(request: NextRequest) {
       String(payload.reviewNote || "").trim(),
     );
     if (item && payload.status === "aprovado") {
-      await sendParticipantApprovedEmail(item);
+      try {
+        await sendParticipantApprovedEmail(item);
+      } catch (error) {
+        console.error("participant approved email error", error);
+      }
     }
     if (item && payload.status === "reprovado") {
-      await sendParticipantDeniedEmail(item);
+      try {
+        await sendParticipantDeniedEmail(item);
+      } catch (error) {
+        console.error("participant denied email error", error);
+      }
     }
   } catch (error) {
     const message = error instanceof Error ? error.message : "Falha ao atualizar no banco.";

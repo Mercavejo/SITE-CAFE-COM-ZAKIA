@@ -102,8 +102,15 @@ export async function POST(request: NextRequest) {
     }
 
     const sentByEmail = await sendInternalPreenchimentoEmail({ ...data, request: savedRequest });
+    let participantEmailSent = false;
+    let participantEmailError = "";
     if (sentByEmail) {
-      await sendParticipantReceivedEmail({ nome: data.nome, email: data.email });
+      try {
+        participantEmailSent = await sendParticipantReceivedEmail({ nome: data.nome, email: data.email });
+      } catch (error) {
+        participantEmailError = error instanceof Error ? error.message : "Falha no e-mail do participante.";
+        console.error("participant received email error", error);
+      }
     }
 
     return NextResponse.json(
@@ -114,6 +121,8 @@ export async function POST(request: NextRequest) {
             : "Preenchimento enviado com sucesso para a equipe do Cafe com Zakia."
           : "Preenchimento gerado. O envio por e-mail sera ativado quando a chave RESEND_API_KEY estiver configurada.",
         sentByEmail,
+        participantEmailSent,
+        participantEmailError: participantEmailError || null,
         databaseSaved: Boolean(savedRequest),
         requestId: savedRequest?.id || null,
         databaseError: databaseError || null,

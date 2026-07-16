@@ -54,14 +54,30 @@ export async function GET(request: NextRequest) {
   }
 
   if (action === "aprovado") {
-    await sendParticipantApprovedEmail(item);
+    try {
+      await sendParticipantApprovedEmail(item);
+    } catch (error) {
+      console.error("participant approved email error", error);
+      return htmlResponse(
+        "Participante aprovado",
+        "O pedido foi aprovado no banco. O e-mail automatico para o participante foi bloqueado pelo provedor de e-mail; verifique a configuracao do dominio no Resend.",
+      );
+    }
     return htmlResponse(
       "Participante aprovado",
       "O pedido foi aprovado e o participante recebeu um e-mail de parabens com o botao para assinar o ACEITO PARTICIPAR DO PROGRAMA !",
     );
   }
 
-  await sendParticipantDeniedEmail(item);
+  try {
+    await sendParticipantDeniedEmail(item);
+  } catch (error) {
+    console.error("participant denied email error", error);
+    return htmlResponse(
+      "Participante reprovado",
+      "O pedido foi reprovado no banco. O e-mail automatico para o participante foi bloqueado pelo provedor de e-mail; verifique a configuracao do dominio no Resend.",
+    );
+  }
   return htmlResponse(
     "Participante reprovado",
     "O pedido foi reprovado e o participante recebeu um e-mail informando a decisao da curadoria.",
