@@ -17,6 +17,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Skills de agente instaladas (ex.: hyperframes) não fazem parte do app.
+    ".claude/**",
   ]),
   {
     rules: {
