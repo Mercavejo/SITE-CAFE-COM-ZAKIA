@@ -1,4 +1,4 @@
-<!-- Cena 1 — Gancho (0,0 → 1,5 s). Frase criada para a campanha. -->
+<!-- Cena 1 — Gancho (0,0 → 1,5 s). Quadro real da estreia da 14ª temporada (YouTube oficial). Frase criada para a campanha. -->
 <template>
   <style>
     @font-face {
@@ -18,21 +18,33 @@
       inset: 0;
       overflow: hidden;
     }
-    #s1-bg {
+    #s1-foto {
       position: absolute;
-      inset: -40px;
-      background: url("assets/img/bg-estudio-desfocado.jpg") center / cover no-repeat;
+      left: 0;
+      top: 740px;
+      width: 1080px;
+      height: 1080px;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 78%, transparent 100%);
+      mask-image: linear-gradient(180deg, transparent 0%, #000 16%, #000 78%, transparent 100%);
     }
-    #s1-vinheta {
+    #s1-img {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1920px;
+      height: 1080px;
+    }
+    #s1-sombra {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 80% 55% at 50% 45%, rgba(3, 3, 3, 0.15) 0%, rgba(3, 3, 3, 0.7) 70%, rgba(3, 3, 3, 0.92) 100%);
+      background: linear-gradient(180deg, rgba(3, 3, 3, 0.35) 0%, rgba(3, 3, 3, 0) 35%);
     }
     #s1-texto {
       position: absolute;
       left: 100px;
       right: 100px;
-      top: 430px;
+      top: 236px;
       font-family: var(--font-display, "Gelasio"), Georgia, serif;
       font-weight: 700;
       color: var(--color-ink, #fff);
@@ -40,27 +52,18 @@
       text-align: center;
       line-height: 1.02;
       letter-spacing: -0.01em;
+      text-shadow: 0 6px 30px rgba(0, 0, 0, 0.7);
     }
     #s1-texto .linha {
       display: block;
-      font-size: 104px;
+      font-size: 96px;
     }
     #s1-texto .linha.destaque {
-      font-size: 150px;
+      font-size: 100px;
       color: var(--color-accent, #ffe79a);
-      line-height: 1.04;
     }
     #s1-texto .w {
       display: inline-block;
-    }
-    #s1-fio {
-      position: absolute;
-      left: 100px;
-      right: 100px;
-      top: 1210px;
-      height: 2px;
-      background: var(--color-gold, #d4af37);
-      transform-origin: 0% 50%;
     }
     #s1-onda {
       position: absolute;
@@ -78,16 +81,17 @@
     }
   </style>
   <div id="root" data-composition-id="s1-gancho" data-width="1080" data-height="1920">
-    <div id="s1-bg"></div>
-    <div id="s1-vinheta"></div>
+    <div id="s1-foto" data-layout-allow-overflow>
+      <img id="s1-img" src="assets/img/real-s1-mesa.jpg" alt="Gravação do Café com Zákia no estúdio" />
+      <div id="s1-sombra"></div>
+    </div>
     <h1 id="s1-texto">
-      <span class="linha"><span class="w">Sua</span> <span class="w">marca</span></span>
-      <span class="linha"><span class="w">merece</span> <span class="w">estar</span></span>
-      <span class="linha"><span class="w s1-in">onde</span> <span class="w s1-in">os</span></span>
-      <span class="linha destaque"><span class="w s1-in">negócios</span></span>
-      <span class="linha"><span class="w s1-in">acontecem.</span></span>
+      <span class="linha"><span class="w">E</span> <span class="w">se</span> <span class="w">a</span></span>
+      <span class="linha"><span class="w">sua</span> <span class="w">marca</span></span>
+      <span class="linha"><span class="w s1-in">estivesse</span></span>
+      <span class="linha destaque"><span class="w s1-in">nesta</span></span>
+      <span class="linha destaque"><span class="w s1-in">conversa?</span></span>
     </h1>
-    <div id="s1-fio"></div>
     <svg id="s1-onda" viewBox="0 0 1080 200" data-layout-ignore>
       <path id="s1-onda-path" d=""></path>
     </svg>
@@ -105,22 +109,19 @@
       document.getElementById("s1-onda-path").setAttribute("d", pts.join(" "));
 
       const tl = gsap.timeline({ paused: true });
-      // Fundo: leve deriva de câmera durante toda a cena.
-      tl.fromTo("#s1-bg", { scale: 1.08, x: 20 }, { scale: 1.0, x: -10, duration: 1.5, ease: "none" }, 0);
-      // Linha fina dourada se desenha por baixo do texto.
-      tl.fromTo("#s1-fio", { scaleX: 0 }, { scaleX: 1, duration: 0.6, ease: "expo.out" }, 0);
-      // "ONDE OS NEGÓCIOS ACONTECEM." palavra a palavra.
+      // Câmera desliza pela mesa real (do convidado para o apresentador).
+      tl.fromTo("#s1-img", { x: -330, scale: 1.04 }, { x: -470, scale: 1.0, duration: 1.5, ease: "none" }, 0);
+      // Resto da pergunta, palavra a palavra.
       tl.fromTo(
         ".s1-in",
         { opacity: 0, filter: "blur(6px)" },
-        { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.067 },
+        { opacity: 1, filter: "blur(0px)", duration: 0.13, ease: "power2.out", stagger: 0.09 },
         0.2,
       );
-      // Saída: o texto desfoca; a linha vira onda de áudio.
-      tl.to("#s1-texto", { opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in" }, 1.28);
-      tl.to("#s1-fio", { opacity: 0, duration: 0.08 }, 1.2);
+      // Saída: texto e foto desfocam; surge a onda de áudio que leva à cena 2.
+      tl.to("#s1-texto", { opacity: 0, filter: "blur(10px)", duration: 0.15, ease: "power2.in" }, 1.34);
+      tl.to("#s1-foto", { opacity: 0, filter: "blur(12px)", duration: 0.25, ease: "power2.in" }, 1.25);
       tl.fromTo("#s1-onda", { opacity: 0, scaleY: 0.05 }, { opacity: 1, scaleY: 1, duration: 0.3, ease: "power2.out" }, 1.2);
-      tl.to("#s1-bg, #s1-vinheta", { opacity: 0, duration: 0.25, ease: "power2.in" }, 1.25);
       window.__timelines["s1-gancho"] = tl;
     })();
   </script>

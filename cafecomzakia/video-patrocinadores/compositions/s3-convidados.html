@@ -1,4 +1,8 @@
-<!-- Cena 3 — Conversas reais (4,0 → 7,0 s). Thumbnails oficiais do YouTube @cafecomzakia; sem nomes na tela. -->
+<!--
+  Cena 3 — Conversas reais (4,0 → 7,0 s).
+  Seis convidados reais (quadros das gravações no YouTube oficial), sem nomes na tela.
+  Palavras do trailer oficial do canal: "com clareza, profundidade e sem enrolação".
+-->
 <template>
   <style>
     @font-face {
@@ -18,43 +22,25 @@
       inset: 0;
       overflow: hidden;
     }
-    #s3-brilho {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse 85% 40% at 50% 42%, rgba(143, 103, 20, 0.28) 0%, rgba(3, 3, 3, 0) 72%);
-    }
-    #s3-contador {
+    #s3-kicker {
       position: absolute;
       left: 100px;
-      top: 300px;
-      height: 44px;
-      width: 300px;
+      right: 100px;
+      top: 236px;
+      text-align: center;
       font-family: var(--font-sans, "Inter"), sans-serif;
       font-weight: 600;
       font-size: 34px;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--color-gold, #d4af37);
-    }
-    .s3-num {
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    #s3-fio-topo {
-      position: absolute;
-      left: 280px;
-      right: 100px;
-      top: 320px;
-      height: 2px;
-      background: rgba(255, 231, 154, 0.45);
-      transform-origin: 0% 50%;
     }
     #s3-slot {
       position: absolute;
-      left: 100px;
-      right: 100px;
-      top: 372px;
-      height: 124px;
+      left: 60px;
+      right: 60px;
+      top: 288px;
+      height: 120px;
       overflow: hidden;
     }
     .s3-palavra {
@@ -65,18 +51,19 @@
       text-align: center;
       font-family: var(--font-display, "Gelasio"), Georgia, serif;
       font-weight: 700;
-      font-size: 104px;
-      line-height: 124px;
-      letter-spacing: -0.01em;
+      font-size: 96px;
+      line-height: 120px;
+      letter-spacing: -0.02em;
+      white-space: nowrap;
       text-transform: uppercase;
       color: var(--color-ink, #fff);
     }
     #s3-quadro {
       position: absolute;
-      left: 100px;
-      top: 540px;
-      width: 880px;
-      height: 520px;
+      left: 190px;
+      top: 440px;
+      width: 700px;
+      height: 875px;
       overflow: hidden;
     }
     .s3-foto-wrap {
@@ -90,29 +77,37 @@
       height: 100%;
       object-fit: cover;
     }
-    #s3-moldura {
+    #s3-degrade {
       position: absolute;
-      left: 86px;
-      top: 526px;
-      width: 908px;
-      height: 548px;
-      border: 2px solid rgba(255, 231, 154, 0.5);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 300px;
+      background: linear-gradient(180deg, rgba(3, 3, 3, 0) 0%, rgba(3, 3, 3, 0.88) 70%, rgba(3, 3, 3, 0.95) 100%);
     }
     #s3-linha {
       position: absolute;
-      left: 100px;
-      right: 100px;
-      top: 1128px;
+      left: 40px;
+      right: 40px;
+      bottom: 30px;
       text-align: center;
       font-family: var(--font-sans, "Inter"), sans-serif;
       font-weight: 600;
-      font-size: 42px;
+      font-size: 38px;
       line-height: 1.25;
-      color: #e4e4e4;
+      color: #f2f2f2;
     }
     #s3-linha b {
       color: var(--color-accent, #ffe79a);
       font-weight: 700;
+    }
+    #s3-moldura {
+      position: absolute;
+      left: 176px;
+      top: 426px;
+      width: 728px;
+      height: 903px;
+      border: 2px solid rgba(255, 231, 154, 0.5);
     }
     #s3-dip {
       position: absolute;
@@ -122,57 +117,55 @@
     }
   </style>
   <div id="root" data-composition-id="s3-convidados" data-width="1080" data-height="1920">
-    <div id="s3-brilho"></div>
-    <div id="s3-contador">
-      <span class="s3-num" id="s3-n1">01 / 03</span>
-      <span class="s3-num" id="s3-n2">02 / 03</span>
-      <span class="s3-num" id="s3-n3">03 / 03</span>
-    </div>
-    <div id="s3-fio-topo"></div>
+    <p id="s3-kicker">Negócios, Direito e Política com</p>
     <div id="s3-slot" data-layout-allow-overflow data-layout-allow-overlap>
-      <div class="s3-palavra" id="s3-p1">Negócios</div>
-      <div class="s3-palavra" id="s3-p2">Liderança</div>
-      <div class="s3-palavra" id="s3-p3">Comunicação</div>
+      <div class="s3-palavra" id="s3-p1">Clareza</div>
+      <div class="s3-palavra" id="s3-p2">Profundidade</div>
+      <div class="s3-palavra" id="s3-p3">Sem enrolação</div>
     </div>
     <div id="s3-moldura"></div>
     <div id="s3-quadro" data-layout-allow-overflow>
-      <div class="s3-foto-wrap" id="s3-f1"><img class="s3-foto" id="s3-img1" src="assets/img/s3-negocios.jpg" alt="Convidada no estúdio do Café com Zákia" /></div>
-      <div class="s3-foto-wrap" id="s3-f2"><img class="s3-foto" id="s3-img2" src="assets/img/s3-lideranca.jpg" alt="Convidado no estúdio do Café com Zákia" /></div>
-      <div class="s3-foto-wrap" id="s3-f3"><img class="s3-foto" id="s3-img3" src="assets/img/s3-comunicacao.jpg" alt="Convidada no estúdio do Café com Zákia" /></div>
+      <div class="s3-foto-wrap" id="s3-f1"><img class="s3-foto" id="s3-img1" src="assets/img/real-s3-convidado1.jpg" alt="Convidado no Café com Zákia" /></div>
+      <div class="s3-foto-wrap" id="s3-f2"><img class="s3-foto" id="s3-img2" src="assets/img/real-s3-convidado2.jpg" alt="Convidado no Café com Zákia" /></div>
+      <div class="s3-foto-wrap" id="s3-f3"><img class="s3-foto" id="s3-img3" src="assets/img/real-s3-convidado3.jpg" alt="Convidada no Café com Zákia" /></div>
+      <div class="s3-foto-wrap" id="s3-f4"><img class="s3-foto" id="s3-img4" src="assets/img/real-s3-convidado4.jpg" alt="Convidado no Café com Zákia" /></div>
+      <div class="s3-foto-wrap" id="s3-f5"><img class="s3-foto" id="s3-img5" src="assets/img/real-s3-convidado5.jpg" alt="Convidado no Café com Zákia" /></div>
+      <div class="s3-foto-wrap" id="s3-f6"><img class="s3-foto" id="s3-img6" src="assets/img/real-s3-convidado6.jpg" alt="Convidado no Café com Zákia" /></div>
+      <div id="s3-degrade"></div>
+      <p id="s3-linha">Conversas com <b>empresários</b>, <b>líderes</b> e <b>especialistas</b></p>
     </div>
-    <p id="s3-linha">Conversas com <b>empresários</b>, <b>líderes</b> e <b>especialistas</b></p>
     <div id="s3-dip"></div>
   </div>
   <script>
     (function () {
-      const tl = gsap.timeline({ paused: true });
-      const cuts = [0, 1, 2];
-      const dir = [1, -1, 1];
       // Estados iniciais (fora da timeline, valem já no quadro 0).
       gsap.set(".s3-palavra", { yPercent: 130, opacity: 0 });
-      gsap.set(".s3-foto-wrap, .s3-num", { opacity: 0 });
-      tl.fromTo("#s3-fio-topo", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "expo.out" }, 0.05);
+      gsap.set(".s3-foto-wrap", { opacity: 0 });
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#s3-kicker", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power3.out" }, 0.02);
       tl.fromTo("#s3-moldura", { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.05);
       tl.fromTo("#s3-linha", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.15);
-      cuts.forEach((t, i) => {
+      // Seis cortes de convidados, um a cada meia batida dupla (0,5 s), com chicote alternado.
+      for (let i = 0; i < 6; i++) {
         const n = i + 1;
-        // Foto: chicote horizontal que aterrissa desfocada e fica nítida.
+        const t = i * 0.5;
+        const dir = i % 2 ? -1 : 1;
         tl.set("#s3-f" + n, { opacity: 1 }, t);
-        if (i > 0) tl.set("#s3-f" + i, { opacity: 0 }, t + 0.16);
-        tl.fromTo("#s3-f" + n, { x: 180 * dir[i], filter: "blur(14px)" }, { x: 0, filter: "blur(0px)", duration: 0.16, ease: "power3.out" }, t);
-        // Empurrão leve de câmera dentro do corte.
-        tl.fromTo("#s3-img" + n, { scale: 1.08 }, { scale: 1.0, duration: 1.0, ease: "power1.out" }, t);
-        // Palavra-tema rola para dentro; a anterior rola para fora.
+        if (i > 0) tl.set("#s3-f" + i, { opacity: 0 }, t + 0.14);
+        tl.fromTo("#s3-f" + n, { x: 150 * dir, filter: "blur(12px)" }, { x: 0, filter: "blur(0px)", duration: 0.14, ease: "power3.out" }, t);
+        tl.fromTo("#s3-img" + n, { scale: 1.07 }, { scale: 1.0, duration: 0.5, ease: "power1.out" }, t);
+      }
+      // Palavras do trailer oficial, uma por batida dupla (1 s).
+      for (let i = 0; i < 3; i++) {
+        const n = i + 1;
+        const t = i * 1.0;
         tl.set("#s3-p" + n, { opacity: 1 }, t);
         tl.fromTo("#s3-p" + n, { yPercent: 130 }, { yPercent: 0, duration: 0.18, ease: "power3.out" }, t);
         if (i > 0) {
           tl.to("#s3-p" + i, { yPercent: -130, duration: 0.14, ease: "power3.in" }, t);
           tl.set("#s3-p" + i, { opacity: 0 }, t + 0.15);
         }
-        // Contador editorial.
-        tl.set("#s3-n" + n, { opacity: 1 }, t);
-        if (i > 0) tl.set("#s3-n" + i, { opacity: 0 }, t);
-      });
+      }
       // Saída: escurece ~45% nos últimos 3 quadros e corta seco na batida.
       tl.to("#s3-dip", { opacity: 0.45, duration: 0.05, ease: "none" }, 2.95);
       window.__timelines["s3-convidados"] = tl;

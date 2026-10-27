@@ -1,113 +1,125 @@
 # BRAND.md — Levantamento da marca Café com Zákia
 
-Data de acesso a todas as fontes: **27/10/2026** (UTC). Cópias brutas do que foi lido estão em `research/`.
+Datas de acesso: **27/10/2026** (UTC). Cópias do que foi lido estão em `research/`.
 
-> **Sobre a "pasta local":** não existe uma pasta `cafecomzakia` com materiais de marca no repositório. O repositório onde este projeto vive é o código do site, mas, por orientação do cliente, ele está **desatualizado e não foi usado como fonte**. Toda informação e toda mídia abaixo vêm do **site no ar**, do **canal oficial do YouTube** ou da **página pública de um reel do Instagram**. Nenhum arquivo da pasta local foi usado no vídeo.
+- **Versão 1:** site no ar, páginas públicas do YouTube e do Instagram.
+- **Versão 2 (atual):** levantamento ampliado com a skill **Agent-Reach** (canais web, YouTube e Instagram) e troca de todas as imagens por **quadros reais das gravações**. A versão 1 usava thumbnails cujo cenário (tijolo, neon, estante) é arte e não o estúdio real.
+
+> **Pasta local:** não existe uma pasta `cafecomzakia` com materiais de marca. O código do site neste repositório está desatualizado e, por orientação do cliente, **não foi usado como fonte**. O único arquivo entregue pelo cliente nesta conversa é a imagem do logo dourado (`research/cliente/logo-dourado-enviado-pelo-cliente.jpg`).
 
 ## 1. Fontes consultadas
 
-| Fonte | URL | Cópia local | Status |
+| Fonte | Como | Cópia local | Resultado |
 | --- | --- | --- | --- |
-| Site oficial (home) | https://www.cafecomzakia.com.br/ | `research/site/index.html`, `visible-text.txt` | 200 OK |
-| CSS do site no ar | https://www.cafecomzakia.com.br/_next/static/chunks/0mp_8yjdml~l1.css | `research/site/site.css` | 200 OK |
-| Páginas internas | `/pacote`, `/spotify`, `/participar-de-podcast`, `/podcast-de-negocios`, `/entrevistas-com-empresarios`, `/programa-de-negocios`, `/videos-de-negocios`, `/marketing-e-negocios` | `research/site/pages/*.html` + `.txt` | 200 OK |
-| YouTube — vídeos | https://www.youtube.com/@cafecomzakia/videos | `research/youtube/channel-videos.html`, `videos.txt` | 200 OK |
-| YouTube — sobre | https://www.youtube.com/@cafecomzakia/about | `research/youtube/channel-about.html` | 200 OK |
-| YouTube — Shorts | https://www.youtube.com/@cafecomzakia/shorts | `research/youtube/shorts.html`, `shorts.txt` | 200 OK |
-| YouTube — 12ª temporada | https://www.youtube.com/playlist?list=PLq1xuEiBAG6rOxr07nMdGEwYwRk-4BNun | `research/youtube/season12.html`, `season12.txt` | 200 OK |
-| Instagram — perfil | https://www.instagram.com/cafecomzakia/ | — | **302 → login** (não acessível sem login; não contornado) |
-| Instagram — reel citado pelo site | https://www.instagram.com/reel/DX4Vzw8FV9a/ | `research/instagram/reel.html` | 200 OK (apenas metadados públicos) |
+| Site oficial https://www.cafecomzakia.com.br/ (+ páginas internas e CSS) | curl | `research/site/` | 200 OK |
+| YouTube @cafecomzakia: vídeos, Shorts, lives, sobre | yt-dlp (instalado pelo Agent-Reach), listagem pública | `research/agent-reach/yt-videos.json`, `yt-shorts.json`, `yt-streams.json`, `yt-top.txt`, `research/youtube/` | 187 vídeos, 1.876 Shorts, 1 live |
+| YouTube: busca e descrição de episódio | `agent-reach youtube search/read` | `research/agent-reach/yt-search.json`, `yt-read-W3ucISsxZfQ.json` | OK; depois **bloqueado pelo YouTube** ("Sign in to confirm you're not a bot"), sem nova tentativa |
+| YouTube: quadros reais das gravações | imagens automáticas públicas `i.ytimg.com/vi/<id>/maxres1|2|3.jpg` | 123 quadros de 41 vídeos analisados; em `research/youtube/frames/` ficam os 12 usados ou citados e as folhas de contato de todos | OK |
+| Web: busca "Café com Zákia" | `agent-reach web search` | `research/agent-reach/web-search.json` | OK |
+| TV BOA: programa, episódios, trailer, "sobre nós" | `agent-reach web read` | `research/agent-reach/tvboa-*.txt` | OK |
+| Jornal O Regional: matéria de estreia | `agent-reach web read` | `research/agent-reach/oregional-estreia.txt` | OK |
+| Página do Facebook "Café Com Zákia, Catanduva" (espelho público medioq.com) | `agent-reach web read` | `research/agent-reach/medioq-facebook.txt` | OK (espelho de terceiros) |
+| Instagram: busca e perfil | `agent-reach instagram search/profile` | `research/agent-reach/ig-*.json` | **Falhou**: o conector de Instagram do Agent-Reach não instalou ("OpenCLI extension release: HTTP 403"); perfil e posts exigem login |
+| Instagram: perfil (curl) | curl | — | 302 → login |
+| Instagram: reel DX4Vzw8FV9a citado pelo site | curl (metadados públicos) | `research/instagram/` | 142 mil curtidas, 2.304 comentários, 3/mai/2026 |
+| Logo dourado | enviado pelo cliente nesta conversa | `research/cliente/` | usado |
 
 ## 2. Informações verificadas
 
-| Informação | Valor encontrado | Onde |
+| Informação | Valor | Fonte |
 | --- | --- | --- |
-| Nome | "Café com Zákia" | site (title, h1, og:site_name) |
-| Posicionamento | "Falando de Negócios" | site (subtítulo do hero; rodapé "Falando de Negócios • Produção Mercavejo Consultoria") |
-| Categoria | "Podcast de negócios • Conversas premium" | site (eyebrow do hero) |
-| Apresentador | "Daniel Zákia" (site); "Daniel Devitto Zákia" (site, link para danieldevittozakia.com.br); "DANIEL DEVITTO ZAKIA — EMPRESÁRIO" (thumbnails do YouTube) | site, YouTube |
-| Descrição | "Café com Zákia é o podcast de negócios conduzido por Daniel Zákia, com entrevistas premium para empresários, líderes e especialistas que desejam construir autoridade, visibilidade e posicionamento." | site (meta description) |
-| Perfil dos convidados | "empresários, líderes e especialistas" | site (hero, meta description, og:description) |
-| Temas | negócios, entrevistas, vídeos de negócios, marketing e negócios; `/pacote`: "negócios, marketing, liderança e posicionamento" | site |
-| Produção | "Produção e estratégia da Mercavejo Consultoria" | site |
-| Temporadas | Site lista 9ª a 12ª ("Últimas Temporadas"); YouTube já mostra a "Décima Terceira" e thumbnails "13° TEMPORADA" | site, YouTube |
-| Periodicidade | **Não encontrada.** "Novos episódios semanalmente" não aparece no site nem no YouTube. | — |
-| Plataformas | YouTube @cafecomzakia, Spotify (show 5HEziKX3xOOfV7eryMZ91v), Instagram @cafecomzakia | site |
-| Contato | WhatsApp https://wa.me/5517996240418 (mensagem pré-preenchida "gostaria de saber como participar?"); cadastro em `/jogos/sorteio/preencher` | site |
-| Patrocínio | **Nenhuma informação sobre patrocínio encontrada.** A página `/pacote` é uma oferta para **convidados participarem** (entrevista, edição, cortes), não para patrocinadores. | site |
-| Descrição do canal (YouTube) | "O Café com Zákia surgiu de uma vontade de espalhar a opinião de pessoas com mentes fortes e personalidades únicas que têm vontade de mostrar suas ideias e pensamentos ao público…" | YouTube (sobre) |
+| Nome | Café com Zákia | site, YouTube, TV BOA |
+| Posicionamento | "Falando de Negócios" | site |
+| Posicionamento do canal | "o canal onde falamos de **NEGÓCIOS, DIREITO e POLÍTICA** com clareza, profundidade e sem enrolação" | descrição do trailer oficial (1PwokG81CGU), espelhada em tvboa.com.br |
+| Quadros do programa | aberturas "Falando de Negócios", "Falando de Direito", "Falando de Política"; "Falando de Negócios" é o quadro sobre marketing, vendas e estratégia (piloto com Émerson Serandin) | quadros reais das aberturas; TV BOA |
+| Apresentador | Daniel Zákia / Daniel Devitto Zákia | site, YouTube, O Regional |
+| Perfil dos convidados | "empresários, líderes e especialistas" | site |
+| Temporada atual | **14ª temporada**, estreia em 24/10/2026 com Camilo Calandreli | TV BOA (espelho da descrição do YouTube) e busca no YouTube |
+| Volume publicado | 2.074 vídeos; 1.098.684 visualizações; 4,3 mil inscritos | YouTube → sobre |
+| Distribuição | YouTube, Spotify, Instagram e **TV BOA** (empresa de mídia digital de Catanduva/SP que lista o Café com Zákia entre seus "Programas" e publica os episódios) | site; tvboa.com.br/programas/cafe-com-zakia e /sobre-nos |
+| Região | Catanduva/SP e região | página do Facebook (espelho), O Regional, TV BOA |
+| Origem do nome | homenagem ao pai de Daniel, Amil Zákia ("este espaço que carrega o seu nome") | post de 10/08/2026 da página do Facebook (espelho) |
+| Frase da página do Facebook | "E ai está preparado? depende da conversa será doce ou amargo." | espelho medioq.com |
+| Periodicidade | Na estreia, "O bate-papo será semanal" (O Regional) e "Será algo semanal" (descrição padrão do YouTube). As datas recentes na TV BOA são 24/10, 15/10 e 06/10, ou seja, não exatamente semanais | O Regional, YouTube, TV BOA → **não usada no vídeo** |
+| Patrocínio | **Nenhuma informação oficial sobre patrocínio.** `/pacote` é uma oferta para convidados | site |
+
+### Shorts e vídeos de maior destaque (YouTube, contagem pública aproximada)
+
+| Visualizações | Vídeo |
+| --- | --- |
+| 185 mil | "A mulher acha maneiras diferente de esperar o marido" (Short de comédia, fora do formato entrevista) |
+| 94 mil | "Mercado Livre scam arrives with charging cable" (mesmo tema do reel viral do Instagram) |
+| 30 mil | "QUANTO CUSTA UMA ACADEMIA?" |
+| 20 mil | "Padre Carlos Humberto sentou à mesa do Café com Zákia e abriu o coração" |
+| 12 mil | "Brasil: Agronegócio pode Dobrar com Tecnologia Sustentável!" |
+| 8,7 mil | Luciana Deboni e Thiago Alves Galli, da clínica Inspirat (episódio) |
+
+Lista completa em `research/agent-reach/yt-top.txt`.
+
+### Espaços de marca observados no estúdio real
+
+Nos quadros reais das gravações, além da mesa com o logo, aparecem:
+
+- **telão** atrás da mesa, que exibe a marca do programa (vários episódios) e, em alguns episódios, outras marcas: "EMPÓRIO ABADESCO" (episódio da Octano Brewpub, W3ucISsxZfQ) e "VOX" (episódio da clínica Inspirat, TDrw4ylzOh8);
+- **placas de mesa** em 3D dourado com o logo "CAFÉ COM ZÁKIA"; no episódio da Inspirat há uma segunda placa, "VOX", ao lado;
+- **canecas** com o logo dourado;
+- **telas laterais** com o logo da Mercavejo Consultoria (produtora, citada no site).
+
+**Não foi possível confirmar** se Empório Abadesco e VOX eram patrocinadores: a descrição do episódio da Octano, lida pelo Agent-Reach, não fala em patrocínio, e a do episódio da Inspirat não pôde ser lida (bloqueio do YouTube). Por isso **nenhuma dessas marcas aparece no vídeo**, e o vídeo não afirma que o programa já teve patrocinadores.
 
 ## 3. Métricas
 
-| Métrica | Texto exato na fonte | Onde | Status no vídeo |
+| Métrica | Texto na fonte | Onde | No vídeo |
 | --- | --- | --- | --- |
-| Corte com mais de 6 milhões | "+ de 6 milhões em corte viral no Instagram @cafecomzakia" (`/participar-de-podcast`); "prova social com corte acima de 6 milhões de visualizações" (home); "Ver corte com + de 6 milhões" (home, link para o reel DX4Vzw8FV9a) | site | **Usada**, como dado publicado pelo Café com Zákia: "+ DE 6 MILHÕES — de visualizações em um corte no Instagram" |
-| +1 milhão no YouTube | "+1 milhão de visualizações no YouTube do Café com Zákia." | site (home) | **Usada** |
-| Visualizações totais do canal | "1.098.684 visualizações" | YouTube → sobre | Confirma o "+1 milhão" (não arredondado para cima) |
-| Inscritos / vídeos | "4,3 mil inscritos", "2.074 vídeos" | YouTube → sobre | **Não usadas** (fora do roteiro; não acrescentam ao argumento) |
-| Reel DX4Vzw8FV9a | "142K likes, 2,304 comments", publicado em 3/mai/2026 | Instagram (meta pública) | **Não usadas**. A contagem de visualizações do reel não é pública sem login; o "+6 milhões" vem só do site |
+| + de 6 milhões | "+ de 6 milhões em corte viral no Instagram @cafecomzakia" | site (`/participar-de-podcast`, home) | Sim, como dado publicado pelo Café com Zákia: "+ DE 6 MILHÕES — de visualizações em um corte no Instagram" |
+| +1 milhão | "+1 milhão de visualizações no YouTube do Café com Zákia." | site; confirmado no YouTube (1.098.684) | Sim |
+| 14ª temporada | "O Café com Zákia estreia sua 14ª temporada…" | TV BOA / YouTube | Sim (selo na cena 2) |
+| Canais | YouTube, Spotify, Instagram, TV BOA | site, TV BOA | Sim (linha na cena 4) |
+| Inscritos, total de vídeos, curtidas do reel | 4,3 mil; 2.074; 142 mil | YouTube, Instagram | Não usadas |
 
-Nenhuma métrica foi combinada, somada ou arredondada para cima. Nenhuma foi apresentada como auditada por terceiros.
+As métricas não foram somadas nem arredondadas para cima, e nenhuma foi apresentada como auditada.
 
 ## 4. Identidade visual
 
-### Cores (CSS do site no ar, `:root`)
+- **Logo usado no vídeo:** o logo **dourado 3D** "CAFÉ COM ZÁKIA", enviado pelo cliente. É a mesma marca das placas de mesa do estúdio e das aberturas recentes. As letras foram recortadas do fundo de mármore (`build/prep_images.py`), sem alteração de forma ou cor.
+- **Estúdio real:** cortinas pretas e azul-marinho, luz âmbar e azul, mesa escura com o logo dourado, cadeiras pretas, microfones em braço articulado, canecas brancas com logo dourado e telão ao fundo.
+- **Cores do site (CSS no ar):** `#030303` (fundo), `#FFFFFF`, `#FFE79A` (dourado-claro), `#D4AF37` (dourado), `#A9ABB0`. Combinam com o dourado do logo e com o escuro do estúdio.
+- **Fontes:** o site declara Georgia (títulos) e Inter (texto). No vídeo: Gelasio (métricas iguais às da Georgia, licença OFL) e Inter, em `.woff2` local.
+- O logo branco/marrom com textura do site também aparece no telão do estúdio em alguns episódios; no vídeo ele só aparece dentro dos quadros reais.
 
-| Token | Hex | Uso no vídeo |
-| --- | --- | --- |
-| `--black` | `#030303` | fundo |
-| `--graphite` | `#141416` | superfícies |
-| `--silver` | `#E4E4E4` | texto secundário |
-| `--silver-soft` | `#A9ABB0` | notas e fonte das métricas |
-| `--gold` | `#D4AF37` | linhas finas e ondas de áudio |
-| `--gold-light` | `#FFE79A` | destaques e palavras-chave |
-| `--gold-dark` | `#8F6714` | brilhos e sombra dourada |
-| `--white` | `#FFFFFF` | texto principal |
-| `--line` | `#FFE79A42` | linhas editoriais |
+## 5. Tom de voz
 
-O cenário real do estúdio (thumbnails do YouTube) é quente: madeira, tijolo, couro marrom, luz âmbar, neon "CAFÉ COM ZAKIA / PODCAST AO VIVO", cortinas azul-marinho e canecas com o logo. O vídeo combina o preto e dourado do site com esse âmbar das fotos.
+Direto e provocativo no YouTube e no Facebook ("sem enrolação", "Ser de verdade é raro", "Se você tem ousadia, você merece sentar ao nosso lado"); premium e institucional no site ("Conversas premium", "vitrine de autoridade"). O vídeo junta os dois: frases curtas e diretas com acabamento premium.
 
-### Fontes
+## 6. Origem de cada mídia usada no vídeo (versão 2)
 
-- O site declara **Georgia** (títulos, 19 regras) e **Inter** (texto corrido, 4 regras), sem arquivos `@font-face`: a Georgia é fonte de sistema e não pode ser embarcada.
-- No vídeo: **Gelasio** (Google Fonts, OFL), desenhada com métricas compatíveis com a Georgia, para os títulos; **Inter** (Google Fonts, OFL) para métricas e chamadas. Os arquivos `.woff2` e as licenças estão em `assets/fonts/`.
-- Títulos em caixa alta e dourado-claro, como o `h1` do site (`text-transform: uppercase; color: var(--gold-light)`).
+Imagens processadas por `build/prep_images.py` (recorte, Lanczos, nitidez leve). Todas são quadros reais das gravações (`maxresN.jpg` gerado pelo YouTube a partir do próprio vídeo), sem nomes de convidados na tela.
 
-### Logos
+| Arquivo | Origem | Publicação de origem | Acesso | Cena |
+| --- | --- | --- | --- | --- |
+| `assets/img/logo-dourado.png` | `research/cliente/logo-dourado-enviado-pelo-cliente.jpg` | imagem enviada pelo cliente nesta conversa | 27/10/2026 | 2, 6 |
+| `assets/img/real-s1-mesa.jpg` | https://i.ytimg.com/vi/-nZZ1ynqW2o/maxres3.jpg | "ARTE, POLÍTICA E LIBERDADE… \| Camilo Calandreli" (estreia da 14ª temporada) | 27/10/2026 | 1 |
+| `assets/img/real-s2-daniel.jpg` | https://i.ytimg.com/vi/kOaDJWxeW0w/maxres1.jpg | "DÉBORA MARCELA: DOS SISTEMAS AOS 30 ANOS DE REVISTA STAMPA" (Daniel Zákia em quadro) | 27/10/2026 | 2 |
+| `assets/img/real-s3-convidado1.jpg` | https://i.ytimg.com/vi/GHRLO0zxVMg/maxres2.jpg | "Falando de Negócios com Raphael Ferris" | 27/10/2026 | 3 |
+| `assets/img/real-s3-convidado2.jpg` | https://i.ytimg.com/vi/KA6jJ9wIu4c/maxres1.jpg | "Dr. Marcelo Aparecido Alfinete no Café Com Zákia" | 27/10/2026 | 3 |
+| `assets/img/real-s3-convidado3.jpg` | https://i.ytimg.com/vi/gxucf5CIrl8/maxres2.jpg | "LETÍCIA PEREZ: BELEZA, EMPREENDEDORISMO E OS DESAFIOS DAS REDES SOCIAIS" | 27/10/2026 | 3 |
+| `assets/img/real-s3-convidado4.jpg` | https://i.ytimg.com/vi/NtkLXKjvThw/maxres1.jpg | "DO INFERNO AO CÉU: A RADICAL MUDANÇA DE VIDA DE THIAGO SOUZA" | 27/10/2026 | 3 |
+| `assets/img/real-s3-convidado5.jpg` | https://i.ytimg.com/vi/_OMB2fwzfPk/maxres1.jpg | "Falando de Negócios com Cesar Hércules e Thales Simões" | 27/10/2026 | 3 |
+| `assets/img/real-s3-convidado6.jpg` | https://i.ytimg.com/vi/RP2fvD_IeWE/maxres1.jpg | "IA NO DIREITO SUBSTITUI ADVOGADO? … com César Hercules e Felipe Rios" | 27/10/2026 | 3 |
+| `assets/img/real-s5-telao.jpg` | https://i.ytimg.com/vi/GHRLO0zxVMg/maxres1.jpg | "Falando de Negócios com Raphael Ferris" (plano aberto com o telão) | 27/10/2026 | 5 |
+| `assets/img/real-bg-estudio.jpg` | mesmo quadro de GHRLO0zxVMg, desfocado e escurecido | — | 27/10/2026 | fundo de todas |
+| `assets/fonts/*.woff2` | Google Fonts (Gelasio, Inter), OFL | — | 27/10/2026 | todas |
+| `assets/audio/trilha-original-master.wav` (+ stems) | `build/trilha.py`, semente 20261027 | original | 27/10/2026 | todas |
 
-- **`/assets/logo-white.png`** (800×800, branco sobre transparente): é o logo usado no topo e no rodapé do site. **Usado no vídeo**, recortado ao conteúdo (433×309), sem nenhuma alteração de forma ou cor.
-- `/assets/logo.png` (marrom + preto) está no servidor, mas não é referenciado pelo site atual e não aparece sobre fundo escuro. Não usado.
-- `/assets/favicon-z.png` (selo "Z" com aro dourado): não usado.
-- Nas thumbnails há um selo branco "CAFÉ COM ZÁKIA | Falando de Negócios — Marketing · Vendas · Estratégia". Ele foi cortado das imagens e não foi usado.
+Elementos incidentais nos quadros reais: marcas das cadeiras ("dazz", "Extreme Life"), garrafas de água e, em alguns enquadramentos, um pedaço do logo da Mercavejo (produtora). São objetos do próprio estúdio, não patrocínios. Os recortes evitam o telão com marcas de terceiros.
 
-## 5. Tom de voz encontrado
-
-Premium, institucional e confiante: "Conversas premium", "Imagem, conversa e reputação no mesmo palco", "Conversas com elegância, profundidade e leitura de negócios", "vitrine de autoridade". O vocabulário gira em torno de autoridade, reputação, presença e posicionamento. O canal do YouTube usa títulos em caixa alta, mais populares, com temas de negócios, política, saúde, esporte e espiritualidade.
-
-## 6. Origem de cada mídia usada no vídeo
-
-Todos os arquivos estão em `assets/`. As imagens foram recortadas e ampliadas por `build/prep_images.py` (Lanczos + nitidez leve). Nenhuma veio da pasta local.
-
-| Arquivo | Origem (URL) | Publicação de origem | Origem | Acesso | Cena |
-| --- | --- | --- | --- | --- | --- |
-| `assets/img/logo-cafe-com-zakia-branco.png` | https://www.cafecomzakia.com.br/assets/logo-white.png | Logo do cabeçalho e rodapé do site | Site | 27/10/2026 | 2, 6 |
-| `assets/img/s2-estudio-daniel.jpg` | https://i.ytimg.com/vi/kOaDJWxeW0w/maxresdefault.jpg (recorte x640–1280, y196–578) | Thumbnail oficial de "DÉBORA MARCELA: DOS SISTEMAS AOS 30 ANOS DE REVISTA STAMPA" (13ª temporada, 3º episódio), mostrando Daniel Devitto Zákia | YouTube @cafecomzakia | 27/10/2026 | 2 |
-| `assets/img/s3-negocios.jpg` | mesma thumbnail kOaDJWxeW0w (recorte x0–600, y262–578) | Convidada Débora Marcela ("Proprietária da Revista Stampa", segundo a thumbnail) | YouTube | 27/10/2026 | 3 |
-| `assets/img/s3-lideranca.jpg` | https://i.ytimg.com/vi/GHRLO0zxVMg/maxresdefault.jpg (recorte x0–530, y262–578) | "Falando de Negócios com Raphael Ferris" (11ª temporada, 11º episódio); thumbnail: "Dr. Raphael Ferris — Presidente da CREFITO-SP" | YouTube | 27/10/2026 | 3 |
-| `assets/img/s3-comunicacao.jpg` | https://i.ytimg.com/vi/0FGdJ3bqnqk/maxresdefault.jpg (recorte x0–600, y262–578) | "Falando de Negócios com Andréa Justino" (11ª temporada, 12º episódio); thumbnail: "Prof. Andréa Justino — Professora de Português". A estampa "Gramática Desfragmentada" na camiseta é da convidada, não é patrocinador | YouTube | 27/10/2026 | 3 |
-| `assets/img/s5-mesa.jpg` | https://i.ytimg.com/vi/FbfFaww9XLc/maxresdefault.jpg (recorte x335–940, y250–578) | "POLÍTICA E EMPREENDEDORISMO JUNTOS? \| Fábio Silva Carvalho" (13ª temporada, 8º episódio). Só a mesa, as canecas e os microfones | YouTube | 27/10/2026 | 5 |
-| `assets/img/bg-estudio-desfocado.jpg` | thumbnail kOaDJWxeW0w (recorte x430–770, y200–578, desfocado e escurecido) | Fundo atmosférico do cenário | YouTube | 27/10/2026 | 1, 4 |
-| `assets/fonts/Gelasio-VF.woff2`, `Gelasio-Italic-VF.woff2`, `Inter-VF.woff2` | fonts.gstatic.com (Google Fonts) | — | Fontes abertas (OFL) | 27/10/2026 | todas |
-| `assets/audio/trilha-original-master.wav` (+ stems) | gerada por `build/trilha.py` (semente 20261027) | — | Original | 27/10/2026 | todas |
-| `assets/vendor/gsap.min.js` | npm `gsap@3.14.2` | — | Biblioteca | 27/10/2026 | runtime |
-
-Os nomes dos convidados **não aparecem na tela**. As imagens mostram momentos reais do programa e são acompanhadas por temas (negócios, liderança, comunicação), nunca por cargos ou depoimentos.
-
-### Mídias encontradas e descartadas
+### Descartados
 
 | Mídia | Motivo |
 | --- | --- |
-| `hero-cafe-zakia-final.jpg` (imagem de capa do site) | Composição ilustrativa com painéis e rostos de "convidados" que não correspondem a episódios verificáveis ("Ep. 46 O Futuro do Marketing" etc.) e um gráfico de "Engajamento do Ouvinte" sem dados. Usá-la exibiria convidados e métricas não verificados |
-| `estudio.jpg` (foto do estúdio no site) | Mostra outras marcas (logo na mesa e anúncio na TV), o que poderia ser lido como patrocínio. Além disso, é de um cenário diferente do que aparece nos episódios atuais |
-| Capa do reel DX4Vzw8FV9a (Instagram) | Traz o logo do Mercado Livre em destaque (tema do corte). Num vídeo para patrocinadores, sugeriria um patrocínio inexistente. Também tem o ícone de play da interface |
-| Depoimentos (`depoimentos-youtube/*.png`) | São capturas de tela de comentários com interface do YouTube; o briefing proíbe depoimentos inventados e desaconselha interface de plataforma |
+| Thumbnails dos episódios (usadas na versão 1) | O cenário de tijolo, neon e estante é arte, não o estúdio real |
+| Capa do site (`hero-cafe-zakia-final.jpg`) | Composição ilustrativa com rostos e números não verificáveis |
+| Capa do reel viral (Instagram) | Logo do Mercado Livre em destaque e ícone de play |
+| Quadros com "EMPÓRIO ABADESCO" e "VOX" | Marcas de terceiros sem confirmação de patrocínio |
+| Aberturas 3D "Falando de…" | Arte gráfica, não gravação; o logo dourado já representa essa identidade |
+| Trechos de vídeo dos episódios | O YouTube bloqueou o download (verificação anti-bot); não foi contornado |

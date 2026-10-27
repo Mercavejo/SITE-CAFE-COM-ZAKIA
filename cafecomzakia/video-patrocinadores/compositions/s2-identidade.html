@@ -1,17 +1,22 @@
-<!-- Cena 2 — Identidade (1,5 → 4,0 s). Logo oficial do site + thumbnail oficial do estúdio. -->
+<!--
+  Cena 2 — Identidade (1,5 → 4,0 s).
+  Logo dourado: imagem enviada pelo cliente. Posicionamento oficial (trailer do canal):
+  "falamos de NEGÓCIOS, DIREITO e POLÍTICA". 14ª temporada: estreia de 24/10/2026.
+  Foto: quadro real da gravação (YouTube oficial).
+-->
 <template>
   <style>
-    @font-face {
-      font-family: "Gelasio";
-      src: url("assets/fonts/Gelasio-VF.woff2") format("woff2");
-      font-weight: 400 700;
-      font-style: normal;
-    }
     @font-face {
       font-family: "Gelasio";
       src: url("assets/fonts/Gelasio-Italic-VF.woff2") format("woff2");
       font-weight: 400 700;
       font-style: italic;
+    }
+    @font-face {
+      font-family: "Inter";
+      src: url("assets/fonts/Inter-VF.woff2") format("woff2");
+      font-weight: 100 900;
+      font-style: normal;
     }
     #root {
       position: absolute;
@@ -21,7 +26,7 @@
     #s2-brilho {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 70% 32% at 50% 26%, rgba(212, 175, 55, 0.22) 0%, rgba(3, 3, 3, 0) 70%);
+      background: radial-gradient(ellipse 70% 30% at 50% 22%, rgba(212, 175, 55, 0.24) 0%, rgba(3, 3, 3, 0) 70%);
       opacity: 0;
     }
     #s2-onda-wrap {
@@ -44,16 +49,16 @@
     }
     #s2-logo {
       position: absolute;
-      left: 260px;
+      left: 230px;
       top: 236px;
-      width: 560px;
+      width: 620px;
       height: auto;
     }
     #s2-fio {
       position: absolute;
-      left: 260px;
-      width: 560px;
-      top: 690px;
+      left: 390px;
+      width: 300px;
+      top: 639px;
       height: 3px;
       background: var(--color-gold, #d4af37);
     }
@@ -61,22 +66,22 @@
       position: absolute;
       left: 100px;
       right: 100px;
-      top: 718px;
+      top: 666px;
       text-align: center;
-      font-family: var(--font-display, "Gelasio"), Georgia, serif;
+      font-family: var(--font-sans, "Inter"), sans-serif;
       font-weight: 700;
-      font-size: 56px;
-      letter-spacing: 0.04em;
+      font-size: 38px;
+      letter-spacing: 0.1em;
       white-space: nowrap;
       text-transform: uppercase;
       color: var(--color-accent, #ffe79a);
-      line-height: 1.1;
+      line-height: 1.2;
     }
     #s2-apres {
       position: absolute;
       left: 100px;
       right: 100px;
-      top: 800px;
+      top: 724px;
       text-align: center;
       font-family: var(--font-display, "Gelasio"), Georgia, serif;
       font-style: italic;
@@ -85,13 +90,29 @@
       color: #e4e4e4;
       line-height: 1.1;
     }
+    #s2-chip {
+      position: absolute;
+      left: 340px;
+      width: 400px;
+      top: 794px;
+      padding: 6px 0;
+      white-space: nowrap;
+      text-align: center;
+      border: 2px solid rgba(255, 231, 154, 0.7);
+      font-family: var(--font-sans, "Inter"), sans-serif;
+      font-weight: 700;
+      font-size: 34px;
+      letter-spacing: 0.08em;
+      color: var(--color-accent, #ffe79a);
+      text-transform: uppercase;
+    }
     #s2-quadro {
       position: absolute;
       left: 100px;
-      top: 910px;
+      top: 884px;
       width: 880px;
-      height: 525px;
-      transform-origin: 62% 40%;
+      height: 495px;
+      transform-origin: 55% 40%;
     }
     #s2-foto-mask {
       position: absolute;
@@ -127,7 +148,7 @@
     <div id="s2-brilho"></div>
     <div id="s2-quadro" data-layout-allow-overflow>
       <div id="s2-foto-mask">
-        <img id="s2-foto" src="assets/img/s2-estudio-daniel.jpg" alt="Daniel Devitto Zákia no estúdio do Café com Zákia" />
+        <img id="s2-foto" src="assets/img/real-s2-daniel.jpg" alt="Daniel Zákia gravando o Café com Zákia" />
       </div>
       <div id="s2-moldura"></div>
       <div class="s2-canto" id="s2-c1"></div>
@@ -135,10 +156,11 @@
       <div class="s2-canto" id="s2-c3"></div>
       <div class="s2-canto" id="s2-c4"></div>
     </div>
-    <img id="s2-logo" src="assets/img/logo-cafe-com-zakia-branco.png" alt="Café com Zákia" />
+    <img id="s2-logo" src="assets/img/logo-dourado.png" alt="Café com Zákia" />
     <div id="s2-fio"></div>
-    <p id="s2-sub">Falando de Negócios</p>
+    <p id="s2-sub">Negócios · Direito · Política</p>
     <p id="s2-apres">com Daniel Zákia</p>
+    <div id="s2-chip">14ª temporada</div>
     <div id="s2-onda-wrap" data-layout-ignore>
       <svg id="s2-onda" viewBox="0 0 1080 200"><path id="s2-onda-path" d=""></path></svg>
     </div>
@@ -158,23 +180,23 @@
       const tl = gsap.timeline({ paused: true });
       // A onda se achata e sobe até virar o fio dourado sob o logo.
       tl.fromTo("#s2-onda", { scaleY: 1 }, { scaleY: 0.015, duration: 0.3, ease: "power3.inOut" }, 0);
-      tl.fromTo("#s2-onda-wrap", { y: 0, scaleX: 1 }, { y: -521, scaleX: 560 / 1080, duration: 0.36, ease: "expo.inOut" }, 0.02);
+      tl.fromTo("#s2-onda-wrap", { y: 0, scaleX: 1 }, { y: -572, scaleX: 300 / 1080, duration: 0.36, ease: "expo.inOut" }, 0.02);
       tl.fromTo("#s2-fio", { opacity: 0 }, { opacity: 1, duration: 0.06 }, 0.36);
       tl.to("#s2-onda-wrap", { opacity: 0, duration: 0.06 }, 0.38);
-      // Logo revelado da esquerda para a direita, e então parado.
+      // Logo dourado revelado da esquerda para a direita, e então parado.
       tl.fromTo("#s2-logo", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "expo.out" }, 0.05);
       tl.fromTo("#s2-brilho", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0.05);
-      // Subtítulos por desfoque.
       tl.fromTo("#s2-sub", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.35);
-      tl.fromTo("#s2-apres", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.55);
-      // Quadro do estúdio abre de baixo para cima; câmera desliza dentro dele.
+      tl.fromTo("#s2-apres", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power3.out" }, 0.5);
+      tl.fromTo("#s2-chip", { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.25, ease: "expo.out" }, 0.62);
+      // Quadro real do estúdio abre de baixo para cima; câmera desliza dentro dele.
       tl.fromTo("#s2-foto-mask", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power3.out" }, 0.4);
       tl.fromTo("#s2-moldura, .s2-canto", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out", stagger: 0.04 }, 0.6);
-      tl.fromTo("#s2-foto", { scale: 1.14, x: 34 }, { scale: 1.02, x: -24, duration: 1.75, ease: "power2.inOut" }, 0.4);
+      tl.fromTo("#s2-foto", { scale: 1.16, x: -30 }, { scale: 1.03, x: 20, duration: 1.75, ease: "power2.inOut" }, 0.4);
       // Saída: zoom através do quadro (o objeto vira o mundo).
-      tl.to("#s2-logo, #s2-fio, #s2-sub, #s2-apres, #s2-brilho", { opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in" }, 2.12);
+      tl.to("#s2-logo, #s2-fio, #s2-sub, #s2-apres, #s2-chip, #s2-brilho", { opacity: 0, filter: "blur(10px)", duration: 0.2, ease: "power2.in" }, 2.12);
       tl.to("#s2-moldura, .s2-canto", { opacity: 0, duration: 0.12 }, 2.12);
-      tl.to("#s2-quadro", { scale: 3.4, duration: 0.38, ease: "power3.in" }, 2.12);
+      tl.to("#s2-quadro", { scale: 3.6, duration: 0.38, ease: "power3.in" }, 2.12);
       tl.to("#s2-foto", { filter: "blur(14px)", duration: 0.2, ease: "power2.in" }, 2.3);
       window.__timelines["s2-identidade"] = tl;
     })();
