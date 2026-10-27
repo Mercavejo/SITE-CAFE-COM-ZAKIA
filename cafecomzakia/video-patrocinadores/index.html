@@ -1,0 +1,209 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  data-resolution="portrait"
+  data-composition-variables='[
+    {"id":"color-ground","type":"color","label":"Fundo","default":"#030303"},
+    {"id":"color-ink","type":"color","label":"Texto","default":"#FFFFFF"},
+    {"id":"color-accent","type":"color","label":"Destaque (dourado-claro)","default":"#FFE79A"},
+    {"id":"color-gold","type":"color","label":"Linhas (dourado)","default":"#D4AF37"},
+    {"id":"color-muted","type":"color","label":"Notas","default":"#A9ABB0"},
+    {"id":"font-display","type":"string","label":"Fonte dos títulos","default":"Gelasio"},
+    {"id":"font-sans","type":"string","label":"Fonte das métricas e chamadas","default":"Inter"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Café com Zákia — Patrocinadores (15 s)</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Gelasio";
+        src: url("assets/fonts/Gelasio-VF.woff2") format("woff2");
+        font-weight: 400 700;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: "Gelasio";
+        src: url("assets/fonts/Gelasio-Italic-VF.woff2") format("woff2");
+        font-weight: 400 700;
+        font-style: italic;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/Inter-VF.woff2") format("woff2");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      :root {
+        --color-ground: #030303;
+        --color-ink: #ffffff;
+        --color-accent: #ffe79a;
+        --color-gold: #d4af37;
+        --color-muted: #a9abb0;
+        --font-display: "Gelasio";
+        --font-sans: "Inter";
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--color-ground);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background: var(--color-ground);
+      }
+      #ground {
+        position: absolute;
+        inset: 0;
+        background: var(--color-ground);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="15"
+      data-width="1080"
+      data-height="1920"
+      data-fps="60"
+    >
+      <div id="ground"></div>
+
+      <div
+        id="atmosfera"
+        class="clip"
+        data-composition-id="atmosfera"
+        data-composition-src="compositions/atmosfera.html"
+        data-start="0"
+        data-duration="15"
+        data-track-index="0"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 1"
+      ></div>
+
+      <div
+        id="s1-gancho"
+        class="clip"
+        data-composition-id="s1-gancho"
+        data-composition-src="compositions/s1-gancho.html"
+        data-start="0"
+        data-duration="1.5"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 2"
+      ></div>
+      <div
+        id="s2-identidade"
+        class="clip"
+        data-composition-id="s2-identidade"
+        data-composition-src="compositions/s2-identidade.html"
+        data-start="1.5"
+        data-duration="2.5"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 3"
+      ></div>
+      <div
+        id="s3-convidados"
+        class="clip"
+        data-composition-id="s3-convidados"
+        data-composition-src="compositions/s3-convidados.html"
+        data-start="4"
+        data-duration="3"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 4"
+      ></div>
+      <div
+        id="s4-metricas"
+        class="clip"
+        data-composition-id="s4-metricas"
+        data-composition-src="compositions/s4-metricas.html"
+        data-start="7"
+        data-duration="3"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 5"
+      ></div>
+      <div
+        id="s5-oportunidade"
+        class="clip"
+        data-composition-id="s5-oportunidade"
+        data-composition-src="compositions/s5-oportunidade.html"
+        data-start="10"
+        data-duration="2.5"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 6"
+      ></div>
+      <div
+        id="s6-cta"
+        class="clip"
+        data-composition-id="s6-cta"
+        data-composition-src="compositions/s6-cta.html"
+        data-start="12.5"
+        data-duration="2.5"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 7"
+      ></div>
+
+      <div
+        id="grao"
+        class="clip"
+        data-composition-id="grao"
+        data-composition-src="compositions/grao.html"
+        data-start="0"
+        data-duration="15"
+        data-track-index="2"
+        data-track-kind="graphics"
+        data-width="1080"
+        data-height="1920"
+        style="z-index: 50"
+      ></div>
+
+      <audio
+        id="trilha"
+        class="clip"
+        src="assets/audio/trilha-original-master.wav"
+        data-start="0"
+        data-duration="15"
+        data-track-index="3"
+        data-volume="1"
+      ></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

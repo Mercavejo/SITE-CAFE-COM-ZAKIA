@@ -1,0 +1,7 @@
+description {"content": "O Café com Zákia surgiu de uma vontade de espalhar a opinião de pessoas com mentes fortes e personalidades únicas que têm vontade de mostrar suas ideias e pensamentos ao público "}
+description "O Café com Zákia surgiu de uma vontade de espalhar a opinião de pessoas com mentes fortes e personalidades únicas que têm vontade de mostrar suas ideias e pensamentos ao público\n\nSomos rodeados de mentiras e mídias sensacionalistas, capazes de vender produtos e não a verdade. As pessoas estão mais frias, se escondendo atrás de máscaras, vivendo uma vida de artificialidades e muitos vivendo de f
+description "O Café com Zákia surgiu de uma vontade de espalhar a opinião de pessoas com mentes fortes e personalidades únicas que têm vontade de mostrar suas ideias e pe..."
+subscriberCountText "4,3 mil inscritos"
+viewCountText "1.098.684 visualizações"
+videoCountText "2.074 vídeos"
+country "Brasil"

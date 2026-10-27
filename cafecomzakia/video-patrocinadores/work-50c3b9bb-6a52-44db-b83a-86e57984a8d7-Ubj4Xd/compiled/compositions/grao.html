@@ -1,0 +1,45 @@
+<!--
+  Grão de filme discreto sobre o vídeo inteiro.
+  Base: componente de registro "grain-overlay" (compositions/components/grain-overlay.html).
+  Diferença: o deslocamento da textura é dirigido pela timeline (passos de 1/12 s),
+  e não por uma animação CSS infinita, para que cada quadro seja determinístico.
+-->
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    #grao-textura {
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.07;
+      mix-blend-mode: overlay;
+    }
+  </style>
+  <div id="root" data-composition-id="grao" data-width="1080" data-height="1920" data-layout-ignore>
+    <div id="grao-textura"></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      // Mesmas posições do grain-overlay original, em ciclo fixo.
+      const pos = [
+        [0, 0], [-5, -5], [-10, 5], [5, -10], [-5, 15],
+        [-10, 5], [15, 0], [0, 10], [-15, 0], [10, 5],
+      ];
+      const step = 1 / 12;
+      for (let i = 0; i * step < 15; i++) {
+        const [x, y] = pos[i % pos.length];
+        tl.set("#grao-textura", { xPercent: x, yPercent: y }, i * step);
+      }
+      window.__timelines["grao"] = tl;
+    })();
+  </script>
+</template>

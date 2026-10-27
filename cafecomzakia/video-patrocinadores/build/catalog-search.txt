@@ -1,0 +1,56 @@
+### film grain
+ - grain-overlay | component | Animated film grain texture overlay using CSS keyframes — adds warmth and analog character to any composition
+ - thin-film | block | An orb's rim shimmers with soap-bubble iridescence on black. A WebGPU shader from the Shaders library (shaders.com, MIT).
+ - grain-field | component | A clearly visible accent-tinted dot field drifts over a subtle luminance gradient in an exact ambient loop.
+ - organic-light-leak-overlay | block | Finite CSS light-leak overlay for memory beats and motivated transitions
+ - yt-lcd-background | block | Textured paper board: scanlines with slow drift, optional pixel grid, static grain, and display text with a blur-focus entrance an
+ - soft-blob-touch | component | A granular soft blob idles with slow internal drift; a scripted touch dot decel-arrives, the blob deforms toward it with an attrac
+### audio waveform
+ - waveform | block | Equalizer bars in a blue to pink gradient pulse across the middle of the frame, like an audio visualizer. A WebGPU shader from the
+ - ripple-waves | block | Shader transition with concentric ripple wave distortion
+ - oscilloscope-trace | block | CRT oscilloscope beam sweeping a waveform across a 10x8 graticule, with closed-form phosphor persistence: the tail decays as exp(-
+ - sine-wave | block | A glowing white sine wave travels across a black frame. A WebGPU shader from the Shaders library (shaders.com, MIT).
+ - weight-wave | block | A crest of thickness travels along a headline: each character swells from light to black and leans forward as the wave passes, dri
+ - signup-flow | component | A composed signup flow with social action, email field, password field, and submit button
+### kinetic typography
+ - caption-kinetic-slam | component | Full-screen single-word display with alternating entrance directions
+ - kinetic-type-swap | component | A held sentence keeps its fixed text in place while one widest-word masked slot rolls through alternatives and settles on the fina
+ - kinetic-center-build | component | Words enter from the right and push the growing phrase left until the final line locks centered.
+ - variable-axis-type | component | A locked one-line headline whose weight or width axis morphs into a decisive emphasis beat.
+ - morph-text | component | Gooey text morph — cycles through an editable word list using SVG threshold + GSAP-driven blur for a fluid, satisfying transition 
+ - weight-wave | block | A crest of thickness travels along a headline: each character swells from light to black and leans forward as the wave passes, dri
+### number counter
+ - number-wheel | component | A rolling digit counter primitive for metrics, prices, counts, and scoreboards
+ - number-pop-in | component | A transitions.dev-inspired digit pop-in with blur, lift, and staggered value reveal
+ - count-up | component | A token-native stat counter that eases between values, counting up or down, and lands with a restrained scale pulse.
+ - apple-money-count | block | Apple-style finance counter that counts from $0 to $10,000, flashes green, and bursts money icons with sound.
+ - camcorder-hud | block | Responsive REC, battery, editable date placeholder, and timeline-driven counter overlay for creator-camera and camcorder treatment
+ - modal-morph | component | A small card expands into a full panel, shared-element style: both layouts measured once at mount, the container morphs by transfo
+### gold line reveal
+ - ui-3d-reveal | block | Perspective 3D reveal animation for UI elements
+ - line-by-line-slide | component | Each line enters from the left with staggered slide and exits to the right.
+ - panel-reveal | component | A panel reveal primitive with height expansion and content fade
+ - code-scroll | block | The camera scrolls a long file to bring a target line to center and spotlights it — for walking through real modules.
+ - skeleton-reveal | component | A skeleton loader transition that pulses, then cross-fades into content
+ - falling-lines | block | White lines fall down the frame at varied speeds, each fading into a trail. A WebGPU shader from the Shaders library (shaders.com,
+### end card logo
+ - logo-outro | block | Cinematic logo reveal with piece-by-piece assembly, glow bloom, tagline fade-in, and URL pill
+ - logo-brand-close | component | A display-scale wordmark cascades letter by letter into a centered lockup, the accent brand period lands last, an optional tagline
+ - extruded-logo | block | Beveled 3D letters flip up one by one, the word swings so light runs across the bevels, then settles for a readable hold. Chrome, 
+ - logo-wall | component | A trusted-by wall of placeholder lettermark logos that fades and scales into place with a deterministic per-cell stagger.
+ - yt-logo-intro | block | Logo stamp pops on a lined board, a kicker line gives way to the title with an accent arrow chip; seeded line distortion
+ - logo-sting | component | A wordmark slams into its final scale, fires one accent ring and one white impact frame, then holds completely still.
+### mask reveal text
+ - svg-mask-reveal | component | A soft token-colored sweep reveals media only through an editable SVG wordmark mask.
+ - texture-mask-text | component | CSS luminance masks that cut holes through letterforms - 66 pre-built texture masks from ambientCG PBR color maps
+ - lt-mask-reveal | block | Cardless lower third: an accent sweep crosses and clip-path-reveals a heavy name, role fades up; for footage
+ - ui-3d-reveal | block | Perspective 3D reveal animation for UI elements
+ - carousel-text-circle-5 | block | A headline mask-reveals word by word while a circle carousel converges from off-frame and threads the line, collapses to centre, h
+ - carousel-text-circle-4 | block | A headline mask-reveals word by word while a circle carousel converges from off-frame and threads the line, collapses to centre, h
+### light leak
+ - light-leak | block | Shader transition with cinematic light leak overlay
+ - organic-light-leak-overlay | block | Finite CSS light-leak overlay for memory beats and motivated transitions
+ - transitions-light | block | Showcase of light-based glow and flash transitions
+ - light-edge | block | Purple and cyan light races around the edge of an orb on black. A WebGPU shader from the Shaders library (shaders.com, MIT).
+ - light-sweep-pass | component | A traveling key light re-shades a slotted scene: a soft diagonal gradient band crosses the frame once while every per-element high
+ - prism | block | A white beam of light splits into a slowly turning rainbow. A WebGPU shader from the Shaders library (shaders.com, MIT).

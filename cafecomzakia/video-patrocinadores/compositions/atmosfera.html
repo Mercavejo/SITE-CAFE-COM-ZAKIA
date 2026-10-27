@@ -1,0 +1,38 @@
+<!--
+  Atmosfera contínua (0 → 15 s): o cenário real do estúdio (thumbnail oficial do YouTube,
+  desfocado em build/prep_images.py) atrás de todas as cenas, com vinheta escura e uma
+  deriva lenta de câmera. Dá profundidade e preenche a área inferior reservada à interface
+  do Reels/TikTok sem colocar texto nela.
+-->
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      background: #030303;
+    }
+    #atm-img {
+      position: absolute;
+      inset: -60px;
+      background: url("assets/img/bg-estudio-desfocado.jpg") center / cover no-repeat;
+      opacity: 0.8;
+    }
+    #atm-vinheta {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 95% 62% at 50% 46%, rgba(3, 3, 3, 0.5) 0%, rgba(3, 3, 3, 0.86) 72%, #030303 100%);
+    }
+  </style>
+  <div id="root" data-composition-id="atmosfera" data-width="1080" data-height="1920" data-layout-ignore>
+    <div id="atm-img"></div>
+    <div id="atm-vinheta"></div>
+  </div>
+  <script>
+    (function () {
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#atm-img", { scale: 1.1, x: -24 }, { scale: 1.0, x: 24, duration: 15, ease: "none" }, 0);
+      window.__timelines["atmosfera"] = tl;
+    })();
+  </script>
+</template>
