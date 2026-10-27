@@ -35,6 +35,23 @@ Problemas encontrados e corrigidos:
 
 Conferido nos quadros: nenhuma palavra cortada; todo texto entre y≈240 e y≈1330 (faixa segura do Reels/TikTok); títulos ≥ 96 px; textos secundários ≥ 34 px; logo sem distorção; "cafecomzakia.com.br" e "@cafecomzakia" com a grafia correta; placa conceitual alinhada à placa de couro da mesa real.
 
+## Arquivo final (ffprobe)
+
+`cafe-com-zakia-patrocinadores-15s.mp4`. Saída completa em `build/ffprobe.txt`.
+
+| Item | Valor |
+| --- | --- |
+| Contêiner | MP4 (`isom`, compatível `isomiso2avc1mp41`), 20,7 MB |
+| Vídeo | H.264 High, nível 5.0, `yuv420p`, 1080×1920, SAR 1:1, DAR 9:16 |
+| Frame rate | 60/1 (constante), 900 quadros |
+| Duração | 15,000000 s (vídeo, áudio e contêiner) |
+| Bitrate de vídeo | ≈ 11,4 Mb/s; keyframe a cada 2 s |
+| Áudio | AAC-LC, 48 kHz, estéreo, ≈ 207 kb/s |
+| Loudness (EBU R128, arquivo final) | −14,7 LUFS integrados, LRA 2,7 LU, pico verdadeiro −1,6 dBFS (sem clipping). Ver `build/loudness-final.txt` |
+| Trilha antes do encode AAC | −14,0 LUFS, pico verdadeiro −1,3 dBFS |
+
+Configuração compatível com Instagram Reels, Stories e TikTok (H.264 + AAC, 9:16, até 60 fps). Quadros extraídos do próprio MP4 em `snapshots/render/` conferem com o preview.
+
 ## Decisões criativas
 
 - Seis cenas nos tempos do briefing, com todas as trocas exatamente nas batidas da trilha (120 BPM).
@@ -44,7 +61,7 @@ Conferido nos quadros: nenhuma palavra cortada; todo texto entre y≈240 e y≈1
 
 ## O que foi medido e o que não foi
 
-- **Medido:** layout, contraste, tempos de leitura, legibilidade a 360 px, loudness (−14 LUFS integrados), pico verdadeiro, duração, resolução, fps e codecs (ffprobe, abaixo).
+- **Medido:** layout, contraste, tempos de leitura, legibilidade a 360 px, loudness, pico verdadeiro, duração, resolução, fps e codecs (ffprobe, acima). O relatório de áudio do HyperFrames (`build/audio-report.json`) classifica o arquivo como música, com ataques regulares nas batidas e pico de energia em 13,0 s (CTA).
 - **Não ouvido:** a trilha foi medida, não escutada por uma pessoa. Recomenda-se ouvir antes de publicar, principalmente a xícara (1,52 s e 12,55 s) e o riser (12,0–12,5 s).
 - **Não verificado no Instagram:** a contagem de visualizações do reel "+6 milhões" não é pública sem login. O número vem do site oficial e está rotulado como "dados publicados pelo Café com Zákia".
 

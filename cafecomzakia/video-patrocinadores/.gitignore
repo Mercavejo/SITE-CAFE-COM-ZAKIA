@@ -2,3 +2,5 @@
 node_modules/
 renders/
 build/*.tgz
+.*.hf-transaction-*/
+work-*/
